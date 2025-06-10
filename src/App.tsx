@@ -9,6 +9,9 @@ import Index from "./pages/Index";
 import CreateCampaign from "./pages/CreateCampaign";
 import SettingsPage from "./pages/SettingsPage";
 import Campaigns from "./pages/Campaigns";
+import FlexManagement from "./pages/FlexManagement";
+import JourneyBuilder from "./pages/JourneyBuilder";
+import WorkflowManager from "./pages/WorkflowManager";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +27,9 @@ const App = () => (
             <Route index element={<Index />} />
             <Route path="create" element={<CreateCampaign />} />
             <Route path="campaigns" element={<Campaigns />} />
+            <Route path="flex" element={<FlexManagement />} />
+            <Route path="journeys" element={<JourneyBuilder />} />
+            <Route path="workflows" element={<WorkflowManager />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
