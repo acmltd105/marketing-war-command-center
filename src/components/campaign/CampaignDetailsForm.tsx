@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,7 +13,7 @@ interface CampaignDetailsFormProps {
     schedule: string;
     scheduledTime: string;
   };
-  onCampaignChange: (updates: Partial<typeof campaign>) => void;
+  onCampaignChange: (updates: Partial<CampaignDetailsFormProps['campaign']>) => void;
   audienceSegments: Array<{ name: string; count: number }>;
 }
 
