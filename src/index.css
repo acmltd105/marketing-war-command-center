@@ -3,56 +3,62 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Control Center War Machine Design System */
+/* Fortune 100 Corporate War Machine Design System */
 
 @layer base {
   :root {
-    --background: 220 13% 8%;
-    --foreground: 180 100% 90%;
+    --background: 218 23% 4%;
+    --foreground: 210 40% 95%;
 
-    --card: 220 13% 10%;
-    --card-foreground: 180 100% 90%;
+    --card: 218 23% 6%;
+    --card-foreground: 210 40% 95%;
 
-    --popover: 220 13% 10%;
-    --popover-foreground: 180 100% 90%;
+    --popover: 218 23% 6%;
+    --popover-foreground: 210 40% 95%;
 
-    --primary: 195 100% 50%;
-    --primary-foreground: 220 13% 8%;
+    --primary: 212 100% 45%;
+    --primary-foreground: 218 23% 4%;
 
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 180 100% 90%;
+    --secondary: 218 23% 8%;
+    --secondary-foreground: 210 40% 95%;
 
-    --muted: 220 13% 15%;
-    --muted-foreground: 180 20% 60%;
+    --muted: 218 23% 10%;
+    --muted-foreground: 210 20% 65%;
 
-    --accent: 350 89% 60%;
-    --accent-foreground: 220 13% 8%;
+    --accent: 14 90% 55%;
+    --accent-foreground: 218 23% 4%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 75% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 13% 20%;
-    --input: 220 13% 15%;
-    --ring: 195 100% 50%;
+    --border: 218 23% 12%;
+    --input: 218 23% 8%;
+    --ring: 212 100% 45%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
-    --sidebar-background: 220 13% 6%;
-    --sidebar-foreground: 180 100% 90%;
-    --sidebar-primary: 195 100% 50%;
-    --sidebar-primary-foreground: 220 13% 8%;
-    --sidebar-accent: 220 13% 12%;
-    --sidebar-accent-foreground: 180 100% 90%;
-    --sidebar-border: 220 13% 18%;
-    --sidebar-ring: 195 100% 50%;
+    --sidebar-background: 218 23% 3%;
+    --sidebar-foreground: 210 40% 95%;
+    --sidebar-primary: 212 100% 45%;
+    --sidebar-primary-foreground: 218 23% 4%;
+    --sidebar-accent: 218 23% 7%;
+    --sidebar-accent-foreground: 210 40% 95%;
+    --sidebar-border: 218 23% 10%;
+    --sidebar-ring: 212 100% 45%;
 
-    /* Custom tactical colors */
-    --tactical-blue: 195 100% 50%;
-    --tactical-cyan: 180 100% 70%;
-    --tactical-red: 350 89% 60%;
-    --tactical-green: 120 60% 50%;
-    --tactical-yellow: 45 100% 60%;
-    --tactical-grid: 220 13% 25%;
+    /* Corporate Fortune 100 colors */
+    --corporate-blue: 212 100% 45%;
+    --corporate-navy: 218 50% 20%;
+    --corporate-silver: 210 15% 75%;
+    --corporate-platinum: 210 10% 85%;
+    --corporate-gold: 43 74% 66%;
+    --corporate-crimson: 355 85% 55%;
+    --corporate-emerald: 160 84% 39%;
+    --corporate-charcoal: 218 23% 15%;
+    --revenue-green: 142 71% 45%;
+    --conversion-orange: 25 95% 53%;
+    --kpi-purple: 262 83% 58%;
+    --warning-amber: 45 93% 47%;
   }
 }
 
@@ -63,36 +69,123 @@
 
   body {
     @apply bg-background text-foreground font-mono;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  /* Tactical grid pattern */
-  .tactical-grid {
+  /* Corporate grid pattern */
+  .corporate-grid {
     background-image: 
-      linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
+      linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 
-  /* Glowing effects */
-  .glow-blue {
-    box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+  /* Premium glow effects */
+  .glow-corporate {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.15), 0 0 60px rgba(59, 130, 246, 0.1);
   }
 
-  .glow-red {
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  .glow-revenue {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
   }
 
-  /* Pulse animation */
-  .pulse-tactical {
-    animation: pulse-tactical 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  .glow-conversion {
+    box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
   }
 
-  @keyframes pulse-tactical {
+  .glow-premium {
+    box-shadow: 
+      0 0 20px rgba(59, 130, 246, 0.2),
+      0 0 40px rgba(59, 130, 246, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Corporate pulse animation */
+  .pulse-corporate {
+    animation: pulse-corporate 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-corporate {
     0%, 100% {
-      box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+      box-shadow: 
+        0 0 20px rgba(59, 130, 246, 0.2),
+        0 0 40px rgba(59, 130, 246, 0.1);
     }
     50% {
-      box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+      box-shadow: 
+        0 0 30px rgba(59, 130, 246, 0.4),
+        0 0 60px rgba(59, 130, 246, 0.2);
     }
+  }
+
+  /* Revenue tracking styles */
+  .revenue-indicator {
+    background: linear-gradient(135deg, 
+      hsl(var(--revenue-green)) 0%, 
+      hsl(var(--corporate-emerald)) 100%);
+  }
+
+  .conversion-indicator {
+    background: linear-gradient(135deg, 
+      hsl(var(--conversion-orange)) 0%, 
+      hsl(var(--warning-amber)) 100%);
+  }
+
+  /* Executive dashboard styling */
+  .executive-card {
+    background: linear-gradient(135deg, 
+      hsl(var(--card)) 0%, 
+      hsl(var(--corporate-charcoal)) 100%);
+    border: 1px solid hsl(var(--corporate-navy));
+  }
+
+  /* Premium button styles */
+  .btn-corporate {
+    background: linear-gradient(135deg, 
+      hsl(var(--corporate-blue)) 0%, 
+      hsl(var(--corporate-navy)) 100%);
+    border: 1px solid hsl(var(--corporate-silver) / 0.2);
+    box-shadow: 
+      0 4px 16px rgba(59, 130, 246, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-corporate:hover {
+    box-shadow: 
+      0 8px 32px rgba(59, 130, 246, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+  }
+
+  /* Fortune 100 typography */
+  .fortune-heading {
+    background: linear-gradient(135deg, 
+      hsl(var(--corporate-platinum)) 0%, 
+      hsl(var(--corporate-silver)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* KPI indicators */
+  .kpi-positive {
+    color: hsl(var(--revenue-green));
+  }
+
+  .kpi-negative {
+    color: hsl(var(--corporate-crimson));
+  }
+
+  .kpi-neutral {
+    color: hsl(var(--conversion-orange));
+  }
+
+  /* Data visualization enhancements */
+  .metric-card {
+    background: linear-gradient(135deg, 
+      hsl(var(--card) / 0.8) 0%, 
+      hsl(var(--corporate-charcoal) / 0.6) 100%);
+    backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border) / 0.8);
   }
 }

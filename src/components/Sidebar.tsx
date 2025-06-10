@@ -7,48 +7,55 @@ import {
   Settings, 
   Plus, 
   Bell,
-  Circle,
-  CircleCheck,
-  CircleMinus,
-  CirclePlus,
-  MessageCircle,
+  LayoutDashboard,
+  Target,
   MessageSquare,
-  Phone
+  Users,
+  BarChart3,
+  Phone,
+  FileText,
+  AlertTriangle,
+  Activity
 } from 'lucide-react';
 
 const Sidebar = () => {
   const navItems = [
-    { name: 'Dashboard', path: '/', icon: Circle, badge: null },
-    { name: 'Campaigns', path: '/campaigns', icon: MessageSquare, badge: '3 Active' },
-    { name: 'Create Campaign', path: '/create', icon: Plus, badge: null },
-    { name: 'Contacts', path: '/contacts', icon: MessageCircle, badge: '15.4K' },
-    { name: 'Analytics', path: '/analytics', icon: CircleCheck, badge: null },
-    { name: 'Phone Numbers', path: '/numbers', icon: Phone, badge: '5' },
-    { name: 'Templates', path: '/templates', icon: MessageSquare, badge: null },
-    { name: 'Settings', path: '/settings', icon: Settings, badge: null },
+    { name: 'Revenue Dashboard', path: '/', icon: LayoutDashboard, badge: null },
+    { name: 'Campaign Operations', path: '/campaigns', icon: Target, badge: '3 Active' },
+    { name: 'Launch Campaign', path: '/create', icon: Plus, badge: null },
+    { name: 'Customer Database', path: '/contacts', icon: Users, badge: '47K' },
+    { name: 'Performance Analytics', path: '/analytics', icon: BarChart3, badge: null },
+    { name: 'Communication Assets', path: '/numbers', icon: Phone, badge: '12' },
+    { name: 'Message Templates', path: '/templates', icon: FileText, badge: '24' },
+    { name: 'System Configuration', path: '/settings', icon: Settings, badge: null },
   ];
 
   const quickStats = [
-    { label: 'Active Campaigns', value: '12', color: 'text-tactical-green' },
-    { label: 'Queue', value: '847', color: 'text-tactical-yellow' },
-    { label: 'Failed', value: '3', color: 'text-tactical-red' },
+    { label: 'Revenue Generated', value: '$2.4M', color: 'text-revenue-green' },
+    { label: 'Active Operations', value: '12', color: 'text-corporate-blue' },
+    { label: 'Queue Processing', value: '847', color: 'text-warning-amber' },
+    { label: 'System Alerts', value: '2', color: 'text-corporate-crimson' },
   ];
 
   return (
-    <div className="w-64 h-screen bg-sidebar border-r border-sidebar-border p-4 flex flex-col">
-      {/* Logo/Brand */}
-      <div className="mb-8">
-        <h1 className="text-xl font-bold text-primary mb-1">WAR MACHINE</h1>
-        <p className="text-xs text-muted-foreground">Twilio Control Center</p>
+    <div className="w-72 h-screen bg-sidebar border-r border-sidebar-border p-4 flex flex-col">
+      {/* Corporate Brand */}
+      <div className="mb-8 p-4 bg-corporate-navy/30 rounded-lg border border-corporate-navy">
+        <h1 className="text-xl font-bold fortune-heading mb-1">REVENUE ENGINE</h1>
+        <p className="text-xs text-corporate-silver">Enterprise Command Center</p>
+        <div className="flex items-center gap-2 mt-2">
+          <Activity className="h-3 w-3 text-revenue-green" />
+          <span className="text-xs text-corporate-silver">Systems Operational</span>
+        </div>
       </div>
 
-      {/* Quick Stats */}
-      <div className="mb-6 p-3 bg-sidebar-accent rounded-lg">
-        <h3 className="text-sm font-medium mb-3 text-sidebar-foreground">System Status</h3>
-        <div className="space-y-2">
+      {/* Executive Metrics */}
+      <div className="mb-6 p-4 metric-card rounded-lg border-corporate-charcoal">
+        <h3 className="text-sm font-semibold mb-3 text-corporate-platinum">Executive Metrics</h3>
+        <div className="space-y-3">
           {quickStats.map((stat) => (
             <div key={stat.label} className="flex justify-between items-center">
-              <span className="text-xs text-muted-foreground">{stat.label}</span>
+              <span className="text-xs text-corporate-silver">{stat.label}</span>
               <span className={`text-sm font-bold ${stat.color}`}>{stat.value}</span>
             </div>
           ))}
@@ -57,23 +64,26 @@ const Sidebar = () => {
 
       {/* Navigation */}
       <nav className="flex-1">
-        <div className="space-y-1">
+        <div className="space-y-2">
           {navItems.map((item) => (
             <NavLink
               key={item.name}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                `flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all duration-200 ${
                   isActive
-                    ? 'bg-sidebar-primary text-sidebar-primary-foreground'
-                    : 'text-sidebar-foreground hover:bg-sidebar-accent'
+                    ? 'bg-corporate-blue text-white font-semibold glow-corporate'
+                    : 'text-corporate-silver hover:bg-corporate-charcoal hover:text-corporate-platinum'
                 }`
               }
             >
               <item.icon className="h-4 w-4" />
               <span className="flex-1">{item.name}</span>
               {item.badge && (
-                <Badge variant="secondary" className="text-xs">
+                <Badge 
+                  variant="secondary" 
+                  className="text-xs bg-corporate-navy text-corporate-platinum font-semibold"
+                >
                   {item.badge}
                 </Badge>
               )}
@@ -82,19 +92,26 @@ const Sidebar = () => {
         </div>
       </nav>
 
-      {/* Emergency Actions */}
-      <div className="mt-6 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
-        <h4 className="text-sm font-medium text-destructive mb-2">Emergency Controls</h4>
-        <Button variant="destructive" size="sm" className="w-full">
-          <CircleMinus className="h-4 w-4 mr-2" />
-          Pause All Campaigns
+      {/* Critical System Controls */}
+      <div className="mt-6 p-4 bg-corporate-crimson/10 border border-corporate-crimson/30 rounded-lg">
+        <h4 className="text-sm font-semibold text-corporate-crimson mb-3 flex items-center gap-2">
+          <AlertTriangle className="h-4 w-4" />
+          Critical Controls
+        </h4>
+        <Button 
+          variant="destructive" 
+          size="sm" 
+          className="w-full bg-corporate-crimson hover:bg-corporate-crimson/90 text-white font-semibold"
+        >
+          Emergency Stop All
         </Button>
       </div>
 
-      {/* Connection Status */}
-      <div className="mt-4 flex items-center gap-2 text-xs">
-        <Circle className="h-2 w-2 text-tactical-green" />
-        <span className="text-muted-foreground">Twilio Connected</span>
+      {/* System Status */}
+      <div className="mt-4 flex items-center gap-2 text-xs p-3 bg-revenue-green/10 rounded-lg border border-revenue-green/30">
+        <Activity className="h-3 w-3 text-revenue-green animate-pulse" />
+        <span className="text-corporate-silver">All Systems: </span>
+        <span className="text-revenue-green font-semibold">OPERATIONAL</span>
       </div>
     </div>
   );
