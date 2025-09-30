@@ -20,8 +20,11 @@ const Command = React.forwardRef<
   />
 ))
 Command.displayName = CommandPrimitive.displayName
-
+codex/review-war-machine-ui-and-recommend-improvements
 type CommandDialogProps = DialogProps;
+=======
+type CommandDialogProps = DialogProps
+main
 
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
