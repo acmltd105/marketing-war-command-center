@@ -14,6 +14,7 @@ import {
   AlertTriangle,
   Bell,
   CheckCircle2,
+  Info,
   LineChart,
   Plus,
   Settings,
@@ -341,6 +342,7 @@ const Dashboard = () => {
   const [projects, setProjects] = useState<UiProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [usingDemoData, setUsingDemoData] = useState(false);
   const refreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const loadProjects = useCallback(
@@ -368,6 +370,7 @@ const Dashboard = () => {
         setError(supabaseError.message);
         setProjects([]);
         setLoading(false);
+        setUsingDemoData(false);
         return;
       }
 
@@ -379,6 +382,7 @@ const Dashboard = () => {
       });
 
       setProjects(normalized);
+      setUsingDemoData(false);
       setError(null);
       setLoading(false);
     },
@@ -387,11 +391,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!supabase) {
-      setProjects(demoProjects);
-      setError(
-        "Supabase credentials are not configured. Displaying live demo data instead.",
+      setProjects(
+        demoProjects.map((project) => ({
+          ...project,
+          builds: project.builds.map((build) => ({ ...build })),
+          latestBuild: project.builds[0],
+        })),
       );
       setLoading(false);
+      setError(null);
+      setUsingDemoData(true);
       return;
     }
 
@@ -402,6 +411,7 @@ const Dashboard = () => {
         setError(String(err));
         setProjects([]);
         setLoading(false);
+        setUsingDemoData(false);
       }
     });
 
@@ -501,6 +511,25 @@ const Dashboard = () => {
                 <p className="font-semibold">Realtime telemetry degraded</p>
                 <p className="text-corporate-silver">
                   {error}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {usingDemoData && (
+        <Card className="executive-card border-corporate-blue/60 mb-8 bg-corporate-blue/5">
+          <CardContent className="p-6">
+            <div className="flex items-start gap-3 text-sm text-corporate-platinum">
+              <Info className="h-5 w-5 text-corporate-blue mt-0.5" />
+              <div>
+                <p className="font-semibold">Running in showcase mode</p>
+                <p className="text-corporate-silver">
+                  Populate <code className="text-xs px-1 py-0.5 bg-corporate-charcoal rounded">VITE_SUPABASE_URL</code> and
+                  <code className="ml-1 text-xs px-1 py-0.5 bg-corporate-charcoal rounded">VITE_SUPABASE_ANON_KEY</code> in your
+                  environment to stream live build telemetry from Supabase. Until then, curated demo data keeps the dashboard
+                  fully interactive.
                 </p>
               </div>
             </div>
