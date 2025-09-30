@@ -14,30 +14,33 @@ import JourneyBuilder from "./pages/JourneyBuilder";
 import WorkflowManager from "./pages/WorkflowManager";
 import DncUpload from "./pages/DncUpload";
 import NotFound from "./pages/NotFound";
+import { SkinProvider } from "./hooks/useSkin";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Index />} />
-            <Route path="create" element={<CreateCampaign />} />
-            <Route path="campaigns" element={<Campaigns />} />
-            <Route path="flex" element={<FlexManagement />} />
-            <Route path="journeys" element={<JourneyBuilder />} />
-            <Route path="workflows" element={<WorkflowManager />} />
-            <Route path="dnc-upload" element={<DncUpload />} />
-            <Route path="settings" element={<SettingsPage />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <SkinProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Index />} />
+              <Route path="create" element={<CreateCampaign />} />
+              <Route path="campaigns" element={<Campaigns />} />
+              <Route path="flex" element={<FlexManagement />} />
+              <Route path="journeys" element={<JourneyBuilder />} />
+              <Route path="workflows" element={<WorkflowManager />} />
+              <Route path="dnc-upload" element={<DncUpload />} />
+              <Route path="settings" element={<SettingsPage />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </SkinProvider>
   </QueryClientProvider>
 );
 

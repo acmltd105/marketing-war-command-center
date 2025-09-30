@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
+import SkinSelector from "./SkinSelector";
 
 const BUILD_STATUSES = [
   "queued",
@@ -466,17 +467,20 @@ const Dashboard = () => {
           <h1 className="text-4xl font-bold fortune-heading mb-2">REVENUE COMMAND CENTER</h1>
           <p className="text-corporate-silver">Enterprise Marketing Operations • Fortune 100 Class</p>
         </div>
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" className="glow-corporate" aria-label="Notifications">
-            <Bell className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon" className="border-corporate-navy" aria-label="Settings">
-            <Settings className="h-4 w-4" />
-          </Button>
-          <Button className="btn-corporate text-white font-semibold">
-            <Plus className="h-4 w-4 mr-2" />
-            Launch Campaign
-          </Button>
+        <div className="flex items-center gap-6">
+          <SkinSelector />
+          <div className="flex items-center gap-4">
+            <Button variant="outline" size="icon" className="glow-corporate" aria-label="Notifications">
+              <Bell className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" className="border-corporate-navy" aria-label="Settings">
+              <Settings className="h-4 w-4" />
+            </Button>
+            <Button className="btn-corporate text-white font-semibold">
+              <Plus className="h-4 w-4 mr-2" />
+              Launch Campaign
+            </Button>
+          </div>
         </div>
       </div>
 
