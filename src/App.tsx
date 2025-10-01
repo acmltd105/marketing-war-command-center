@@ -13,6 +13,7 @@ import FlexManagement from "./pages/FlexManagement";
 import JourneyBuilder from "./pages/JourneyBuilder";
 import WorkflowManager from "./pages/WorkflowManager";
 import NotFound from "./pages/NotFound";
+import GoToMarketPipeline from "./pages/GoToMarketPipeline";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="campaigns" element={<Campaigns />} />
             <Route path="flex" element={<FlexManagement />} />
             <Route path="journeys" element={<JourneyBuilder />} />
+            <Route path="war-map" element={<GoToMarketPipeline />} />
             <Route path="workflows" element={<WorkflowManager />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>

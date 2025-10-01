@@ -15,13 +15,15 @@ import {
   Phone,
   FileText,
   AlertTriangle,
-  Activity
+  Activity,
+  Radar
 } from 'lucide-react';
 
 const Sidebar = () => {
   const navItems = [
     { name: 'Revenue Dashboard', path: '/', icon: LayoutDashboard, badge: null },
     { name: 'Campaign Operations', path: '/campaigns', icon: Target, badge: '3 Active' },
+    { name: 'Go-To-Market War Map', path: '/war-map', icon: Radar, badge: null },
     { name: 'Launch Campaign', path: '/create', icon: Plus, badge: null },
     { name: 'Customer Database', path: '/contacts', icon: Users, badge: '47K' },
     { name: 'Performance Analytics', path: '/analytics', icon: BarChart3, badge: null },
