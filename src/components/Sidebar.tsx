@@ -15,7 +15,9 @@ import {
   Phone,
   FileText,
   AlertTriangle,
-  Activity
+  Activity,
+  Globe,
+  Database
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -24,9 +26,11 @@ const Sidebar = () => {
     { name: 'Campaign Operations', path: '/campaigns', icon: Target, badge: '3 Active' },
     { name: 'Launch Campaign', path: '/create', icon: Plus, badge: null },
     { name: 'Customer Database', path: '/contacts', icon: Users, badge: '47K' },
+    { name: 'Lead Intelligence', path: '/leads', icon: Database, badge: 'Ingest' },
     { name: 'Performance Analytics', path: '/analytics', icon: BarChart3, badge: null },
     { name: 'Communication Assets', path: '/numbers', icon: Phone, badge: '12' },
     { name: 'Message Templates', path: '/templates', icon: FileText, badge: '24' },
+    { name: 'Landing & Web Dev', path: '/web-dev', icon: Globe, badge: null },
     { name: 'System Configuration', path: '/settings', icon: Settings, badge: null },
   ];
 
