@@ -14,6 +14,8 @@ import JourneyBuilder from "./pages/JourneyBuilder";
 import WorkflowManager from "./pages/WorkflowManager";
 import DncUpload from "./pages/DncUpload";
 import NotFound from "./pages/NotFound";
+import TemplateGallery from "./pages/TemplateGallery";
+import ClientPreviewShowcase from "./pages/ClientPreviewShowcase";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,8 @@ const App = () => (
             <Route path="journeys" element={<JourneyBuilder />} />
             <Route path="workflows" element={<WorkflowManager />} />
             <Route path="dnc-upload" element={<DncUpload />} />
+            <Route path="templates" element={<TemplateGallery />} />
+            <Route path="client-previews" element={<ClientPreviewShowcase />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />

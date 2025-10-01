@@ -29,6 +29,7 @@ const Sidebar = () => {
     { name: 'Performance Analytics', path: '/analytics', icon: BarChart3, badge: null },
     { name: 'Communication Assets', path: '/numbers', icon: Phone, badge: '12' },
     { name: 'Message Templates', path: '/templates', icon: FileText, badge: '24' },
+    { name: 'Client Previews', path: '/client-previews', icon: MessageSquare, badge: 'New' },
     { name: 'System Configuration', path: '/settings', icon: Settings, badge: null },
   ];
 
