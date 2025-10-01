@@ -16,6 +16,8 @@ The migrations create:
 - `builds` — per-build execution snapshots.
 - `project_latest_build` — helper view for the dashboard.
 - Trigger `handle_failed_build_alert` that forwards failed builds to the Twilio alerting function.
+- `financial_revenue_metrics`, `financial_revenue_projections`, and `financial_expense_metrics` — the Supabase tables that fuel
+  the new revenue & expense command tabs. Seed rows keep the UI interactive even before data pipelines are connected.
 
 ## Edge functions
 
