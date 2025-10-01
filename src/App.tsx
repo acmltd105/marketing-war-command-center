@@ -13,6 +13,7 @@ import FlexManagement from "./pages/FlexManagement";
 import JourneyBuilder from "./pages/JourneyBuilder";
 import WorkflowManager from "./pages/WorkflowManager";
 import DncUpload from "./pages/DncUpload";
+import FinancialsPage from "./pages/Financials";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="journeys" element={<JourneyBuilder />} />
             <Route path="workflows" element={<WorkflowManager />} />
             <Route path="dnc-upload" element={<DncUpload />} />
+            <Route path="financials" element={<FinancialsPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
