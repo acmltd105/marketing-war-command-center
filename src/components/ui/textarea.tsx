@@ -2,12 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-codex/review-war-machine-ui-and-recommend-improvements
-export type TextareaProps =
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>;
-=======
 export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>
-main
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => {
