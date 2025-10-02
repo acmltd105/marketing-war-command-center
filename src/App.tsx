@@ -15,6 +15,10 @@ import WorkflowManager from "./pages/WorkflowManager";
 import DncUpload from "./pages/DncUpload";
 import FinancialsPage from "./pages/Financials";
 import NotFound from "./pages/NotFound";
+ codex/set-up-dashboard-for-project-overview
+import LeadIntelligence from "./pages/LeadIntelligence";
+import WebDevelopment from "./pages/WebDevelopment";
+=======
  codex/find-email-templates-for-dental-and-precare-coverage-cxc1oz
 import TemplateGallery from "./pages/TemplateGallery";
 =======
@@ -31,6 +35,7 @@ import { SkinProvider } from "./hooks/useSkin";
  main
 main
 main
+ main
  main
 
 const queryClient = new QueryClient();
@@ -55,6 +60,10 @@ codex/define-lead-processing-and-marketing-workflow
             <Route path="journeys" element={<JourneyBuilder />} />
             <Route path="war-map" element={<GoToMarketPipeline />} />
             <Route path="workflows" element={<WorkflowManager />} />
+codex/set-up-dashboard-for-project-overview
+            <Route path="leads" element={<LeadIntelligence />} />
+            <Route path="web-dev" element={<WebDevelopment />} />
+=======
  codex/integrate-revenue-and-expense-tabs-qmhblg
             <Route path="dnc-upload" element={<DncUpload />} />
 codex/find-email-templates-for-dental-and-precare-coverage-cxc1oz
@@ -66,6 +75,7 @@ codex/find-email-templates-for-dental-and-precare-coverage-cxc1oz
  main
 main
 main
+ main
             <Route path="settings" element={<SettingsPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
