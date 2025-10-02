@@ -16,7 +16,10 @@ const SkinSelector = () => {
     isRemoteLoading,
     pendingSkinId,
     lastError,
+codex/add-skin-selector-for-color-theme
+=======
     isHydrated,
+main
   } = useSkin();
   const [open, setOpen] = useState(false);
 
@@ -31,6 +34,9 @@ const SkinSelector = () => {
 
   return (
     <div className="flex flex-col items-end gap-1">
+codex/add-skin-selector-for-color-theme
+      <Popover open={open} onOpenChange={setOpen}>
+=======
       <Popover
         open={open}
         onOpenChange={(nextOpen) => {
@@ -40,11 +46,24 @@ const SkinSelector = () => {
           setOpen(nextOpen);
         }}
       >
+main
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             size="sm"
             className={cn(
+codex/add-skin-selector-for-color-theme
+              "group relative flex items-center gap-2 rounded-full border border-white/15 bg-background/60 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground backdrop-blur-md transition",
+              "hover:border-white/35 hover:text-foreground",
+            )}
+            aria-label="Select dashboard skin"
+          >
+            <Paintbrush className="h-3.5 w-3.5 text-primary transition group-hover:text-primary" />
+            <span className="font-semibold normal-case tracking-tight text-foreground/90 group-hover:text-foreground">
+              {currentSkin.name}
+            </span>
+            {(isRemoteLoading || pendingSkinId === currentSkinId) && (
+=======
 codex/add-skin-selector-for-color-theme-on40yv
               "group relative flex items-center gap-2 rounded-full border border-white/15 bg-background/60 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground backdrop-blur-md transition",
               "hover:border-white/35 hover:text-foreground",
@@ -66,17 +85,22 @@ codex/add-skin-selector-for-color-theme-on40yv
               {isHydrated ? currentSkin.name : "Hydrating skin..."}
             </span>
             {(isRemoteLoading || pendingSkinId === currentSkinId || !isHydrated) && (
+main
               <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" aria-hidden />
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent
           align="end"
+codex/add-skin-selector-for-color-theme
+          className="w-80 space-y-4 border border-white/12 bg-background/95 p-4 shadow-xl backdrop-blur-2xl"
+=======
 codex/add-skin-selector-for-color-theme-on40yv
           className="w-80 space-y-4 border border-white/12 bg-background/95 p-4 shadow-xl backdrop-blur-2xl"
 =======
           className="w-80 space-y-4 border border-slate-200/80 bg-white/85 p-4 shadow-[0_28px_60px_-36px_rgba(15,23,42,0.55)] backdrop-blur-2xl"
  main
+main
         >
           <div className="flex items-center justify-between">
             <div>
@@ -98,6 +122,11 @@ codex/add-skin-selector-for-color-theme-on40yv
                   onClick={() => handleSelect(skin.id)}
                   disabled={isSaving}
                   className={cn(
+codex/add-skin-selector-for-color-theme
+                    "relative overflow-hidden rounded-xl border border-white/10 bg-background/60 p-3 text-left transition",
+                    "hover:border-white/25 hover:shadow-lg",
+                    isActive && "border-primary/60 shadow-[0_0_0_1px_rgba(0,0,0,0.35)] ring-2 ring-primary/70",
+=======
  codex/add-skin-selector-for-color-theme-on40yv
                     "relative overflow-hidden rounded-xl border border-white/10 bg-background/60 p-3 text-left transition",
                     "hover:border-white/25 hover:shadow-lg",
@@ -107,25 +136,35 @@ codex/add-skin-selector-for-color-theme-on40yv
                     "hover:border-slate-300 hover:shadow-[0_20px_44px_-28px_rgba(15,23,42,0.45)]",
                     isActive && "border-primary/70 shadow-[0_20px_48px_-28px_rgba(37,99,235,0.45)] ring-2 ring-primary/60",
 main
+main
                     isSaving && "opacity-80",
                   )}
                 >
                   <div
+codex/add-skin-selector-for-color-theme
+                    className="pointer-events-none absolute inset-0 opacity-40"
+=======
  codex/add-skin-selector-for-color-theme-on40yv
                     className="pointer-events-none absolute inset-0 opacity-40"
 =======
                     className="pointer-events-none absolute inset-0 opacity-60"
 main
+main
                     style={{ background: skin.heroGradient }}
                   />
                   <div className="relative flex items-start justify-between gap-3">
                     <div>
+codex/add-skin-selector-for-color-theme
+                      <p className="text-sm font-semibold text-foreground">{skin.name}</p>
+                      <p className="text-xs text-muted-foreground">{skin.description}</p>
+=======
 codex/add-skin-selector-for-color-theme-on40yv
                       <p className="text-sm font-semibold text-foreground">{skin.name}</p>
                       <p className="text-xs text-muted-foreground">{skin.description}</p>
 =======
                       <p className="text-sm font-semibold text-slate-900">{skin.name}</p>
                       <p className="text-xs text-slate-500">{skin.description}</p>
+main
 main
                     </div>
                     <div className="flex items-center gap-2">
@@ -149,11 +188,15 @@ main
                       />
                     ))}
                   </div>
+codex/add-skin-selector-for-color-theme
+                  <p className="relative mt-3 text-[0.6rem] uppercase tracking-[0.3em] text-muted-foreground">
+=======
  codex/add-skin-selector-for-color-theme-on40yv
                   <p className="relative mt-3 text-[0.6rem] uppercase tracking-[0.3em] text-muted-foreground">
 =======
                   <p className="relative mt-3 text-[0.6rem] uppercase tracking-[0.3em] text-slate-500">
  main
+main
                     {skin.headline}
                   </p>
                 </button>
@@ -161,10 +204,14 @@ main
             })}
           </div>
           {lastError && (
+codex/add-skin-selector-for-color-theme
+            <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive-foreground">
+=======
 codex/add-skin-selector-for-color-theme-on40yv
             <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive-foreground">
 =======
             <div className="flex items-start gap-2 rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-xs text-destructive-foreground">
+main
 main
               <AlertCircle className="mt-[2px] h-3.5 w-3.5" />
               <span>{lastError}</span>
@@ -172,10 +219,14 @@ main
           )}
         </PopoverContent>
       </Popover>
+codex/add-skin-selector-for-color-theme
+      <span className="text-[0.55rem] uppercase tracking-[0.32em] text-muted-foreground">Skin</span>
+=======
 codex/add-skin-selector-for-color-theme-on40yv
       <span className="text-[0.55rem] uppercase tracking-[0.32em] text-muted-foreground">Skin</span>
 =======
       <span className="text-[0.55rem] uppercase tracking-[0.32em] text-slate-500">Skin</span>
+main
 main
     </div>
   );

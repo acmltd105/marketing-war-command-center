@@ -10,6 +10,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+codex/find-email-templates-for-dental-and-precare-coverage-bku57i
+=======
+codex/find-email-templates-for-dental-and-precare-coverage-dftp26
+ main
 import { CheckCircle2, Copy, FileText, MessageCircleMore, Sparkles } from 'lucide-react';
 import { CoverageTemplate, topDentalTemplates } from '@/data/dentalTemplates';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -25,13 +29,40 @@ const HeroHeading = () => (
       <h1 className="text-4xl font-semibold text-white drop-shadow">Petcare Coverage Template Deck</h1>
       <p className="max-w-3xl text-base text-corporate-silver">
         Toggle between Twilio SendGrid emails and Twilio RCS rich cards. Each tile distills persona targeting, CTA strategy, dynamic field mapping, and payload guidance you can trigger from Supabase and mirror in your Rust desktop copilots.
+ codex/find-email-templates-for-dental-and-precare-coverage-bku57i
+=======
+=======
+import { CheckCircle2, Copy, FileText, Sparkles } from 'lucide-react';
+import { CoverageTemplate, topDentalTemplates } from '@/data/dentalTemplates';
+
+const SectionHeading = () => (
+  <div className="flex flex-col gap-4 rounded-2xl border border-corporate-blue/40 bg-corporate-navy/20 p-8 shadow-xl backdrop-blur">
+    <div className="flex items-center gap-3 text-corporate-platinum">
+      <Sparkles className="h-6 w-6 text-revenue-green" />
+      <span className="text-sm uppercase tracking-[0.3em]">Twilio Ready Email Ops</span>
+    </div>
+    <div className="flex flex-col gap-3">
+      <h1 className="text-4xl font-semibold text-white drop-shadow">Dental Coverage Template Deck</h1>
+      <p className="max-w-3xl text-base text-corporate-silver">
+        Visualize the top ten templates from the 50-email library. Each tile distills persona targeting, CTA strategy, dynamic field mapping, and the exact HTML payload you can sync into Twilio SendGrid via your Supabase-powered automation flows.
+main
+main
       </p>
     </div>
     <div className="flex flex-wrap gap-3">
       <Badge className="bg-corporate-blue/80 text-white">Liquid glass UI preview</Badge>
       <Badge className="bg-revenue-green/80 text-corporate-charcoal">Supabase metadata ready</Badge>
+ codex/find-email-templates-for-dental-and-precare-coverage-bku57i
       <Badge className="bg-corporate-crimson/70 text-white">Twilio SendGrid compliant</Badge>
       <Badge className="bg-amber-500/70 text-corporate-charcoal">Twilio RCS optimized</Badge>
+=======
+codex/find-email-templates-for-dental-and-precare-coverage-dftp26
+      <Badge className="bg-corporate-crimson/70 text-white">Twilio SendGrid compliant</Badge>
+      <Badge className="bg-amber-500/70 text-corporate-charcoal">Twilio RCS optimized</Badge>
+=======
+      <Badge className="bg-corporate-crimson/70 text-white">Twilio template compliant</Badge>
+ main
+main
     </div>
   </div>
 );
@@ -153,6 +184,10 @@ const TemplateCard = ({ template }: { template: CoverageTemplate }) => {
   );
 };
 
+codex/find-email-templates-for-dental-and-precare-coverage-bku57i
+=======
+codex/find-email-templates-for-dental-and-precare-coverage-dftp26
+ main
 const renderActionLabel = (action: RcsTemplate['suggestedActions'][number]) => {
   switch (action.type) {
     case 'openUrl':
@@ -314,6 +349,29 @@ const TemplateGallery = () => {
           </div>
         </TabsContent>
       </Tabs>
+codex/find-email-templates-for-dental-and-precare-coverage-bku57i
+=======
+const TemplateGallery = () => {
+  return (
+    <div className="space-y-10">
+      <SectionHeading />
+      <div className="grid gap-6 xl:grid-cols-2">
+        {topDentalTemplates.map((template) => (
+          <TemplateCard key={template.id} template={template} />
+        ))}
+      </div>
+      <div className="rounded-2xl border border-corporate-blue/40 bg-corporate-navy/10 p-6 text-sm text-corporate-platinum">
+        Need the full 50-template playbook? Sync the markdown from{' '}
+        <a
+          href="/docs/email-templates/dental-precare-templates"
+          className="font-semibold text-revenue-green underline-offset-4 hover:underline"
+        >
+          docs/email-templates/dental-precare-templates.md
+        </a>{' '}
+        into your Supabase storage bucket or marketing knowledge base for complete access.
+      </div>
+main
+ main
     </div>
   );
 };

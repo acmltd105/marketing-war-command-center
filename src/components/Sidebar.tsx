@@ -14,6 +14,10 @@ import {
   FileText,
   AlertTriangle,
   Activity,
+ codex/set-up-dashboard-for-project-overview
+  Globe,
+  Database
+=======
  codex/integrate-revenue-and-expense-tabs-ugnmqm
   Upload,
   Coins
@@ -23,6 +27,7 @@ codex/integrate-revenue-and-expense-tabs-qmhblg
 codex/define-lead-processing-and-marketing-workflow
   Radar
   Upload
+ main
  main
  main
  main
@@ -37,9 +42,15 @@ const Sidebar = () => {
     { name: 'Launch Campaign', path: '/create', icon: Plus, badge: null },
     { name: 'DNC Upload', path: '/dnc-upload', icon: Upload, badge: null },
     { name: 'Customer Database', path: '/contacts', icon: Users, badge: '47K' },
+    { name: 'Lead Intelligence', path: '/leads', icon: Database, badge: 'Ingest' },
     { name: 'Performance Analytics', path: '/analytics', icon: BarChart3, badge: null },
     { name: 'Communication Assets', path: '/numbers', icon: Phone, badge: '12' },
     { name: 'Message Templates', path: '/templates', icon: FileText, badge: '24' },
+ codex/find-email-templates-for-dental-and-precare-coverage-dftp26
+    { name: 'Client Previews', path: '/client-previews', icon: MessageSquare, badge: 'New' },
+=======
+    { name: 'Landing & Web Dev', path: '/web-dev', icon: Globe, badge: null },
+main
     { name: 'System Configuration', path: '/settings', icon: Settings, badge: null },
   ];
 

@@ -1,10 +1,17 @@
+ codex/add-skin-selector-for-color-theme
+import type { SupabaseClient } from "@supabase/supabase-js";
+=======
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
+ main
 import { resolveSkinId, type SkinId } from "./skins";
 
 const STORAGE_KEY = "mwcc:dashboard-skin";
 
+ codex/add-skin-selector-for-color-theme
+=======
 type StorageCallback = (skinId: SkinId | null) => void;
 
+main
 export function readStoredSkin(): SkinId | null {
   if (typeof window === "undefined") {
     return null;
@@ -35,6 +42,8 @@ export function persistStoredSkin(skinId: SkinId) {
   }
 }
 
+codex/add-skin-selector-for-color-theme
+=======
 export function subscribeToStoredSkin(callback: StorageCallback): () => void {
   if (typeof window === "undefined") {
     return () => {};
@@ -60,6 +69,7 @@ export function subscribeToStoredSkin(callback: StorageCallback): () => void {
   };
 }
 
+ main
 function isAuthSessionError(error: unknown): boolean {
   if (!error || typeof error !== "object") {
     return false;
@@ -70,6 +80,8 @@ function isAuthSessionError(error: unknown): boolean {
     : false;
 }
 
+codex/add-skin-selector-for-color-theme
+=======
 function getPostgrestCode(error: unknown): string | null {
   if (error && typeof error === "object" && "code" in error) {
     const code = (error as PostgrestError).code;
@@ -92,6 +104,7 @@ function isIgnorablePreferenceError(error: unknown): boolean {
   return ["42P01", "42501", "PGRST116", "PGRST301"].includes(code);
 }
 
+main
 function formatSupabaseError(error: unknown, fallback: string): Error {
   if (error instanceof Error) {
     return error;
@@ -125,8 +138,12 @@ export async function fetchRemoteSkin(
     .maybeSingle();
 
   if (error) {
+codex/add-skin-selector-for-color-theme
+    if ("code" in error && (error as { code?: string }).code === "PGRST116") {
+=======
     if (isIgnorablePreferenceError(error)) {
       console.warn("Dashboard skin preference table unavailable, falling back to defaults", error);
+main
       return null;
     }
 
@@ -169,11 +186,14 @@ export async function persistRemoteSkin(client: SupabaseClient, skinId: SkinId):
     );
 
   if (error) {
+codex/add-skin-selector-for-color-theme
+=======
     if (isIgnorablePreferenceError(error)) {
       console.warn("Unable to persist dashboard skin preference remotely; continuing with local value", error);
       return;
     }
 
+ main
     throw formatSupabaseError(error, "Failed to persist dashboard skin preference");
   }
 }
