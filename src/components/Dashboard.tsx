@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
+import SkinSelector from "./SkinSelector";
 
 const BUILD_STATUSES = [
   "queued",
@@ -77,20 +78,26 @@ type UiProject = {
 };
 
 const statusBadgeClass: Record<BuildStatus, string> = {
-  queued: "bg-yellow-500/80 text-background font-semibold",
-  running: "bg-corporate-blue text-white font-semibold",
-  succeeded: "revenue-indicator text-background font-semibold",
-  failed: "bg-corporate-crimson text-white font-semibold",
-  cancelled: "bg-corporate-charcoal text-white font-semibold",
-  unknown: "bg-muted text-foreground font-semibold",
+  queued:
+    "border border-amber-200 bg-amber-50 text-amber-700 shadow-[0_8px_18px_-12px_rgba(217,119,6,0.45)]",
+  running:
+    "border border-blue-300 bg-gradient-to-tr from-blue-500 via-blue-600 to-blue-500 text-white shadow-[0_12px_28px_-18px_rgba(37,99,235,0.55)]",
+  succeeded:
+    "border border-emerald-300 bg-gradient-to-tr from-emerald-500 via-emerald-400 to-emerald-500 text-white shadow-[0_12px_28px_-18px_rgba(16,185,129,0.55)]",
+  failed:
+    "border border-rose-300 bg-gradient-to-tr from-rose-500 via-rose-500 to-rose-600 text-white shadow-[0_12px_28px_-18px_rgba(244,63,94,0.55)]",
+  cancelled:
+    "border border-slate-200 bg-slate-100 text-slate-600 shadow-[0_8px_20px_-16px_rgba(15,23,42,0.25)]",
+  unknown:
+    "border border-slate-200 bg-slate-50 text-slate-500 shadow-[0_6px_18px_-14px_rgba(100,116,139,0.25)]",
 };
 
 const statusDotClass: Record<BuildStatus, string> = {
-  queued: "bg-yellow-400",
-  running: "bg-blue-400",
-  succeeded: "bg-emerald-400",
-  failed: "bg-red-500",
-  cancelled: "bg-slate-500",
+  queued: "bg-amber-500",
+  running: "bg-blue-500",
+  succeeded: "bg-emerald-500",
+  failed: "bg-rose-500",
+  cancelled: "bg-slate-400",
   unknown: "bg-slate-400",
 };
 
@@ -467,17 +474,20 @@ const Dashboard = () => {
           <h1 className="text-4xl font-bold fortune-heading mb-2">REVENUE COMMAND CENTER</h1>
           <p className="text-corporate-silver">Enterprise Marketing Operations • Fortune 100 Class</p>
         </div>
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" className="glow-corporate" aria-label="Notifications">
-            <Bell className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon" className="border-corporate-navy" aria-label="Settings">
-            <Settings className="h-4 w-4" />
-          </Button>
-          <Button className="btn-corporate text-white font-semibold">
-            <Plus className="h-4 w-4 mr-2" />
-            Launch Campaign
-          </Button>
+        <div className="flex items-center gap-6">
+          <SkinSelector />
+          <div className="flex items-center gap-4">
+            <Button variant="outline" size="icon" className="glow-corporate" aria-label="Notifications">
+              <Bell className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" className="border-corporate-navy" aria-label="Settings">
+              <Settings className="h-4 w-4" />
+            </Button>
+            <Button className="btn-corporate text-white font-semibold">
+              <Plus className="h-4 w-4 mr-2" />
+              Launch Campaign
+            </Button>
+          </div>
         </div>
       </div>
 
