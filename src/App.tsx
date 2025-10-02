@@ -15,6 +15,10 @@ import WorkflowManager from "./pages/WorkflowManager";
 import DncUpload from "./pages/DncUpload";
 import FinancialsPage from "./pages/Financials";
 import NotFound from "./pages/NotFound";
+ codex/find-email-templates-for-dental-and-precare-coverage-dftp26
+import TemplateGallery from "./pages/TemplateGallery";
+import ClientPreviewShowcase from "./pages/ClientPreviewShowcase";
+=======
  codex/set-up-dashboard-for-project-overview
 import LeadIntelligence from "./pages/LeadIntelligence";
 import WebDevelopment from "./pages/WebDevelopment";
@@ -37,6 +41,7 @@ main
 main
  main
  main
+main
 
 const queryClient = new QueryClient();
 
@@ -66,6 +71,10 @@ codex/set-up-dashboard-for-project-overview
 =======
  codex/integrate-revenue-and-expense-tabs-qmhblg
             <Route path="dnc-upload" element={<DncUpload />} />
+ codex/find-email-templates-for-dental-and-precare-coverage-dftp26
+            <Route path="templates" element={<TemplateGallery />} />
+            <Route path="client-previews" element={<ClientPreviewShowcase />} />
+=======
 codex/find-email-templates-for-dental-and-precare-coverage-cxc1oz
             <Route path="templates" element={<TemplateGallery />} />
 =======
@@ -75,6 +84,7 @@ codex/find-email-templates-for-dental-and-precare-coverage-cxc1oz
  main
 main
 main
+ main
  main
             <Route path="settings" element={<SettingsPage />} />
           </Route>
