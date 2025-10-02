@@ -50,10 +50,18 @@ artifacts, and expose the new tabs inside the command center shell.
 The revenue and expense intelligence now ships natively with the command center. Navigate to **Financial Command** in the
 left rail (or visit `/financials`) to access:
 
+codex/integrate-revenue-and-expense-tabs-ugnmqm
 - A dual-tab glass dashboard that pivots between revenue acceleration and cost discipline views.
 - Supabase-backed metrics sourced from the `financial_revenue_metrics`, `financial_revenue_projections`, and
   `financial_expense_metrics` tables with automatic demo fallbacks when credentials are missing.
 - Runway alerts and quarterly forecasts surfaced alongside the rest of the Twilio operations toolkit.
+
+- A dual-tab glass dashboard that pivots between revenue acceleration and cost discipline views, including ARR, pipeline health,
+  and segment mix visualizations.
+- Supabase-backed metrics sourced from the `financial_revenue_metrics`, `financial_revenue_projections`, and `financial_expense_metrics`
+  tables (plus supporting trend tables) with automatic demo fallbacks when credentials are missing.
+- Cost-per-client, CAC payback, and vendor runway controls surfaced alongside quarterly forecasts so finance can intervene fast.
+main
 
 ## Quality checklist
 
