@@ -15,6 +15,9 @@ import WorkflowManager from "./pages/WorkflowManager";
 import DncUpload from "./pages/DncUpload";
 import FinancialsPage from "./pages/Financials";
 import NotFound from "./pages/NotFound";
+codex/add-skin-selector-for-color-theme
+import { SkinProvider } from "./hooks/useSkin";
+=======
  codex/add-skin-selector-for-color-theme-on40yv
 import { SkinProvider } from "./hooks/useSkin";
 =======
@@ -24,11 +27,14 @@ import GoToMarketPipeline from "./pages/GoToMarketPipeline";
 import { SkinProvider } from "./hooks/useSkin";
  main
 main
+main
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+codex/add-skin-selector-for-color-theme
+=======
  codex/add-skin-selector-for-color-theme-on40yv
 =======
 codex/define-lead-processing-and-marketing-workflow
@@ -60,6 +66,7 @@ main
     </TooltipProvider>
 =======
 main
+main
     <SkinProvider>
       <TooltipProvider>
         <Toaster />
@@ -81,8 +88,11 @@ main
         </BrowserRouter>
       </TooltipProvider>
     </SkinProvider>
+codex/add-skin-selector-for-color-theme
+=======
  codex/add-skin-selector-for-color-theme-on40yv
 
+main
 main
 main
   </QueryClientProvider>

@@ -2,6 +2,11 @@ import * as React from "react";
 import { type DialogProps } from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
+codex/add-skin-selector-for-color-theme
+
+import { cn } from "@/lib/utils";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+=======
 codex/integrate-revenue-and-expense-tabs-ugnmqm
 
 import { cn } from "@/lib/utils";
@@ -15,6 +20,7 @@ codex/integrate-revenue-and-expense-tabs-qmhblg
 
 type CommandDialogProps = DialogProps;
  main
+main
 main
 main
 
@@ -32,6 +38,10 @@ const Command = React.forwardRef<
   />
 ));
 Command.displayName = CommandPrimitive.displayName;
+codex/add-skin-selector-for-color-theme
+
+type CommandDialogProps = DialogProps;
+=======
 codex/integrate-revenue-and-expense-tabs-ugnmqm
 codex/add-skin-selector-for-color-theme-on40yv
 
@@ -39,6 +49,7 @@ type CommandDialogProps = DialogProps;
 codex/integrate-revenue-and-expense-tabs-qmhblg
 type CommandDialogProps = DialogProps;
  main
+main
 main
 main
 
@@ -97,10 +108,13 @@ codex/integrate-revenue-and-expense-tabs-ugnmqm
     className="py-6 text-center text-sm"
     {...props}
   />
+codex/add-skin-selector-for-color-theme
+=======
  codex/add-skin-selector-for-color-theme-on40yv
 main
  main
 main
+ main
 ));
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName;
 
@@ -132,10 +146,13 @@ codex/integrate-revenue-and-expense-tabs-ugnmqm
     className={cn("-mx-1 h-px bg-border", className)}
     {...props}
   />
+ codex/add-skin-selector-for-color-theme
+=======
 codex/add-skin-selector-for-color-theme-on40yv
  main
  main
 main
+ main
 ));
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName;
 
@@ -146,6 +163,10 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
+codex/add-skin-selector-for-color-theme
+      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground",
+      className,
+=======
 codex/integrate-revenue-and-expense-tabs-ugnmqm
 codex/add-skin-selector-for-color-theme-on40yv
       "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground",
@@ -158,6 +179,7 @@ main
 
       "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground",
       className,
+ main
  main
  main
     )}
