@@ -15,6 +15,9 @@ import WorkflowManager from "./pages/WorkflowManager";
 import DncUpload from "./pages/DncUpload";
 import FinancialsPage from "./pages/Financials";
 import NotFound from "./pages/NotFound";
+ codex/find-email-templates-for-dental-and-precare-coverage-cxc1oz
+import TemplateGallery from "./pages/TemplateGallery";
+=======
 codex/add-skin-selector-for-color-theme
 import { SkinProvider } from "./hooks/useSkin";
 =======
@@ -28,6 +31,7 @@ import { SkinProvider } from "./hooks/useSkin";
  main
 main
 main
+ main
 
 const queryClient = new QueryClient();
 
@@ -53,10 +57,14 @@ codex/define-lead-processing-and-marketing-workflow
             <Route path="workflows" element={<WorkflowManager />} />
  codex/integrate-revenue-and-expense-tabs-qmhblg
             <Route path="dnc-upload" element={<DncUpload />} />
+codex/find-email-templates-for-dental-and-precare-coverage-cxc1oz
+            <Route path="templates" element={<TemplateGallery />} />
+=======
             <Route path="financials" element={<FinancialsPage />} />
  codex/integrate-revenue-and-expense-tabs-ugnmqm
 
  main
+main
 main
             <Route path="settings" element={<SettingsPage />} />
           </Route>
