@@ -4,7 +4,10 @@ import { cn } from "@/lib/utils";
 
 export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
+codex/integrate-revenue-and-expense-tabs-ugnmqm
+
 codex/integrate-revenue-and-expense-tabs-qmhblg
+main
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => {
   return (
     <textarea
@@ -17,7 +20,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ classNa
     />
   );
 });
-=======
+codex/integrate-revenue-and-expense-tabs-ugnmqm
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => (
     <textarea
@@ -34,6 +37,7 @@ codex/add-skin-selector-for-color-theme-on40yv
 
  main
  main
+main
 Textarea.displayName = "Textarea";
 
 export { Textarea };
