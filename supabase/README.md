@@ -16,6 +16,17 @@ The migrations create:
 - `builds` — per-build execution snapshots.
 - `project_latest_build` — helper view for the dashboard.
 - Trigger `handle_failed_build_alert` that forwards failed builds to the Twilio alerting function.
+codex/integrate-revenue-and-expense-tabs-ugnmqm
+- `financial_revenue_metrics`, `financial_revenue_projections`, and `financial_expense_metrics` — the Supabase tables that fuel
+  the new revenue & expense command tabs. Seed rows keep the UI interactive even before data pipelines are connected.
+
+- `financial_revenue_metrics`, `financial_revenue_projections`, `financial_revenue_segments`, `financial_revenue_mrr_trends`,
+  `financial_expense_metrics`, `financial_expense_trends`, and `financial_vendor_spend` — the Supabase tables that fuel the new
+  revenue & expense command tabs. Seed rows keep the UI interactive even before data pipelines are connected.
+- `predictability_safe_launch`, `predictability_modeling`, `predictability_guardrails`, `predictability_scenarios`,
+  `predictability_volume_drivers`, `predictability_channel_mix`, and `predictability_support_metrics` — data powering the
+  Predictability & Modeling Command PRO tab so the safe-launch calculator, guardrails, and support readiness tables stay live.
+main
 
 ## Edge functions
 
