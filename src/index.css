@@ -3,62 +3,64 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fortune 100 Corporate War Machine Design System */
-
 @layer base {
   :root {
-    --background: 218 23% 4%;
-    --foreground: 210 40% 95%;
+    --background: 210 40% 98%;
+    --foreground: 215 32% 14%;
 
-    --card: 218 23% 6%;
-    --card-foreground: 210 40% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 32% 14%;
 
-    --popover: 218 23% 6%;
-    --popover-foreground: 210 40% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 32% 14%;
 
-    --primary: 212 100% 45%;
-    --primary-foreground: 218 23% 4%;
+    --primary: 213 90% 56%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 218 23% 8%;
-    --secondary-foreground: 210 40% 95%;
+    --secondary: 152 76% 45%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 218 23% 10%;
-    --muted-foreground: 210 20% 65%;
+    --muted: 210 16% 92%;
+    --muted-foreground: 215 20% 36%;
 
-    --accent: 14 90% 55%;
-    --accent-foreground: 218 23% 4%;
+    --accent: 189 70% 62%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 75% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 56%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 218 23% 12%;
-    --input: 218 23% 8%;
-    --ring: 212 100% 45%;
+    --border: 210 24% 88%;
+    --input: 210 24% 88%;
+    --ring: 213 90% 56%;
 
-    --radius: 0.25rem;
+    --radius: 0.95rem;
 
-    --sidebar-background: 218 23% 3%;
-    --sidebar-foreground: 210 40% 95%;
-    --sidebar-primary: 212 100% 45%;
-    --sidebar-primary-foreground: 218 23% 4%;
-    --sidebar-accent: 218 23% 7%;
-    --sidebar-accent-foreground: 210 40% 95%;
-    --sidebar-border: 218 23% 10%;
-    --sidebar-ring: 212 100% 45%;
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 215 34% 16%;
+    --sidebar-primary: 213 90% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 189 70% 62%;
+    --sidebar-accent-foreground: 210 40% 15%;
+    --sidebar-border: 210 24% 88%;
+    --sidebar-ring: 213 90% 56%;
 
-    /* Corporate Fortune 100 colors */
-    --corporate-blue: 212 100% 45%;
-    --corporate-navy: 218 50% 20%;
-    --corporate-silver: 210 15% 75%;
-    --corporate-platinum: 210 10% 85%;
-    --corporate-gold: 43 74% 66%;
-    --corporate-crimson: 355 85% 55%;
-    --corporate-emerald: 160 84% 39%;
-    --corporate-charcoal: 218 23% 15%;
-    --revenue-green: 142 71% 45%;
-    --conversion-orange: 25 95% 53%;
-    --kpi-purple: 262 83% 58%;
-    --warning-amber: 45 93% 47%;
+    --glass-base: 210 45% 99%;
+    --glass-highlight: 0 0% 100%;
+    --glass-border: 208 28% 82%;
+    --glass-shadow: 213 46% 52%;
+
+    --corporate-blue: 213 90% 56%;
+    --corporate-navy: 226 40% 28%;
+    --corporate-silver: 210 16% 80%;
+    --corporate-platinum: 204 24% 92%;
+    --corporate-gold: 44 84% 62%;
+    --corporate-crimson: 0 78% 54%;
+    --corporate-emerald: 152 76% 45%;
+    --corporate-charcoal: 215 24% 28%;
+    --revenue-green: 150 80% 40%;
+    --conversion-orange: 28 94% 55%;
+    --kpi-purple: 262 70% 58%;
+    --warning-amber: 44 90% 58%;
   }
 }
 
@@ -68,106 +70,116 @@
   }
 
   body {
-    @apply bg-background text-foreground font-mono;
+    @apply bg-background text-foreground font-sans;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background:
+      radial-gradient(circle at 18% 18%, hsla(var(--primary) / 0.16) 0%, transparent 55%),
+      radial-gradient(circle at 80% 0%, hsla(var(--accent) / 0.18) 0%, transparent 50%),
+      radial-gradient(circle at 50% 110%, hsla(var(--secondary) / 0.16) 0%, transparent 58%),
+      hsl(var(--background));
   }
 
-  /* Corporate grid pattern */
-  .corporate-grid {
-    background-image: 
-      linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
-    background-size: 24px 24px;
+  .glass-panel {
+    position: relative;
+    border-radius: var(--radius);
+    background:
+      linear-gradient(135deg,
+        hsla(var(--glass-base) / 0.94) 0%,
+        hsla(var(--glass-highlight) / 0.9) 45%,
+        hsla(var(--glass-base) / 0.86) 100%);
+    border: 1px solid hsla(var(--glass-border) / 0.75);
+    box-shadow:
+      0 24px 48px -28px hsla(var(--glass-shadow) / 0.45),
+      inset 0 1px 0 hsla(0 0% 100% / 0.85);
+    backdrop-filter: blur(22px);
   }
 
-  /* Premium glow effects */
-  .glow-corporate {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.15), 0 0 60px rgba(59, 130, 246, 0.1);
+  .glass-panel::before {
+    content: "";
+    position: absolute;
+    inset: 1px 1px auto 1px;
+    height: 40%;
+    border-radius: calc(var(--radius) - 2px);
+    background: linear-gradient(135deg, hsla(0 0% 100% / 0.7), transparent 70%);
+    opacity: 0.9;
+    pointer-events: none;
   }
 
-  .glow-revenue {
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+  .glass-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 20% 20%, hsla(var(--primary) / 0.08), transparent 55%),
+      radial-gradient(circle at 80% 0%, hsla(var(--accent) / 0.08), transparent 55%);
+    mix-blend-mode: soft-light;
+    pointer-events: none;
   }
 
-  .glow-conversion {
-    box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
+  .metric-card {
+    background:
+      linear-gradient(135deg,
+        hsla(var(--glass-base) / 0.92) 0%,
+        hsla(var(--glass-highlight) / 0.88) 100%);
+    border: 1px solid hsla(var(--glass-border) / 0.75);
+    box-shadow:
+      0 18px 44px -28px hsla(var(--glass-shadow) / 0.45),
+      inset 0 1px 0 hsla(0 0% 100% / 0.65);
+    backdrop-filter: blur(20px);
   }
 
-  .glow-premium {
-    box-shadow: 
-      0 0 20px rgba(59, 130, 246, 0.2),
-      0 0 40px rgba(59, 130, 246, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-
-  /* Corporate pulse animation */
-  .pulse-corporate {
-    animation: pulse-corporate 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes pulse-corporate {
-    0%, 100% {
-      box-shadow: 
-        0 0 20px rgba(59, 130, 246, 0.2),
-        0 0 40px rgba(59, 130, 246, 0.1);
-    }
-    50% {
-      box-shadow: 
-        0 0 30px rgba(59, 130, 246, 0.4),
-        0 0 60px rgba(59, 130, 246, 0.2);
-    }
-  }
-
-  /* Revenue tracking styles */
   .revenue-indicator {
-    background: linear-gradient(135deg, 
-      hsl(var(--revenue-green)) 0%, 
-      hsl(var(--corporate-emerald)) 100%);
+    background: linear-gradient(135deg,
+      hsl(var(--revenue-green)) 0%,
+      hsl(var(--secondary)) 100%);
+    box-shadow: 0 12px 24px -12px rgba(34, 197, 94, 0.35);
   }
 
   .conversion-indicator {
-    background: linear-gradient(135deg, 
-      hsl(var(--conversion-orange)) 0%, 
+    background: linear-gradient(135deg,
+      hsl(var(--conversion-orange)) 0%,
       hsl(var(--warning-amber)) 100%);
+    box-shadow: 0 12px 24px -12px rgba(251, 146, 60, 0.35);
   }
 
-  /* Executive dashboard styling */
-  .executive-card {
-    background: linear-gradient(135deg, 
-      hsl(var(--card)) 0%, 
-      hsl(var(--corporate-charcoal)) 100%);
-    border: 1px solid hsl(var(--corporate-navy));
+  .btn-liquid {
+    position: relative;
+    overflow: hidden;
+    border-radius: calc(var(--radius) - 0.25rem);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+    box-shadow: 0 16px 36px -18px rgba(17, 24, 39, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
 
-  /* Premium button styles */
-  .btn-corporate {
-    background: linear-gradient(135deg, 
-      hsl(var(--corporate-blue)) 0%, 
-      hsl(var(--corporate-navy)) 100%);
-    border: 1px solid hsl(var(--corporate-silver) / 0.2);
-    box-shadow: 
-      0 4px 16px rgba(59, 130, 246, 0.25),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  .btn-liquid::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent 60%);
+    mix-blend-mode: screen;
+    pointer-events: none;
   }
 
-  .btn-corporate:hover {
-    box-shadow: 
-      0 8px 32px rgba(59, 130, 246, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  .btn-liquid:hover {
     transform: translateY(-1px);
+    box-shadow: 0 18px 40px -18px rgba(17, 24, 39, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.7);
   }
 
-  /* Fortune 100 typography */
-  .fortune-heading {
-    background: linear-gradient(135deg, 
-      hsl(var(--corporate-platinum)) 0%, 
-      hsl(var(--corporate-silver)) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .btn-liquid--primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsla(var(--primary) / 0.82) 100%);
+    color: hsl(var(--primary-foreground));
   }
 
-  /* KPI indicators */
+  .btn-liquid--success {
+    background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsla(var(--secondary) / 0.78) 100%);
+    color: hsl(var(--secondary-foreground));
+  }
+
+  .btn-liquid--danger {
+    background: linear-gradient(135deg, hsl(var(--destructive)) 0%, hsla(var(--destructive) / 0.76) 100%);
+    color: hsl(var(--destructive-foreground));
+  }
+
   .kpi-positive {
     color: hsl(var(--revenue-green));
   }
@@ -178,14 +190,5 @@
 
   .kpi-neutral {
     color: hsl(var(--conversion-orange));
-  }
-
-  /* Data visualization enhancements */
-  .metric-card {
-    background: linear-gradient(135deg, 
-      hsl(var(--card) / 0.8) 0%, 
-      hsl(var(--corporate-charcoal) / 0.6) 100%);
-    backdrop-filter: blur(16px);
-    border: 1px solid hsl(var(--border) / 0.8);
   }
 }
