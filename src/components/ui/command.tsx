@@ -5,6 +5,11 @@ import { Search } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+codex/integrate-revenue-and-expense-tabs-qmhblg
+
+type CommandDialogProps = DialogProps;
+=======
+ main
 
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -20,8 +25,11 @@ const Command = React.forwardRef<
   />
 ));
 Command.displayName = CommandPrimitive.displayName;
+ codex/integrate-revenue-and-expense-tabs-qmhblg
+=======
 
 type CommandDialogProps = DialogProps;
+ main
 
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
@@ -69,11 +77,15 @@ const CommandEmpty = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Empty>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>
 >((props, ref) => (
+ codex/integrate-revenue-and-expense-tabs-qmhblg
+  <CommandPrimitive.Empty ref={ref} className="py-6 text-center text-sm" {...props} />
+=======
   <CommandPrimitive.Empty
     ref={ref}
     className="py-6 text-center text-sm"
     {...props}
   />
+main
 ));
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName;
 
@@ -96,11 +108,15 @@ const CommandSeparator = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>
 >(({ className, ...props }, ref) => (
+ codex/integrate-revenue-and-expense-tabs-qmhblg
+  <CommandPrimitive.Separator ref={ref} className={cn("-mx-1 h-px bg-border", className)} {...props} />
+=======
   <CommandPrimitive.Separator
     ref={ref}
     className={cn("-mx-1 h-px bg-border", className)}
     {...props}
   />
+ main
 ));
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName;
 
@@ -111,8 +127,13 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
+ codex/integrate-revenue-and-expense-tabs-qmhblg
+      "relative flex cursor-default select-none items-center rounded-md px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground",
+      className
+=======
       "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground",
       className,
+ main
     )}
     {...props}
   />

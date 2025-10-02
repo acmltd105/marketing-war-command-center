@@ -13,6 +13,7 @@ import FlexManagement from "./pages/FlexManagement";
 import JourneyBuilder from "./pages/JourneyBuilder";
 import WorkflowManager from "./pages/WorkflowManager";
 import DncUpload from "./pages/DncUpload";
+import FinancialsPage from "./pages/Financials";
 import NotFound from "./pages/NotFound";
  codex/define-lead-processing-and-marketing-workflow
 import GoToMarketPipeline from "./pages/GoToMarketPipeline";
@@ -38,6 +39,11 @@ codex/define-lead-processing-and-marketing-workflow
             <Route path="journeys" element={<JourneyBuilder />} />
             <Route path="war-map" element={<GoToMarketPipeline />} />
             <Route path="workflows" element={<WorkflowManager />} />
+ codex/integrate-revenue-and-expense-tabs-qmhblg
+            <Route path="dnc-upload" element={<DncUpload />} />
+            <Route path="financials" element={<FinancialsPage />} />
+=======
+ main
             <Route path="settings" element={<SettingsPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
