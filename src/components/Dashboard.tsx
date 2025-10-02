@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import LaunchChecklist from "@/components/LaunchChecklist";
 import {
   Activity,
   AlertTriangle,
@@ -510,6 +511,10 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         ))}
+      </div>
+
+      <div className="mb-8">
+        <LaunchChecklist />
       </div>
 
       {error && (
