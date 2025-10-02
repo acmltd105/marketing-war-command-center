@@ -28,8 +28,15 @@ before pointing CI to the `report-build` endpoint.
 
 ## Production deployment
 
-This repository now includes an automated GitHub Pages workflow (`.github/workflows/deploy.yml`). Once GitHub Pages is enabled
-for the repository:
+### Vercel
+
+Prefer a fully managed, CDN-backed deploy? Follow the step-by-step [Vercel deployment playbook](docs/vercel-deployment.md) to
+import the repository, wire up environment variables, and publish the SPA with automatic rewrites for client-side routing.
+
+### GitHub Pages
+
+This repository includes an automated GitHub Pages workflow (`.github/workflows/deploy.yml`). Once GitHub Pages is enabled for
+the repository:
 
 1. Go to **Settings → Pages** and choose **GitHub Actions** as the source.
 2. Merge to `main` (or trigger the workflow manually). The action builds the Vite site and publishes it to Pages.
