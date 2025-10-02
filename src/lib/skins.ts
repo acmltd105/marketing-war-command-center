@@ -8,6 +8,55 @@ export type SkinDefinition = {
   headline: string;
 };
 
+ codex/add-skin-selector-for-color-theme-on40yv
+const liquidGlassTokens: Record<string, string> = {
+  background: "210 40% 98%",
+  foreground: "215 32% 14%",
+  card: "0 0% 100%",
+  "card-foreground": "215 32% 14%",
+  popover: "0 0% 100%",
+  "popover-foreground": "215 32% 14%",
+  primary: "213 90% 56%",
+  "primary-foreground": "0 0% 100%",
+  secondary: "152 76% 45%",
+  "secondary-foreground": "0 0% 100%",
+  muted: "210 16% 92%",
+  "muted-foreground": "215 20% 36%",
+  accent: "189 70% 62%",
+  "accent-foreground": "0 0% 100%",
+  destructive: "0 72% 56%",
+  "destructive-foreground": "0 0% 100%",
+  border: "210 24% 88%",
+  input: "210 24% 88%",
+  ring: "213 90% 56%",
+  radius: "0.95rem",
+  "sidebar-background": "210 40% 98%",
+  "sidebar-foreground": "215 34% 16%",
+  "sidebar-primary": "213 90% 56%",
+  "sidebar-primary-foreground": "0 0% 100%",
+  "sidebar-accent": "189 70% 62%",
+  "sidebar-accent-foreground": "210 40% 15%",
+  "sidebar-border": "210 24% 88%",
+  "sidebar-ring": "213 90% 56%",
+  "glass-base": "210 45% 99%",
+  "glass-highlight": "0 0% 100%",
+  "glass-border": "208 28% 82%",
+  "glass-shadow": "213 46% 52%",
+  "corporate-blue": "213 90% 56%",
+  "corporate-navy": "226 40% 28%",
+  "corporate-silver": "210 16% 80%",
+  "corporate-platinum": "204 24% 92%",
+  "corporate-gold": "44 84% 62%",
+  "corporate-crimson": "0 78% 54%",
+  "corporate-emerald": "152 76% 45%",
+  "corporate-charcoal": "215 24% 28%",
+  "revenue-green": "150 80% 40%",
+  "conversion-orange": "28 94% 55%",
+  "kpi-purple": "262 70% 58%",
+  "warning-amber": "44 90% 58%",
+};
+
+main
 const fortune100Tokens: Record<string, string> = {
   background: "218 23% 4%",
   foreground: "210 40% 95%",
@@ -37,6 +86,13 @@ const fortune100Tokens: Record<string, string> = {
   "sidebar-accent-foreground": "210 40% 95%",
   "sidebar-border": "218 23% 10%",
   "sidebar-ring": "212 100% 45%",
+ codex/add-skin-selector-for-color-theme-on40yv
+	
+  "glass-base": "218 28% 10%",
+  "glass-highlight": "210 40% 88%",
+  "glass-border": "218 24% 18%",
+  "glass-shadow": "212 90% 32%",
+main
   "corporate-blue": "212 100% 45%",
   "corporate-navy": "218 50% 20%",
   "corporate-silver": "210 15% 75%",
@@ -80,6 +136,13 @@ const auroraGlassTokens: Record<string, string> = {
   "sidebar-accent-foreground": "198 48% 92%",
   "sidebar-border": "225 36% 26%",
   "sidebar-ring": "195 86% 62%",
+ codex/add-skin-selector-for-color-theme-on40yv
+
+  "glass-base": "223 52% 16%",
+  "glass-highlight": "197 56% 94%",
+  "glass-border": "223 40% 28%",
+  "glass-shadow": "195 70% 48%",
+main
   "corporate-blue": "195 86% 62%",
   "corporate-navy": "224 60% 18%",
   "corporate-silver": "197 28% 74%",
@@ -123,6 +186,13 @@ const emberVanguardTokens: Record<string, string> = {
   "sidebar-accent-foreground": "28 36% 94%",
   "sidebar-border": "28 32% 26%",
   "sidebar-ring": "16 92% 58%",
+codex/add-skin-selector-for-color-theme-on40yv
+
+  "glass-base": "24 38% 12%",
+  "glass-highlight": "32 40% 92%",
+  "glass-border": "26 34% 24%",
+  "glass-shadow": "16 88% 42%",
+main
   "corporate-blue": "205 82% 54%",
   "corporate-navy": "220 50% 20%",
   "corporate-silver": "35 24% 70%",
@@ -139,6 +209,22 @@ const emberVanguardTokens: Record<string, string> = {
 
 const SKIN_DEFINITIONS = [
   {
+ codex/add-skin-selector-for-color-theme-on40yv
+ id: "liquid-glass-pro",
+    name: "Liquid Glass PRO",
+    description: "Crisp white glass with executive neon accents.",
+    cssVars: liquidGlassTokens,
+    previewColors: [
+      "hsl(213 90% 56%)",
+      "hsl(152 76% 45%)",
+      "hsl(0 72% 56%)",
+    ],
+    heroGradient:
+      "linear-gradient(135deg, hsla(213,90%,56%,0.18) 0%, hsla(152,76%,45%,0.12) 45%, hsla(0,0%,100%,0.8) 100%)",
+    headline: "Liquid glass control",
+  },
+  {
+ main
     id: "fortune-100",
     name: "Fortune 100 Steel",
     description: "Executive navy glass with electric revenue pulses.",
@@ -188,7 +274,11 @@ const skinMap = new Map<SkinId, SkinDefinition>(
   SKIN_DEFINITIONS.map((definition) => [definition.id, definition]),
 );
 
+ codex/add-skin-selector-for-color-theme-on40yv
 export const defaultSkinId: SkinId = "fortune-100";
+
+export const defaultSkinId: SkinId = "liquid-glass-pro";
+main
 
 export function getAvailableSkins(): readonly SkinDefinition[] {
   return SKIN_DEFINITIONS;

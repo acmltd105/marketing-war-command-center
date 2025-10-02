@@ -3,26 +3,35 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Settings, 
-  Plus, 
-  Bell,
+import {
+  Settings,
+  Plus,
   LayoutDashboard,
   Target,
-  MessageSquare,
   Users,
   BarChart3,
   Phone,
   FileText,
   AlertTriangle,
   Activity,
+codex/integrate-revenue-and-expense-tabs-qmhblg
+  Upload,
+  Coins
+=======
+codex/define-lead-processing-and-marketing-workflow
+  Radar
+=======
   Upload
+ main
+ main
 } from 'lucide-react';
 
 const Sidebar = () => {
   const navItems = [
     { name: 'Revenue Dashboard', path: '/', icon: LayoutDashboard, badge: null },
+    { name: 'Financial Command', path: '/financials', icon: Coins, badge: 'New' },
     { name: 'Campaign Operations', path: '/campaigns', icon: Target, badge: '3 Active' },
+    { name: 'Go-To-Market War Map', path: '/war-map', icon: Radar, badge: null },
     { name: 'Launch Campaign', path: '/create', icon: Plus, badge: null },
     { name: 'DNC Upload', path: '/dnc-upload', icon: Upload, badge: null },
     { name: 'Customer Database', path: '/contacts', icon: Users, badge: '47K' },
