@@ -1,8 +1,17 @@
+ codex/add-skin-selector-for-color-theme
 import type { SupabaseClient } from "@supabase/supabase-js";
+=======
+import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
+ main
 import { resolveSkinId, type SkinId } from "./skins";
 
 const STORAGE_KEY = "mwcc:dashboard-skin";
 
+ codex/add-skin-selector-for-color-theme
+=======
+type StorageCallback = (skinId: SkinId | null) => void;
+
+main
 export function readStoredSkin(): SkinId | null {
   if (typeof window === "undefined") {
     return null;
@@ -33,6 +42,34 @@ export function persistStoredSkin(skinId: SkinId) {
   }
 }
 
+codex/add-skin-selector-for-color-theme
+=======
+export function subscribeToStoredSkin(callback: StorageCallback): () => void {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handler = (event: StorageEvent) => {
+    if (event.key !== STORAGE_KEY) {
+      return;
+    }
+
+    try {
+      callback(event.newValue ? resolveSkinId(event.newValue) : null);
+    } catch (error) {
+      console.warn("Unable to react to skin preference storage change", error);
+      callback(null);
+    }
+  };
+
+  window.addEventListener("storage", handler);
+
+  return () => {
+    window.removeEventListener("storage", handler);
+  };
+}
+
+ main
 function isAuthSessionError(error: unknown): boolean {
   if (!error || typeof error !== "object") {
     return false;
@@ -43,6 +80,31 @@ function isAuthSessionError(error: unknown): boolean {
     : false;
 }
 
+codex/add-skin-selector-for-color-theme
+=======
+function getPostgrestCode(error: unknown): string | null {
+  if (error && typeof error === "object" && "code" in error) {
+    const code = (error as PostgrestError).code;
+    if (typeof code === "string") {
+      return code;
+    }
+  }
+  return null;
+}
+
+function isIgnorablePreferenceError(error: unknown): boolean {
+  const code = getPostgrestCode(error);
+
+  if (!code) {
+    return false;
+  }
+
+  // 42P01: relation does not exist, 42501: insufficient privilege
+  // PGRST116: row not found for maybeSingle, PGRST301: table not found
+  return ["42P01", "42501", "PGRST116", "PGRST301"].includes(code);
+}
+
+main
 function formatSupabaseError(error: unknown, fallback: string): Error {
   if (error instanceof Error) {
     return error;
@@ -76,7 +138,12 @@ export async function fetchRemoteSkin(
     .maybeSingle();
 
   if (error) {
+codex/add-skin-selector-for-color-theme
     if ("code" in error && (error as { code?: string }).code === "PGRST116") {
+=======
+    if (isIgnorablePreferenceError(error)) {
+      console.warn("Dashboard skin preference table unavailable, falling back to defaults", error);
+main
       return null;
     }
 
@@ -119,6 +186,14 @@ export async function persistRemoteSkin(client: SupabaseClient, skinId: SkinId):
     );
 
   if (error) {
+codex/add-skin-selector-for-color-theme
+=======
+    if (isIgnorablePreferenceError(error)) {
+      console.warn("Unable to persist dashboard skin preference remotely; continuing with local value", error);
+      return;
+    }
+
+ main
     throw formatSupabaseError(error, "Failed to persist dashboard skin preference");
   }
 }

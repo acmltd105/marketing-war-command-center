@@ -39,6 +39,30 @@ for the repository:
 Assets are built with a relative base path, so the site works on both GitHub Pages and custom domains without further
 configuration. If you host elsewhere, set `VITE_BASE_PATH` to the appropriate subdirectory before running `npm run build`.
 
+## Consolidating related dashboards
+
+Need to pull the revenue & expense UI into this monorepo? Follow the step-by-step playbook in
+[`docs/repo-consolidation.md`](docs/repo-consolidation.md) to graft the smaller repo with `git subtree`, harmonize Supabase
+artifacts, and expose the new tabs inside the command center shell.
+
+## Financial command module
+
+The revenue and expense intelligence now ships natively with the command center. Navigate to **Financial Command** in the
+left rail (or visit `/financials`) to access:
+
+codex/integrate-revenue-and-expense-tabs-ugnmqm
+- A dual-tab glass dashboard that pivots between revenue acceleration and cost discipline views.
+- Supabase-backed metrics sourced from the `financial_revenue_metrics`, `financial_revenue_projections`, and
+  `financial_expense_metrics` tables with automatic demo fallbacks when credentials are missing.
+- Runway alerts and quarterly forecasts surfaced alongside the rest of the Twilio operations toolkit.
+
+- A dual-tab glass dashboard that pivots between revenue acceleration and cost discipline views, including ARR, pipeline health,
+  and segment mix visualizations.
+- Supabase-backed metrics sourced from the `financial_revenue_metrics`, `financial_revenue_projections`, and `financial_expense_metrics`
+  tables (plus supporting trend tables) with automatic demo fallbacks when credentials are missing.
+- Cost-per-client, CAC payback, and vendor runway controls surfaced alongside quarterly forecasts so finance can intervene fast.
+main
+
 ## Quality checklist
 
 - **Supabase**: `supabase db push`, `supabase functions deploy report-build`, `supabase functions deploy twilio-build-alert`.

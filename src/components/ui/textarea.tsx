@@ -3,7 +3,27 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+codex/add-skin-selector-for-color-theme
+=======
 
+codex/integrate-revenue-and-expense-tabs-ugnmqm
+ main
+
+codex/integrate-revenue-and-expense-tabs-qmhblg
+main
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => {
+  return (
+    <textarea
+      className={cn(
+        "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+      ref={ref}
+      {...props}
+    />
+  );
+});
+codex/integrate-revenue-and-expense-tabs-ugnmqm
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => (
     <textarea
@@ -16,6 +36,14 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     />
   ),
 );
+ codex/add-skin-selector-for-color-theme
+=======
+codex/add-skin-selector-for-color-theme-on40yv
+
+ main
+ main
+main
+ main
 Textarea.displayName = "Textarea";
 
 export { Textarea };
