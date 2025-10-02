@@ -11,7 +11,18 @@ npm install
 npm run dev
 ```
 
-The dev server listens on `http://localhost:8080` by default. Tailwind, shadcn UI, and React Fast Refresh are all prewired.
+The dev server binds to `http://localhost:5173/` immediately (and to your LAN IP so other devices can test in real time). Tailwind,
+shadcn UI, and React Fast Refresh are all prewired. Override the defaults with `DEV_HOST`/`DEV_PORT` env vars if you need to run on
+another interface.
+
+Need to review the production bundle locally? Run:
+
+```bash
+npm run build
+npm run preview
+```
+
+`vite preview` serves the contents of `dist/` at `http://localhost:4173/` (customisable via `PREVIEW_HOST`/`PREVIEW_PORT`).
 
 ### Environment variables
 
@@ -28,44 +39,25 @@ before pointing CI to the `report-build` endpoint.
 
 ## Production deployment
 
-This repository now includes an automated GitHub Pages workflow (`.github/workflows/deploy.yml`). Once GitHub Pages is enabled
-for the repository:
+### Vercel
+
+Prefer a fully managed, CDN-backed deploy? Follow the step-by-step [Vercel deployment playbook](docs/vercel-deployment.md) to
+import the repository, wire up environment variables, and publish the SPA with automatic rewrites for client-side routing.
+
+### GitHub Pages
+
+This repository includes an automated GitHub Pages workflow (`.github/workflows/deploy.yml`). Once GitHub Pages is enabled for
+the repository:
 
 1. Go to **Settings → Pages** and choose **GitHub Actions** as the source.
-2. Merge to `main` (or trigger the workflow manually). The action builds the Vite site and publishes it to Pages.
-3. The workflow outputs a ready-to-share URL (e.g., `https://<org>.github.io/<repo>/`) so stakeholders can click and test the UI
-   immediately.
+2. Merge to `main` (or trigger the workflow manually via **Actions → Deploy marketing war command center → Run workflow**). The
+   action builds the Vite site with the GitHub Pages base path and publishes it.
+3. Grab the live URL from the job summary (e.g., `https://<org>.github.io/<repo>/`) and share it with stakeholders for instant
+   smoke testing.
 
 Assets are built with a relative base path, so the site works on both GitHub Pages and custom domains without further
 configuration. If you host elsewhere, set `VITE_BASE_PATH` to the appropriate subdirectory before running `npm run build`.
 
-## Consolidating related dashboards
-
-Need to pull the revenue & expense UI into this monorepo? Follow the step-by-step playbook in
-[`docs/repo-consolidation.md`](docs/repo-consolidation.md) to graft the smaller repo with `git subtree`, harmonize Supabase
-artifacts, and expose the new tabs inside the command center shell.
-
-codex/integrate-revenue-and-expense-tabs
-=======
-## Financial command module
-
-The revenue and expense intelligence now ships natively with the command center. Navigate to **Financial Command** in the
-left rail (or visit `/financials`) to access:
-
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-- A dual-tab glass dashboard that pivots between revenue acceleration and cost discipline views.
-- Supabase-backed metrics sourced from the `financial_revenue_metrics`, `financial_revenue_projections`, and
-  `financial_expense_metrics` tables with automatic demo fallbacks when credentials are missing.
-- Runway alerts and quarterly forecasts surfaced alongside the rest of the Twilio operations toolkit.
-
-- A dual-tab glass dashboard that pivots between revenue acceleration and cost discipline views, including ARR, pipeline health,
-  and segment mix visualizations.
-- Supabase-backed metrics sourced from the `financial_revenue_metrics`, `financial_revenue_projections`, and `financial_expense_metrics`
-  tables (plus supporting trend tables) with automatic demo fallbacks when credentials are missing.
-- Cost-per-client, CAC payback, and vendor runway controls surfaced alongside quarterly forecasts so finance can intervene fast.
-main
-
- main
 ## Quality checklist
 
 - **Supabase**: `supabase db push`, `supabase functions deploy report-build`, `supabase functions deploy twilio-build-alert`.
