@@ -1,3 +1,13 @@
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import {
   applySkin,
   defaultSkinId,
@@ -12,24 +22,9 @@ import {
   persistRemoteSkin,
   persistStoredSkin,
   readStoredSkin,
- codex/add-skin-selector-for-color-theme
-=======
   subscribeToStoredSkin,
- main
 } from "@/lib/preferences";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
- codex/add-skin-selector-for-color-theme
-=======
-  useLayoutEffect,
- main
-  useMemo,
-  useState,
-} from "react";
 
 interface SkinContextValue {
   availableSkins: readonly SkinDefinition[];
@@ -44,15 +39,13 @@ interface SkinContextValue {
 
 const SkinContext = createContext<SkinContextValue | undefined>(undefined);
 
-codex/add-skin-selector-for-color-theme
-=======
 const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-main
 function applyToDocument(skinId: SkinId) {
   if (typeof document === "undefined") {
     return;
   }
+
   const root = document.documentElement;
   applySkin(root, getSkin(skinId));
 }
@@ -60,9 +53,6 @@ function applyToDocument(skinId: SkinId) {
 export const SkinProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const supabase = useMemo(() => getSupabaseBrowserClient(), []);
   const availableSkins = useMemo(() => getAvailableSkins(), []);
-codex/add-skin-selector-for-color-theme
-  const [currentSkinId, setCurrentSkinId] = useState<SkinId>(defaultSkinId);
-=======
   const [currentSkinId, setCurrentSkinId] = useState<SkinId>(() => {
     const storedSkin = readStoredSkin();
     const datasetSkin =
@@ -70,20 +60,11 @@ codex/add-skin-selector-for-color-theme
 
     return resolveSkinId(storedSkin ?? datasetSkin ?? defaultSkinId);
   });
- main
   const [isHydrated, setIsHydrated] = useState(false);
   const [isRemoteLoading, setIsRemoteLoading] = useState(false);
   const [pendingSkinId, setPendingSkinId] = useState<SkinId | null>(null);
   const [lastError, setLastError] = useState<string | null>(null);
 
- codex/add-skin-selector-for-color-theme
-  useEffect(() => {
-    const initialSkin = readStoredSkin();
-    if (initialSkin) {
-      setCurrentSkinId(initialSkin);
-    }
-    applyToDocument(initialSkin ?? defaultSkinId);
-=======
   useIsomorphicLayoutEffect(() => {
     applyToDocument(currentSkinId);
   }, [currentSkinId]);
@@ -93,22 +74,18 @@ codex/add-skin-selector-for-color-theme
   }, [currentSkinId]);
 
   useEffect(() => {
- main
-    setIsHydrated(true);
-  }, []);
+    const unsubscribe = subscribeToStoredSkin((skinId) => {
+      if (!skinId) {
+        return;
+      }
 
-  useEffect(() => {
- codex/add-skin-selector-for-color-theme
-    applyToDocument(currentSkinId);
-    persistStoredSkin(currentSkinId);
-  }, [currentSkinId]);
-=======
-    return subscribeToStoredSkin((skinId) => {
-      const resolved = resolveSkinId(skinId ?? defaultSkinId);
-      setCurrentSkinId((current) => (current === resolved ? current : resolved));
+      setCurrentSkinId((current) => (current === skinId ? current : skinId));
     });
+
+    setIsHydrated(true);
+
+    return unsubscribe;
   }, []);
- main
 
   useEffect(() => {
     if (!supabase) {
@@ -123,18 +100,15 @@ codex/add-skin-selector-for-color-theme
         if (cancelled || !remoteSkin) {
           return;
         }
- codex/add-skin-selector-for-color-theme
-        setCurrentSkinId(remoteSkin);
-        persistStoredSkin(remoteSkin);
-=======
+
         setCurrentSkinId((current) => (current === remoteSkin ? current : remoteSkin));
- main
         setLastError(null);
       })
       .catch((error) => {
         if (cancelled) {
           return;
         }
+
         console.error("Failed to hydrate skin preference from Supabase", error);
         setLastError(
           error instanceof Error ? error.message : "Unable to load skin preference from Supabase",
@@ -154,12 +128,8 @@ codex/add-skin-selector-for-color-theme
   const selectSkin = useCallback(
     async (skinId: SkinId) => {
       const resolved = resolveSkinId(skinId);
- codex/add-skin-selector-for-color-theme
-      setCurrentSkinId(resolved);
-      persistStoredSkin(resolved);
-=======
       setCurrentSkinId((current) => (current === resolved ? current : resolved));
-main
+      persistStoredSkin(resolved);
       setLastError(null);
 
       if (!supabase) {
@@ -193,15 +163,7 @@ main
       lastError,
       selectSkin,
     }),
-    [
-      availableSkins,
-      currentSkinId,
-      isHydrated,
-      isRemoteLoading,
-      pendingSkinId,
-      lastError,
-      selectSkin,
-    ],
+    [availableSkins, currentSkinId, isHydrated, isRemoteLoading, pendingSkinId, lastError, selectSkin],
   );
 
   return <SkinContext.Provider value={value}>{children}</SkinContext.Provider>;
