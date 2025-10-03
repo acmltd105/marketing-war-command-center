@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,10 +20,12 @@ import {
   Cloud,
   Database,
   FileSpreadsheet,
+  Loader2,
   PlugZap,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
+import { useLeadIngestion } from "@/hooks/useLeadIngestion";
 
 const stageStatusClasses: Record<string, string> = {
   ready: "bg-corporate-blue text-white",
@@ -106,6 +108,48 @@ const segmentDestinations = [
 const LeadIntelligence = () => {
   const [sampleRate, setSampleRate] = useState(15);
   const totalLeads = 128_000;
+  const { uploadState, isUploading, handleFileUpload } = useLeadIngestion();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const openFileDialog = useCallback(() => {
+    if (isUploading) return;
+    fileInputRef.current?.click();
+  }, [isUploading]);
+
+  const handleLeadUpload = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      void handleFileUpload(file);
+      event.target.value = "";
+    },
+    [handleFileUpload],
+  );
+
+  const uploadStatusLabel = useMemo(() => {
+    switch (uploadState.stage) {
+      case "preparing":
+        return "Preparing file";
+      case "uploading":
+        return "Uploading to Supabase";
+      case "success":
+        return "Ingestion complete";
+      case "error":
+        return "Upload failed";
+      default:
+        return "Awaiting upload";
+    }
+  }, [uploadState.stage]);
+
+  const progressValue = useMemo(() => {
+    if (uploadState.totalRows && uploadState.totalRows > 0) {
+      return Math.min(100, Math.round((uploadState.processedRows / uploadState.totalRows) * 100));
+    }
+    if (uploadState.stage === "success") {
+      return 100;
+    }
+    return uploadState.processedRows > 0 ? 15 : 0;
+  }, [uploadState.processedRows, uploadState.stage, uploadState.totalRows]);
 
   const sampleLeads = useMemo(
     () => Math.max(1, Math.round((sampleRate / 100) * totalLeads)),
@@ -159,17 +203,80 @@ const LeadIntelligence = () => {
                 <Badge className="bg-corporate-blue text-white">AES-256 at rest</Badge>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Button asChild className="btn-corporate text-white">
-                  <label htmlFor="lead-upload">Upload CSV / XLSX</label>
+                <Button
+                  className="btn-corporate text-white flex items-center gap-2"
+                  onClick={openFileDialog}
+                  disabled={isUploading}
+                >
+                  {isUploading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <FileSpreadsheet className="h-4 w-4" />
+                  )}
+                  {isUploading ? "Uploading…" : "Upload CSV / XLSX"}
                 </Button>
-                <input id="lead-upload" type="file" className="sr-only" accept=".csv,.xlsx" />
-                <Button variant="outline" className="border-corporate-navy text-corporate-platinum">
+                <input
+                  id="lead-upload"
+                  ref={fileInputRef}
+                  type="file"
+                  className="sr-only"
+                  accept=".csv,.xlsx,.xls"
+                  onChange={handleLeadUpload}
+                  disabled={isUploading}
+                />
+                <Button
+                  variant="outline"
+                  className="border-corporate-navy text-corporate-platinum"
+                  disabled={isUploading}
+                >
                   <Sparkles className="h-4 w-4" /> Auto-map Columns
                 </Button>
-                <Button variant="outline" className="border-corporate-charcoal text-corporate-silver">
+                <Button
+                  variant="outline"
+                  className="border-corporate-charcoal text-corporate-silver"
+                  disabled={isUploading}
+                >
                   <ShieldCheck className="h-4 w-4" /> Compliance Receipt
                 </Button>
               </div>
+              {uploadState.stage !== "idle" && (
+                <div className="space-y-3 rounded-lg border border-corporate-navy/40 bg-corporate-navy/10 p-4 text-sm">
+                  <div className="flex items-center justify-between text-xs text-corporate-silver uppercase tracking-wide">
+                    <span>Upload status</span>
+                    <span className="text-corporate-platinum font-semibold normal-case">
+                      {uploadStatusLabel}
+                    </span>
+                  </div>
+                  <Progress value={progressValue} className="h-2 bg-corporate-charcoal/40" />
+                  <div className="flex items-center justify-between text-xs text-corporate-silver">
+                    <span>
+                      {uploadState.processedRows > 0
+                        ? `${uploadState.processedRows.toLocaleString()} rows processed`
+                        : "Initializing…"}
+                    </span>
+                    {uploadState.totalRows ? (
+                      <span>{uploadState.totalRows.toLocaleString()} total rows</span>
+                    ) : uploadState.stage === "uploading" ? (
+                      <span>Estimating total…</span>
+                    ) : null}
+                  </div>
+                  {uploadState.fileName && (
+                    <div className="flex items-center justify-between text-xs text-corporate-silver/80">
+                      <span>File</span>
+                      <span className="max-w-[60%] truncate text-corporate-platinum">{uploadState.fileName}</span>
+                    </div>
+                  )}
+                  {uploadState.ingestionId && uploadState.stage !== "idle" && (
+                    <div className="flex items-center justify-between text-xs text-revenue-green/80">
+                      <span>Supabase ingestion</span>
+                      <span className="font-mono">{`${uploadState.ingestionId.slice(0, 8)}…`}</span>
+                    </div>
+                  )}
+                  {uploadState.errorMessage && (
+                    <p className="text-xs text-corporate-crimson">{uploadState.errorMessage}</p>
+                  )}
+                </div>
+              )}
               <div className="grid gap-2 text-sm text-corporate-silver">
                 <div className="flex justify-between">
                   <span>Records landed</span>

@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
+
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
 export type TrendDirection = "up" | "down" | "flat";
-
- codex/integrate-revenue-and-expense-tabs-ugnmqm
 export type MetricFormat = "currency" | "percent" | "number" | "ratio" | "duration";
 
- main
 export type FinancialMetric = {
   id: string;
   label: string;
@@ -14,21 +13,15 @@ export type FinancialMetric = {
   delta: number;
   trend: TrendDirection;
   target?: number;
- codex/integrate-revenue-and-expense-tabs-ugnmqm
-=======
   format: MetricFormat;
   precision?: number;
   suffix?: string;
- main
 };
 
 export type FinancialRunway = {
   burnRate: number;
   runwayMonths: number;
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-
   cashBalance: number;
- main
   nextMilestone: string;
 };
 
@@ -44,8 +37,6 @@ export type FinancialAlert = {
   message: string;
 };
 
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-=======
 export type RevenueSegment = {
   id: string;
   label: string;
@@ -154,22 +145,25 @@ export type PredictabilityData = {
   voiceSupport: PredictabilitySupportMetric[];
 };
 
->>>> main
+type SupabaseMetricRow = {
+  id: string;
+  label: string;
+  amount?: number | null;
+  delta?: number | null;
+  trend?: string | null;
+  target?: number | null;
+  target_value?: number | null;
+  target_amount?: number | null;
+  format?: string | null;
+  precision?: number | null;
+  decimals?: number | null;
+  suffix?: string | null;
+};
+
 export type FinancialsData = {
   source: "supabase" | "demo";
   lastUpdated: string;
   revenue: {
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-    headline: FinancialMetric[];
-    pipeline: FinancialMetric[];
-    projections: FinancialProjection[];
-  };
-  expenses: {
-    headline: FinancialMetric[];
-    runway: FinancialRunway;
-    alerts: FinancialAlert[];
-  };
-
     summary: FinancialMetric[];
     pipeline: FinancialMetric[];
     efficiency: FinancialMetric[];
@@ -186,136 +180,26 @@ codex/integrate-revenue-and-expense-tabs-ugnmqm
     spendTrend: ExpenseTrendPoint[];
   };
   predictability: PredictabilityData;
- main
 };
 
 const DEMO_DATA: FinancialsData = {
   source: "demo",
   lastUpdated: new Date().toISOString(),
   revenue: {
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-    headline: [
-      { id: "arr", label: "ARR", amount: 2400000, delta: 12.4, trend: "up", target: 3000000 },
-      { id: "net-retention", label: "Net Revenue Retention", amount: 134, delta: 4.1, trend: "up", target: 140 },
-      { id: "gross-margin", label: "Gross Margin", amount: 78, delta: 1.2, trend: "up", target: 80 },
-    ],
-    pipeline: [
-      { id: "pipeline", label: "Pipeline Coverage", amount: 3.4, delta: -0.3, trend: "down", target: 4 },
-      { id: "avg-deal", label: "Avg Deal Size", amount: 58000, delta: 2.6, trend: "up" },
-      { id: "sales-cycle", label: "Sales Cycle", amount: 34, delta: -1.7, trend: "down" },
-    ],
-    projections: [
-      { quarter: "Q1", forecast: 620000, variance: 4.8 },
-      { quarter: "Q2", forecast: 710000, variance: 3.1 },
-      { quarter: "Q3", forecast: 810000, variance: -1.5 },
-      { quarter: "Q4", forecast: 920000, variance: 0.6 },
-    ],
-  },
-  expenses: {
-    headline: [
-      { id: "burn", label: "Monthly Burn", amount: 480000, delta: -2.3, trend: "down" },
-      { id: "opex", label: "OpEx", amount: 220000, delta: 1.1, trend: "up" },
-      { id: "unit", label: "Unit Economics", amount: 42, delta: 6.2, trend: "up" },
-    ],
-    runway: {
-      burnRate: 480000,
-      runwayMonths: 19,
-      nextMilestone: "Series C readiness in 2 quarters",
-    },
-    alerts: [
-      { id: "vendor-spend", severity: "warning", message: "Martech vendor costs spiked 11% MoM" },
-      { id: "hiring-freeze", severity: "info", message: "Hiring slowdown preserving runway" },
-    ],
-  },
-};
-
-=======
     summary: [
-      {
-        id: "total-arr",
-        label: "Total ARR",
-        amount: 4_200_000,
-        delta: 11.2,
-        trend: "up",
-        target: 5_000_000,
-        format: "currency",
-      },
-      {
-        id: "new-arr",
-        label: "New ARR QTD",
-        amount: 380_000,
-        delta: 6.5,
-        trend: "up",
-        target: 450_000,
-        format: "currency",
-      },
-      {
-        id: "expansion-arr",
-        label: "Expansion ARR",
-        amount: 140_000,
-        delta: 3.1,
-        trend: "up",
-        format: "currency",
-      },
+      { id: "arr", label: "ARR", amount: 2_400_000, delta: 12.4, trend: "up", target: 3_000_000, format: "currency" },
+      { id: "net-retention", label: "Net Revenue Retention", amount: 134, delta: 4.1, trend: "up", target: 140, format: "percent", precision: 0 },
+      { id: "gross-margin", label: "Gross Margin", amount: 78, delta: 1.2, trend: "up", target: 80, format: "percent", precision: 0 },
     ],
     pipeline: [
-      {
-        id: "pipeline-coverage",
-        label: "Pipeline Coverage",
-        amount: 4.2,
-        delta: 0.4,
-        trend: "up",
-        target: 5,
-        format: "ratio",
-        precision: 1,
-        suffix: "x",
-      },
-      {
-        id: "committed-pipeline",
-        label: "Committed Pipeline",
-        amount: 910_000,
-        delta: 5.6,
-        trend: "up",
-        format: "currency",
-      },
-      {
-        id: "avg-contract",
-        label: "Avg Contract Value",
-        amount: 72_000,
-        delta: 4.4,
-        trend: "up",
-        format: "currency",
-      },
+      { id: "pipeline", label: "Pipeline Coverage", amount: 3.4, delta: -0.3, trend: "down", target: 4, format: "ratio", precision: 1, suffix: "x" },
+      { id: "avg-deal", label: "Avg Deal Size", amount: 58_000, delta: 2.6, trend: "up", format: "currency" },
+      { id: "sales-cycle", label: "Sales Cycle", amount: 34, delta: -1.7, trend: "down", format: "duration", precision: 0, suffix: "days" },
     ],
     efficiency: [
-      {
-        id: "win-rate",
-        label: "Win Rate",
-        amount: 31,
-        delta: 1.7,
-        trend: "up",
-        target: 35,
-        format: "percent",
-        precision: 1,
-      },
-      {
-        id: "sales-cycle",
-        label: "Sales Cycle",
-        amount: 32,
-        delta: -2.1,
-        trend: "down",
-        format: "duration",
-        suffix: "days",
-      },
-      {
-        id: "lead-velocity",
-        label: "Lead Velocity",
-        amount: 18,
-        delta: 2.4,
-        trend: "up",
-        format: "percent",
-        precision: 1,
-      },
+      { id: "win-rate", label: "Win Rate", amount: 28, delta: 1.4, trend: "up", format: "percent" },
+      { id: "partner-sourced", label: "Partner Sourced", amount: 32, delta: 2.2, trend: "up", format: "percent" },
+      { id: "upsell", label: "Expansion ARR", amount: 420_000, delta: 6.5, trend: "up", format: "currency" },
     ],
     segments: [
       { id: "enterprise", label: "Enterprise", arr: 2_200_000, change: 8.4 },
@@ -339,68 +223,14 @@ codex/integrate-revenue-and-expense-tabs-ugnmqm
   },
   expenses: {
     summary: [
-      {
-        id: "burn",
-        label: "Monthly Burn",
-        amount: 520_000,
-        delta: -1.8,
-        trend: "down",
-        format: "currency",
-      },
-      {
-        id: "operating",
-        label: "Operating Expenses",
-        amount: 310_000,
-        delta: 0.9,
-        trend: "up",
-        format: "currency",
-      },
-      {
-        id: "cash",
-        label: "Cash on Hand",
-        amount: 9_800_000,
-        delta: 2.3,
-        trend: "up",
-        format: "currency",
-      },
+      { id: "burn", label: "Monthly Burn", amount: 520_000, delta: -1.8, trend: "down", format: "currency" },
+      { id: "operating", label: "Operating Expenses", amount: 310_000, delta: 0.9, trend: "up", format: "currency" },
+      { id: "cash", label: "Cash on Hand", amount: 9_800_000, delta: 2.3, trend: "up", format: "currency" },
     ],
     unitEconomics: [
-      {
-        id: "cost-per-client",
-        label: "Cost per Client",
-        amount: 480,
-        delta: -4.2,
-        trend: "down",
-        format: "currency",
-      },
-      {
-        id: "cac-payback",
-        label: "CAC Payback",
-        amount: 9.4,
-        delta: -0.6,
-        trend: "down",
-        format: "duration",
-        precision: 1,
-        suffix: "months",
-      },
-      {
-        id: "support-cost",
-        label: "Support Cost / Ticket",
-        amount: 18,
-        delta: 1.2,
-        trend: "up",
-        format: "currency",
-      },
-      {
-        id: "ltv-cac",
-        label: "LTV to CAC",
-        amount: 4.2,
-        delta: 0.3,
-        trend: "up",
-        format: "ratio",
-        precision: 1,
-        suffix: "x",
-      },
+      { id: "cost-per-client", label: "Cost per Client", amount: 480, delta: -4.2, trend: "down", format: "currency" },
+      { id: "cac-payback", label: "CAC Payback", amount: 9.4, delta: -0.6, trend: "down", format: "duration", precision: 1, suffix: "months" },
+      { id: "ltv-cac", label: "LTV to CAC", amount: 4.2, delta: 0.3, trend: "up", format: "ratio", precision: 1, suffix: "x" },
     ],
     runway: {
       burnRate: 520_000,
@@ -410,42 +240,14 @@ codex/integrate-revenue-and-expense-tabs-ugnmqm
     },
     alerts: [
       { id: "vendor-spend", severity: "warning", message: "Data enrichment renewal is trending +12% month over month." },
+      { id: "support-alert", severity: "critical", message: "Escalation volume has exceeded the support run rate by 8%." },
       { id: "hiring", severity: "info", message: "Hiring slowdown preserving headcount budget across sales." },
-      { id: "support", severity: "critical", message: "Escalation volume has exceeded the support run rate by 8%." },
     ],
     vendorSpend: [
-      {
-        id: "clearbit",
-        vendor: "Clearbit",
-        category: "Data Enrichment",
-        amount: 18_000,
-        change: 12,
-        status: "Renewal due",
-      },
-      {
-        id: "segment",
-        vendor: "Segment",
-        category: "CDP",
-        amount: 24_000,
-        change: 4,
-        status: "Active",
-      },
-      {
-        id: "marketo",
-        vendor: "Marketo",
-        category: "Automation",
-        amount: 32_000,
-        change: -3,
-        status: "Negotiating",
-      },
-      {
-        id: "zendesk",
-        vendor: "Zendesk",
-        category: "Support",
-        amount: 21_000,
-        change: 6,
-        status: "Active",
-      },
+      { id: "clearbit", vendor: "Clearbit", category: "Data Enrichment", amount: 18_000, change: 12, status: "Renewal due" },
+      { id: "segment", vendor: "Segment", category: "CDP", amount: 24_000, change: 4, status: "Active" },
+      { id: "marketo", vendor: "Marketo", category: "Automation", amount: 32_000, change: -3, status: "Negotiating" },
+      { id: "zendesk", vendor: "Zendesk", category: "Support", amount: 21_000, change: 6, status: "Active" },
     ],
     spendTrend: [
       { month: "2024-04", label: "Apr", marketing: 180_000, headcount: 260_000, tooling: 120_000 },
@@ -522,30 +324,9 @@ codex/integrate-revenue-and-expense-tabs-ugnmqm
       },
     ],
     volumeDrivers: [
-      {
-        id: "events",
-        driver: "Field & events",
-        readiness: "Playbook locked",
-        runRate: 420_000,
-        cost: 320_000,
-        signal: "hot",
-      },
-      {
-        id: "paid",
-        driver: "Paid acquisition",
-        readiness: "Budgets cleared",
-        runRate: 310_000,
-        cost: 260_000,
-        signal: "warm",
-      },
-      {
-        id: "partners",
-        driver: "Partner co-selling",
-        readiness: "Rev-share synced",
-        runRate: 210_000,
-        cost: 140_000,
-        signal: "hot",
-      },
+      { id: "events", driver: "Field & events", readiness: "Playbook locked", runRate: 420_000, cost: 320_000, signal: "hot" },
+      { id: "paid", driver: "Paid acquisition", readiness: "Budgets cleared", runRate: 310_000, cost: 260_000, signal: "warm" },
+      { id: "partners", driver: "Partner co-selling", readiness: "Rev-share synced", runRate: 210_000, cost: 140_000, signal: "hot" },
     ],
     channelMix: [
       { id: "inbound", channel: "Inbound", mix: 38, cac: 420, payback: 7.5, intercept: "Full" },
@@ -554,22 +335,8 @@ codex/integrate-revenue-and-expense-tabs-ugnmqm
       { id: "events", channel: "Events", mix: 14, cac: 540, payback: 8.6, intercept: "Full" },
     ],
     voiceSupport: [
-      {
-        id: "voice-sla",
-        label: "Voice SLA",
-        value: "92% within 45s",
-        target: "90%",
-        status: "on-track",
-        trend: 1.4,
-      },
-      {
-        id: "chat",
-        label: "Chat concurrency",
-        value: "3.1 avg",
-        target: "3.0",
-        status: "on-track",
-        trend: 0.6,
-      },
+      { id: "voice-sla", label: "Voice SLA", value: "92% within 45s", target: "90%", status: "on-track", trend: 1.4 },
+      { id: "chat", label: "Chat concurrency", value: "3.1 avg", target: "3.0", status: "on-track", trend: 0.6 },
       {
         id: "deflection",
         label: "Self-serve deflection",
@@ -582,461 +349,296 @@ codex/integrate-revenue-and-expense-tabs-ugnmqm
   },
 };
 
-const TRENDS: TrendDirection[] = ["up", "down", "flat"];
-const FORMATS: MetricFormat[] = ["currency", "percent", "number", "ratio", "duration"];
-const GUARDRAIL_STATUSES: GuardrailStatus[] = ["stable", "watch", "breach"];
-const SIGNAL_STATES: PredictabilityVolumeDriver["signal"][] = ["hot", "warm", "cool"];
-const SUPPORT_STATUSES: SupportStatus[] = ["on-track", "at-risk", "breach"];
-
-function isTrend(value: unknown): value is TrendDirection {
-  return typeof value === "string" && TRENDS.includes(value as TrendDirection);
+function mapMetric(row: SupabaseMetricRow): FinancialMetric {
+  const amount = Number(row.amount ?? 0);
+  const delta = Number(row.delta ?? 0);
+  const targetValue = row.target ?? row.target_value ?? row.target_amount;
+  const precisionValue = row.precision ?? row.decimals;
+  return {
+    id: row.id,
+    label: row.label,
+    amount,
+    delta,
+    trend: (row.trend as TrendDirection) ?? "flat",
+    target: targetValue === null || targetValue === undefined ? undefined : Number(targetValue),
+    format: (row.format as MetricFormat) ?? "currency",
+    precision: precisionValue === null || precisionValue === undefined ? undefined : Number(precisionValue),
+    suffix: row.suffix ?? undefined,
+  };
 }
 
-function isFormat(value: unknown): value is MetricFormat {
-  return typeof value === "string" && FORMATS.includes(value as MetricFormat);
-}
-
-function isGuardrailStatus(value: unknown): value is GuardrailStatus {
-  return typeof value === "string" && GUARDRAIL_STATUSES.includes(value as GuardrailStatus);
-}
-
-function isSignalState(value: unknown): value is PredictabilityVolumeDriver["signal"] {
-  return typeof value === "string" && SIGNAL_STATES.includes(value as PredictabilityVolumeDriver["signal"]);
-}
-
-function isSupportStatus(value: unknown): value is SupportStatus {
-  return typeof value === "string" && SUPPORT_STATUSES.includes(value as SupportStatus);
-}
-
-function toLabel(month: string | null | undefined) {
+function coerceMonthLabel(month: string): string {
   if (!month) return "";
-  const normalised = month.length === 7 ? `${month}-01` : month;
-  const date = new Date(normalised);
-  if (Number.isNaN(date.getTime())) {
+  const parsed = new Date(month);
+  if (Number.isNaN(parsed.valueOf())) {
     return month;
   }
-  return date.toLocaleString("en-US", { month: "short" });
+  return parsed.toLocaleDateString(undefined, { month: "short" });
 }
 
- main
-async function fetchFinancials(): Promise<FinancialsData> {
-  const client = getSupabaseBrowserClient();
-  if (!client) {
-    return DEMO_DATA;
+function collectSupabaseErrors(results: Array<{ error: PostgrestError | null } | undefined>) {
+  return results
+    .map((result) => result?.error)
+    .filter((error): error is PostgrestError => Boolean(error));
+}
+
+async function loadFinancialsFromSupabase(client: SupabaseClient): Promise<FinancialsData | null> {
+  const [
+    revenueMetrics,
+    expenseMetrics,
+    projections,
+    segments,
+    revenueTrend,
+    vendorSpend,
+    expenseTrend,
+    safeLaunch,
+    modeling,
+    guardrails,
+    scenarios,
+    volumeDrivers,
+    channelMix,
+    supportMetrics,
+  ] = await Promise.all([
+    client.from("financial_revenue_metrics").select("*", { head: false }).eq("active", true),
+    client.from("financial_expense_metrics").select("*", { head: false }).eq("active", true),
+    client.from("financial_revenue_projections").select("quarter, forecast, variance").order("quarter"),
+    client.from("financial_revenue_segments").select("id, label, arr, change"),
+    client.from("financial_revenue_mrr_trends").select("month, recurring, services").order("month"),
+    client.from("financial_vendor_spend").select("id, vendor, category, amount, change, status"),
+    client.from("financial_expense_trends").select("month, marketing, headcount, tooling").order("month"),
+    client.from("predictability_safe_launch").select("*").maybeSingle(),
+    client.from("predictability_modeling").select("*").maybeSingle(),
+    client.from("predictability_guardrails").select("id, label, status, detail").order("display_order"),
+    client.from("predictability_scenarios").select("id, scenario, lead_volume, conversion, readiness, go_live").order("display_order"),
+    client.from("predictability_volume_drivers").select("id, driver, readiness, run_rate, cost, signal").order("display_order"),
+    client.from("predictability_channel_mix").select("id, channel, mix, cac, payback, intercept").order("display_order"),
+    client.from("predictability_support_metrics").select("id, label, value, target, status, trend").order("display_order"),
+  ]);
+
+  const errors = collectSupabaseErrors([
+    revenueMetrics,
+    expenseMetrics,
+    projections,
+    segments,
+    revenueTrend,
+    vendorSpend,
+    expenseTrend,
+    safeLaunch,
+    modeling,
+    guardrails,
+    scenarios,
+    volumeDrivers,
+    channelMix,
+    supportMetrics,
+  ]);
+
+  if (errors.length) {
+    errors.forEach((error) => {
+      console.warn("Falling back to demo financial data due to Supabase error", error);
+    });
+    return null;
   }
 
-  try {
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-    const [{ data: revenueData, error: revenueError }, { data: expenseData, error: expenseError }] = await Promise.all([
-      client
-        .from("financial_revenue_metrics")
-        .select("id,label,amount,delta,trend,target,category")
-        .eq("active", true),
-      client
-        .from("financial_expense_metrics")
-        .select("id,label,amount,delta,trend,category,runway_burn,runway_months,next_milestone,severity,message")
-        .eq("active", true),
-    ]);
+  const revenueSummary: FinancialMetric[] = [];
+  const revenuePipeline: FinancialMetric[] = [];
+  const revenueEfficiency: FinancialMetric[] = [];
 
-    if (revenueError || expenseError) {
-      throw revenueError ?? expenseError;
+  (revenueMetrics.data ?? []).forEach((row) => {
+    const metric = mapMetric(row);
+    const section = String(row.section ?? row.category ?? "summary");
+    if (section === "pipeline") {
+      revenuePipeline.push(metric);
+    } else if (section === "efficiency" || section === "unit") {
+      revenueEfficiency.push(metric);
+    } else {
+      revenueSummary.push(metric);
     }
+  });
 
-    const revenueHeadline: FinancialMetric[] = [];
-    const revenuePipeline: FinancialMetric[] = [];
+  const expenseSummary: FinancialMetric[] = [];
+  const unitEconomics: FinancialMetric[] = [];
+  const alerts: FinancialAlert[] = [];
+  let runway: FinancialRunway = {
+    burnRate: DEMO_DATA.expenses.runway.burnRate,
+    runwayMonths: DEMO_DATA.expenses.runway.runwayMonths,
+    cashBalance: DEMO_DATA.expenses.runway.cashBalance,
+    nextMilestone: DEMO_DATA.expenses.runway.nextMilestone,
+  };
 
-    revenueData?.forEach((row) => {
-      const metric: FinancialMetric = {
-        id: row.id,
-        label: row.label,
-        amount: row.amount ?? 0,
-        delta: row.delta ?? 0,
-        trend: (row.trend as TrendDirection) ?? "flat",
-        target: row.target ?? undefined,
+  (expenseMetrics.data ?? []).forEach((row) => {
+    const section = String(row.section ?? row.category ?? "summary");
+    const metric = mapMetric(row);
+
+    if (section === "summary") {
+      expenseSummary.push(metric);
+    } else if (section === "unit") {
+      unitEconomics.push(metric);
+    } else if (section === "runway") {
+      runway = {
+        burnRate: Number(row.runway_burn ?? metric.amount ?? 0),
+        runwayMonths: Number(row.runway_months ?? 0),
+        cashBalance: metric.amount ?? 0,
+        nextMilestone: row.next_milestone ?? DEMO_DATA.expenses.runway.nextMilestone,
       };
-      if (row.category === "headline") {
-        revenueHeadline.push(metric);
-      } else {
-        revenuePipeline.push(metric);
-      }
-    });
-
-    let runway: FinancialRunway | null = null;
-    const alerts: FinancialAlert[] = [];
-    const expenseHeadline: FinancialMetric[] = [];
-
-    expenseData?.forEach((row) => {
-      if (row.category === "headline") {
-        expenseHeadline.push({
-          id: row.id,
-          label: row.label,
-          amount: row.amount ?? 0,
-          delta: row.delta ?? 0,
-          trend: (row.trend as TrendDirection) ?? "flat",
-        });
-      }
-      if (row.category === "alert") {
-    const [
-      { data: revenueMetrics, error: revenueError },
-      { data: expenseMetrics, error: expenseError },
-      { data: projectionData, error: projectionError },
-      { data: segmentData, error: segmentError },
-      { data: mrrTrendData, error: mrrError },
-      { data: vendorData, error: vendorError },
-      { data: expenseTrendData, error: expenseTrendError },
-      { data: safeLaunchData, error: safeLaunchError },
-      { data: modelingData, error: modelingError },
-      { data: guardrailData, error: guardrailError },
-      { data: scenarioData, error: scenarioError },
-      { data: driverData, error: driverError },
-      { data: channelMixData, error: channelMixError },
-      { data: supportData, error: supportError },
-    ] = await Promise.all([
-      client
-        .from("financial_revenue_metrics")
-        .select("id,label,amount,delta,trend,target,category,format,precision,suffix,section")
-        .eq("active", true),
-      client
-        .from("financial_expense_metrics")
-        .select(
-          "id,label,amount,delta,trend,category,runway_burn,runway_months,next_milestone,severity,message,format,precision,suffix,section"
-        )
-        .eq("active", true),
-      client
-        .from("financial_revenue_projections")
-        .select("quarter,forecast,variance")
-        .order("quarter", { ascending: true }),
-      client
-        .from("financial_revenue_segments")
-        .select("id,label,arr,change")
-        .order("arr", { ascending: false }),
-      client
-        .from("financial_revenue_mrr_trends")
-        .select("month,recurring,services")
-        .order("month", { ascending: true }),
-      client
-        .from("financial_vendor_spend")
-        .select("id,vendor,category,amount,change,status")
-        .order("amount", { ascending: false }),
-      client
-        .from("financial_expense_trends")
-        .select("month,marketing,headcount,tooling")
-        .order("month", { ascending: true }),
-      client
-        .from("predictability_safe_launch")
-        .select(
-          "qualified_leads,qualified_lead_low,qualified_lead_high,activation_window_days,cost_to_scale,budget_guardrail,intercept_coverage,twilio_verified,automation_confidence"
-        )
-        .maybeSingle(),
-      client
-        .from("predictability_modeling")
-        .select("forecast_accuracy,reliability_score,intercept_margin,scenario_confidence,notes")
-        .maybeSingle(),
-      client
-        .from("predictability_guardrails")
-        .select("id,label,status,detail")
-        .order("display_order", { ascending: true }),
-      client
-        .from("predictability_scenarios")
-        .select("id,scenario,lead_volume,conversion,readiness,go_live")
-        .order("display_order", { ascending: true }),
-      client
-        .from("predictability_volume_drivers")
-        .select("id,driver,readiness,run_rate,cost,signal")
-        .order("display_order", { ascending: true }),
-      client
-        .from("predictability_channel_mix")
-        .select("id,channel,mix,cac,payback,intercept")
-        .order("mix", { ascending: false }),
-      client
-        .from("predictability_support_metrics")
-        .select("id,label,value,target,status,trend")
-        .order("display_order", { ascending: true }),
-    ]);
-
-    const queryError =
-      revenueError ||
-      expenseError ||
-      projectionError ||
-      segmentError ||
-      mrrError ||
-      vendorError ||
-      expenseTrendError ||
-      safeLaunchError ||
-      modelingError ||
-      guardrailError ||
-      scenarioError ||
-      driverError ||
-      channelMixError ||
-      supportError;
-    if (queryError) {
-      throw queryError;
+    } else if (section === "alert" && row.message) {
+      alerts.push({
+        id: row.id,
+        severity: (row.severity as FinancialAlert["severity"]) ?? "info",
+        message: row.message,
+      });
     }
+  });
 
-    const summaryMetrics: FinancialMetric[] = [];
-    const pipelineMetrics: FinancialMetric[] = [];
-    const efficiencyMetrics: FinancialMetric[] = [];
+  const projectionsData: FinancialProjection[] = (projections.data ?? []).map((row) => ({
+    quarter: row.quarter,
+    forecast: Number(row.forecast ?? 0),
+    variance: Number(row.variance ?? 0),
+  }));
 
-    revenueMetrics?.forEach((row) => {
-      const metric: FinancialMetric = {
-        id: row.id,
-        label: row.label,
-        amount: Number(row.amount ?? 0),
-        delta: Number(row.delta ?? 0),
-        trend: isTrend(row.trend) ? row.trend : "flat",
-        target: row.target ?? undefined,
-        format: isFormat(row.format) ? row.format : "currency",
-        precision: typeof row.precision === "number" ? row.precision : undefined,
-        suffix: row.suffix ?? undefined,
-      };
+  const segmentsData: RevenueSegment[] = (segments.data ?? []).map((row) => ({
+    id: row.id,
+    label: row.label,
+    arr: Number(row.arr ?? 0),
+    change: Number(row.change ?? 0),
+  }));
 
-      const bucket = row.section ?? row.category;
-      if (bucket === "pipeline") {
-        pipelineMetrics.push(metric);
-      } else if (bucket === "efficiency") {
-        efficiencyMetrics.push(metric);
-      } else {
-        summaryMetrics.push(metric);
-      }
-    });
+  const revenueTrendData: RevenueTrendPoint[] = (revenueTrend.data ?? []).map((row) => ({
+    month: row.month,
+    label: coerceMonthLabel(row.month),
+    recurring: Number(row.recurring ?? 0),
+    services: Number(row.services ?? 0),
+  }));
 
-    const summaryExpenses: FinancialMetric[] = [];
-    const unitEconomics: FinancialMetric[] = [];
-    const alerts: FinancialAlert[] = [];
-    let runway: FinancialRunway | null = null;
+  const vendorSpendData: VendorSpend[] = (vendorSpend.data ?? []).map((row) => ({
+    id: row.id,
+    vendor: row.vendor,
+    category: row.category,
+    amount: Number(row.amount ?? 0),
+    change: Number(row.change ?? 0),
+    status: row.status,
+  }));
 
-    expenseMetrics?.forEach((row) => {
-      const bucket = row.section ?? row.category;
+  const expenseTrendData: ExpenseTrendPoint[] = (expenseTrend.data ?? []).map((row) => ({
+    month: row.month,
+    label: coerceMonthLabel(row.month),
+    marketing: Number(row.marketing ?? 0),
+    headcount: Number(row.headcount ?? 0),
+    tooling: Number(row.tooling ?? 0),
+  }));
 
-      if (bucket === "alert" || row.category === "alert") {
- main
-        alerts.push({
-          id: row.id,
-          severity: (row.severity as FinancialAlert["severity"]) ?? "info",
-          message: row.message ?? "",
-        });
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-      }
-      if (row.category === "runway" && !runway) {
-        runway = {
-          burnRate: row.runway_burn ?? 0,
-          runwayMonths: row.runway_months ?? 0,
-          nextMilestone: row.next_milestone ?? "",
-        };
-      }
-    });
+  const safeLaunchRow = safeLaunch.data;
+  const modelingRow = modeling.data;
 
-    const { data: projectionData, error: projectionError } = await client
-      .from("financial_revenue_projections")
-      .select("quarter,forecast,variance")
-      .order("quarter", { ascending: true });
-
-    if (projectionError) {
-      throw projectionError;
-    }
-        return;
-      }
-
-      if (bucket === "runway") {
-        runway = {
-          burnRate: Number(row.runway_burn ?? row.amount ?? 0),
-          runwayMonths: Number(row.runway_months ?? 0),
-          cashBalance: Number(row.amount ?? DEMO_DATA.expenses.runway.cashBalance),
-          nextMilestone: row.next_milestone ?? "",
-        };
-        return;
-      }
-
-      const metric: FinancialMetric = {
-        id: row.id,
-        label: row.label,
-        amount: Number(row.amount ?? 0),
-        delta: Number(row.delta ?? 0),
-        trend: isTrend(row.trend) ? row.trend : "flat",
-        format: isFormat(row.format) ? row.format : "currency",
-        precision: typeof row.precision === "number" ? row.precision : undefined,
-        suffix: row.suffix ?? undefined,
-      };
-
-      if (bucket === "unit") {
-        unitEconomics.push(metric);
-      } else {
-        summaryExpenses.push(metric);
-      }
-    });
-
-    const projections: FinancialProjection[] = projectionData?.map((row) => ({
-      quarter: row.quarter,
-      forecast: Number(row.forecast ?? 0),
-      variance: Number(row.variance ?? 0),
-    })) ?? [];
-
-    const segments: RevenueSegment[] = segmentData?.map((row) => ({
+  const predictability: PredictabilityData = {
+    safeLaunch: safeLaunchRow
+      ? {
+          qualifiedLeads: Number(safeLaunchRow.qualified_leads ?? 0),
+          qualifiedLeadLow: Number(safeLaunchRow.qualified_lead_low ?? 0),
+          qualifiedLeadHigh: Number(safeLaunchRow.qualified_lead_high ?? 0),
+          activationWindowDays: Number(safeLaunchRow.activation_window_days ?? 0),
+          costToScale: Number(safeLaunchRow.cost_to_scale ?? 0),
+          budgetGuardrail: Number(safeLaunchRow.budget_guardrail ?? 0),
+          interceptCoverage: Number(safeLaunchRow.intercept_coverage ?? 0),
+          twilioVerified: Number(safeLaunchRow.twilio_verified ?? 0),
+          automationConfidence: Number(safeLaunchRow.automation_confidence ?? 0),
+        }
+      : DEMO_DATA.predictability.safeLaunch,
+    modeling: modelingRow
+      ? {
+          forecastAccuracy: Number(modelingRow.forecast_accuracy ?? 0),
+          reliabilityScore: Number(modelingRow.reliability_score ?? 0),
+          interceptMargin: Number(modelingRow.intercept_margin ?? 0),
+          scenarioConfidence: Number(modelingRow.scenario_confidence ?? 0),
+          notes: modelingRow.notes ?? "",
+        }
+      : DEMO_DATA.predictability.modeling,
+    guardrails: (guardrails.data ?? []).map((row) => ({
       id: row.id,
       label: row.label,
-      arr: Number(row.arr ?? 0),
-      change: Number(row.change ?? 0),
-    })) ?? [];
-
-    const mrrTrend: RevenueTrendPoint[] = mrrTrendData?.map((row) => ({
-      month: row.month,
-      label: toLabel(row.month),
-      recurring: Number(row.recurring ?? 0),
-      services: Number(row.services ?? 0),
-    })) ?? [];
-
-    const vendorSpend: VendorSpend[] = vendorData?.map((row) => ({
-      id: row.id,
-      vendor: row.vendor,
-      category: row.category,
-      amount: Number(row.amount ?? 0),
-      change: Number(row.change ?? 0),
-      status: row.status,
-    })) ?? [];
-
-    const spendTrend: ExpenseTrendPoint[] = expenseTrendData?.map((row) => ({
-      month: row.month,
-      label: toLabel(row.month),
-      marketing: Number(row.marketing ?? 0),
-      headcount: Number(row.headcount ?? 0),
-      tooling: Number(row.tooling ?? 0),
-    })) ?? [];
-
-    const safeLaunch = safeLaunchData
-      ? {
-          qualifiedLeads: Number(safeLaunchData.qualified_leads ?? DEMO_DATA.predictability.safeLaunch.qualifiedLeads),
-          qualifiedLeadLow: Number(safeLaunchData.qualified_lead_low ?? DEMO_DATA.predictability.safeLaunch.qualifiedLeadLow),
-          qualifiedLeadHigh: Number(safeLaunchData.qualified_lead_high ?? DEMO_DATA.predictability.safeLaunch.qualifiedLeadHigh),
-          activationWindowDays: Number(
-            safeLaunchData.activation_window_days ?? DEMO_DATA.predictability.safeLaunch.activationWindowDays
-          ),
-          costToScale: Number(safeLaunchData.cost_to_scale ?? DEMO_DATA.predictability.safeLaunch.costToScale),
-          budgetGuardrail: Number(safeLaunchData.budget_guardrail ?? DEMO_DATA.predictability.safeLaunch.budgetGuardrail),
-          interceptCoverage: Number(
-            safeLaunchData.intercept_coverage ?? DEMO_DATA.predictability.safeLaunch.interceptCoverage
-          ),
-          twilioVerified: Number(safeLaunchData.twilio_verified ?? DEMO_DATA.predictability.safeLaunch.twilioVerified),
-          automationConfidence: Number(
-            safeLaunchData.automation_confidence ?? DEMO_DATA.predictability.safeLaunch.automationConfidence
-          ),
-        }
-      : DEMO_DATA.predictability.safeLaunch;
-
-    const modeling = modelingData
-      ? {
-          forecastAccuracy: Number(modelingData.forecast_accuracy ?? DEMO_DATA.predictability.modeling.forecastAccuracy),
-          reliabilityScore: Number(modelingData.reliability_score ?? DEMO_DATA.predictability.modeling.reliabilityScore),
-          interceptMargin: Number(modelingData.intercept_margin ?? DEMO_DATA.predictability.modeling.interceptMargin),
-          scenarioConfidence: Number(
-            modelingData.scenario_confidence ?? DEMO_DATA.predictability.modeling.scenarioConfidence
-          ),
-          notes: modelingData.notes ?? DEMO_DATA.predictability.modeling.notes,
-        }
-      : DEMO_DATA.predictability.modeling;
-
-    const guardrails: PredictabilityGuardrail[] = guardrailData?.map((row) => ({
-      id: row.id,
-      label: row.label,
-      status: isGuardrailStatus(row.status) ? row.status : DEMO_DATA.predictability.guardrails[0].status,
+      status: row.status as GuardrailStatus,
       detail: row.detail,
-    })) ?? [];
-
-    const scenarios: PredictabilityScenario[] = scenarioData?.map((row) => ({
+    })),
+    scenarios: (scenarios.data ?? []).map((row) => ({
       id: row.id,
       scenario: row.scenario,
       leadVolume: Number(row.lead_volume ?? 0),
       conversion: Number(row.conversion ?? 0),
       readiness: row.readiness,
       goLive: row.go_live,
-    })) ?? [];
-
-    const volumeDrivers: PredictabilityVolumeDriver[] = driverData?.map((row) => ({
+    })),
+    volumeDrivers: (volumeDrivers.data ?? []).map((row) => ({
       id: row.id,
       driver: row.driver,
       readiness: row.readiness,
       runRate: Number(row.run_rate ?? 0),
       cost: Number(row.cost ?? 0),
-      signal: isSignalState(row.signal) ? row.signal : "warm",
-    })) ?? [];
-
-    const channelMix: PredictabilityChannelMix[] = channelMixData?.map((row) => ({
+      signal: row.signal as PredictabilityVolumeDriver["signal"],
+    })),
+    channelMix: (channelMix.data ?? []).map((row) => ({
       id: row.id,
       channel: row.channel,
       mix: Number(row.mix ?? 0),
       cac: Number(row.cac ?? 0),
       payback: Number(row.payback ?? 0),
       intercept: row.intercept,
-    })) ?? [];
-
-    const voiceSupport: PredictabilitySupportMetric[] = supportData?.map((row) => ({
+    })),
+    voiceSupport: (supportMetrics.data ?? []).map((row) => ({
       id: row.id,
       label: row.label,
       value: row.value,
       target: row.target,
-      status: isSupportStatus(row.status) ? row.status : "on-track",
+      status: row.status as SupportStatus,
       trend: Number(row.trend ?? 0),
-    })) ?? [];
- main
+    })),
+  };
 
-    return {
-      source: "supabase",
-      lastUpdated: new Date().toISOString(),
-      revenue: {
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-        headline: revenueHeadline.length ? revenueHeadline : DEMO_DATA.revenue.headline,
-        pipeline: revenuePipeline.length ? revenuePipeline : DEMO_DATA.revenue.pipeline,
-        projections: projectionData?.length
-          ? projectionData.map((row) => ({
-              quarter: row.quarter,
-              forecast: row.forecast,
-              variance: row.variance,
-            }))
-          : DEMO_DATA.revenue.projections,
-      },
-      expenses: {
-        headline: expenseHeadline.length ? expenseHeadline : DEMO_DATA.expenses.headline,
-        runway: runway ?? DEMO_DATA.expenses.runway,
-        alerts: alerts.length ? alerts : DEMO_DATA.expenses.alerts,
-        summary: summaryMetrics.length ? summaryMetrics : DEMO_DATA.revenue.summary,
-        pipeline: pipelineMetrics.length ? pipelineMetrics : DEMO_DATA.revenue.pipeline,
-        efficiency: efficiencyMetrics.length ? efficiencyMetrics : DEMO_DATA.revenue.efficiency,
-        segments: segments.length ? segments : DEMO_DATA.revenue.segments,
-        projections: projections.length ? projections : DEMO_DATA.revenue.projections,
-        mrrTrend: mrrTrend.length ? mrrTrend : DEMO_DATA.revenue.mrrTrend,
-      },
-      expenses: {
-        summary: summaryExpenses.length ? summaryExpenses : DEMO_DATA.expenses.summary,
-        unitEconomics: unitEconomics.length ? unitEconomics : DEMO_DATA.expenses.unitEconomics,
-        runway: runway ?? DEMO_DATA.expenses.runway,
-        alerts: alerts.length ? alerts : DEMO_DATA.expenses.alerts,
-        vendorSpend: vendorSpend.length ? vendorSpend : DEMO_DATA.expenses.vendorSpend,
-        spendTrend: spendTrend.length ? spendTrend : DEMO_DATA.expenses.spendTrend,
-      },
-      predictability: {
-        safeLaunch,
-        modeling,
-        guardrails: guardrails.length ? guardrails : DEMO_DATA.predictability.guardrails,
-        scenarios: scenarios.length ? scenarios : DEMO_DATA.predictability.scenarios,
-        volumeDrivers: volumeDrivers.length ? volumeDrivers : DEMO_DATA.predictability.volumeDrivers,
-        channelMix: channelMix.length ? channelMix : DEMO_DATA.predictability.channelMix,
-        voiceSupport: voiceSupport.length ? voiceSupport : DEMO_DATA.predictability.voiceSupport,
- main
-      },
-    };
+  return {
+    source: "supabase",
+    lastUpdated: new Date().toISOString(),
+    revenue: {
+      summary: revenueSummary.length ? revenueSummary : DEMO_DATA.revenue.summary,
+      pipeline: revenuePipeline.length ? revenuePipeline : DEMO_DATA.revenue.pipeline,
+      efficiency: revenueEfficiency.length ? revenueEfficiency : DEMO_DATA.revenue.efficiency,
+      segments: segmentsData.length ? segmentsData : DEMO_DATA.revenue.segments,
+      projections: projectionsData.length ? projectionsData : DEMO_DATA.revenue.projections,
+      mrrTrend: revenueTrendData.length ? revenueTrendData : DEMO_DATA.revenue.mrrTrend,
+    },
+    expenses: {
+      summary: expenseSummary.length ? expenseSummary : DEMO_DATA.expenses.summary,
+      unitEconomics: unitEconomics.length ? unitEconomics : DEMO_DATA.expenses.unitEconomics,
+      runway,
+      alerts: alerts.length ? alerts : DEMO_DATA.expenses.alerts,
+      vendorSpend: vendorSpendData.length ? vendorSpendData : DEMO_DATA.expenses.vendorSpend,
+      spendTrend: expenseTrendData.length ? expenseTrendData : DEMO_DATA.expenses.spendTrend,
+    },
+    predictability,
+  };
+}
+
+async function fetchFinancials(): Promise<FinancialsData> {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) {
+    return { ...DEMO_DATA, lastUpdated: new Date().toISOString() };
+  }
+
+  try {
+    const result = await loadFinancialsFromSupabase(supabase as SupabaseClient);
+    if (!result) {
+      return { ...DEMO_DATA, lastUpdated: new Date().toISOString() };
+    }
+    return result;
   } catch (error) {
-    console.warn("Falling back to demo financial data", error);
-    return {
-      ...DEMO_DATA,
-      lastUpdated: new Date().toISOString(),
-    };
+    console.error("Failed to load financials from Supabase", error);
+    return { ...DEMO_DATA, lastUpdated: new Date().toISOString() };
   }
 }
 
 export function useFinancialsData() {
-  return useQuery({
-    queryKey: ["financials", "dashboard"],
+  return useQuery<FinancialsData>({
+    queryKey: ["financials"],
     queryFn: fetchFinancials,
     staleTime: 60_000,
-    gcTime: 5 * 60_000,
+    refetchOnWindowFocus: false,
   });
 }
+export { DEMO_DATA as FALLBACK_FINANCIALS };
