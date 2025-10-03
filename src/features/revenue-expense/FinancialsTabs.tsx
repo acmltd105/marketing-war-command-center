@@ -1,7 +1,4 @@
 import { useMemo } from "react";
- codex/integrate-revenue-and-expense-tabs-ugnmqm
-import { Activity, AlertTriangle, BarChart3, ShieldCheck, Wallet } from "lucide-react";
-
 import {
   Activity,
   AlertTriangle,
@@ -9,44 +6,15 @@ import {
   Briefcase,
   Gauge,
   PieChart,
-  Radar,
   ShieldCheck,
   Target,
   TrendingUp,
   Users,
-  Wallet,
 } from "lucide-react";
-main
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-import { FinancialMetricCard } from "./FinancialMetricCard";
-import { useFinancialsData } from "./useFinancialsData";
-
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
-}
-
-function formatPercent(value: number) {
-  return `${value > 0 ? "+" : ""}${value.toFixed(1)}%`;
-}
-
-export function FinancialsTabs() {
-  const { data, isLoading } = useFinancialsData();
-
-  const projectionsTable = useMemo(() => {
-    if (!data) return null;
-    return data.revenue.projections.map((projection) => ({
-      quarter: projection.quarter,
-      forecast: projection.forecast,
-      variance: projection.variance,
-    }));
-  }, [data]);
-=======
-import { cn } from "@/lib/utils";
 import {
   ChartContainer,
   ChartLegend,
@@ -54,9 +22,15 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+
 import { FinancialMetricCard } from "./FinancialMetricCard";
 import {
+  FALLBACK_FINANCIALS,
+  type FinancialMetric,
   type GuardrailStatus,
   type PredictabilitySupportMetric,
   type PredictabilityVolumeDriver,
@@ -79,6 +53,22 @@ function formatPercent(value: number, precision = 1) {
 
 function formatNumber(value: number) {
   return new Intl.NumberFormat("en-US").format(Math.round(value));
+}
+
+function formatMetric(metric: FinancialMetric) {
+  switch (metric.format) {
+    case "percent":
+      return formatPercent(metric.amount, metric.precision ?? 1);
+    case "ratio":
+      return `${metric.amount.toFixed(metric.precision ?? 1)}${metric.suffix ?? "x"}`;
+    case "duration":
+      return `${metric.amount.toFixed(metric.precision ?? 0)} ${metric.suffix ?? "days"}`;
+    case "number":
+      return formatNumber(metric.amount);
+    case "currency":
+    default:
+      return formatCurrency(metric.amount);
+  }
 }
 
 const revenueChartConfig = {
@@ -130,66 +120,64 @@ const supportLabels: Record<SupportStatus, string> = {
 
 export function FinancialsTabs() {
   const { data, isLoading } = useFinancialsData();
+  const dataset = useMemo(
+    () => data ?? { ...FALLBACK_FINANCIALS, lastUpdated: FALLBACK_FINANCIALS.lastUpdated },
+    [data],
+  );
 
-  const projectionsTable = useMemo(() => data?.revenue.projections ?? [], [data]);
-  const revenueTrend = useMemo(() => data?.revenue.mrrTrend ?? [], [data]);
-  const spendTrend = useMemo(() => data?.expenses.spendTrend ?? [], [data]);
-  const guardrails = useMemo(() => data?.predictability.guardrails ?? [], [data]);
-  const scenarios = useMemo(() => data?.predictability.scenarios ?? [], [data]);
-  const volumeDrivers = useMemo(() => data?.predictability.volumeDrivers ?? [], [data]);
-  const channelMix = useMemo(() => data?.predictability.channelMix ?? [], [data]);
-  const voiceSupport = useMemo(() => data?.predictability.voiceSupport ?? [], [data]);
-  const safeLaunch = data?.predictability.safeLaunch;
-  const modeling = data?.predictability.modeling;
-main
+  const projectionsTable = useMemo(() => dataset.revenue.projections, [dataset]);
+  const revenueTrend = useMemo(() => dataset.revenue.mrrTrend, [dataset]);
+  const spendTrend = useMemo(() => dataset.expenses.spendTrend, [dataset]);
+  const guardrails = useMemo(() => dataset.predictability.guardrails, [dataset]);
+  const scenarios = useMemo(() => dataset.predictability.scenarios, [dataset]);
+  const volumeDrivers = useMemo(() => dataset.predictability.volumeDrivers, [dataset]);
+  const channelMix = useMemo(() => dataset.predictability.channelMix, [dataset]);
+  const voiceSupport = useMemo(() => dataset.predictability.voiceSupport, [dataset]);
+  const safeLaunch = dataset.predictability.safeLaunch;
+  const modeling = dataset.predictability.modeling;
+
+  const topMetrics = useMemo(() => {
+    const combined = [...dataset.revenue.summary, ...dataset.expenses.summary];
+    return combined.slice(0, 3);
+  }, [dataset]);
 
   return (
     <div className="space-y-8">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold text-white tracking-tight">Financial Command Center</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-white">Financial Command Center</h1>
           <p className="text-sm text-corporate-silver/80">
             Operate revenue acceleration and cost discipline from a unified glass dashboard.
           </p>
         </div>
-        {data && (
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="border-revenue-green/40 text-revenue-green bg-revenue-green/10">
-              <Activity className="mr-1 h-3 w-3" />
-              {data.source === "supabase" ? "Live Supabase feed" : "Demo data"}
-            </Badge>
-            <Badge variant="outline" className="border-corporate-silver/40 text-corporate-silver">
-              Updated {new Date(data.lastUpdated).toLocaleTimeString()}
-            </Badge>
-          </div>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="outline" className="border-revenue-green/40 bg-revenue-green/10 text-revenue-green">
+            <Activity className="mr-1 h-3 w-3" />
+            {data?.source === "supabase" ? "Live Supabase feed" : "Demo data"}
+          </Badge>
+          <Badge variant="outline" className="border-corporate-silver/40 text-corporate-silver">
+            Updated {new Date(dataset.lastUpdated).toLocaleTimeString()}
+          </Badge>
+        </div>
       </header>
 
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-      <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
+      <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg font-medium text-corporate-platinum flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-revenue-green" />
-            Financial posture
+          <CardTitle className="flex items-center gap-2 text-lg font-medium text-corporate-platinum">
+            <ShieldCheck className="h-4 w-4 text-revenue-green" /> Financial posture
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 pt-6 md:grid-cols-3">
-          {isLoading &&
-            new Array(3).fill(null).map((_, index) => (
-              <Skeleton key={index} className="h-32 rounded-xl bg-white/5" />
-            ))}
-          {!isLoading && data && data.revenue.headline.concat(data.expenses.headline).slice(0, 3).map((metric) => (
-            <FinancialMetricCard key={metric.id} metric={metric} />
-          ))}
+          {isLoading && !data
+            ? new Array(3).fill(null).map((_, index) => (
+                <Skeleton key={`financial-skeleton-${index}`} className="h-32 rounded-xl bg-white/5" />
+              ))
+            : topMetrics.map((metric) => <FinancialMetricCard key={metric.id} metric={metric} />)}
         </CardContent>
       </Card>
 
       <Tabs defaultValue="revenue" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-white/5 p-1">
-
-      <Tabs defaultValue="revenue" className="space-y-6">
         <TabsList className="grid w-full grid-cols-3 gap-1 rounded-2xl bg-white/5 p-1">
-main
           <TabsTrigger
             value="revenue"
             className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-revenue-green/20 data-[state=active]:to-corporate-blue/20"
@@ -200,746 +188,435 @@ main
             value="expenses"
             className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-corporate-crimson/20 data-[state=active]:to-warning-amber/20"
           >
-            <Wallet className="mr-2 h-4 w-4" /> Expenses
+            <Briefcase className="mr-2 h-4 w-4" /> Expenses
           </TabsTrigger>
- codex/integrate-revenue-and-expense-tabs-ugnmqm
-        </TabsList>
-        <TabsContent value="revenue" className="space-y-6">
-          <section className="grid gap-4 md:grid-cols-3">
-            {isLoading && new Array(3).fill(null).map((_, index) => <Skeleton key={index} className="h-36 rounded-xl bg-white/5" />)}
-            {!isLoading && data?.revenue.headline.map((metric) => <FinancialMetricCard key={metric.id} metric={metric} />)}
-          </section>
-          <section className="grid gap-4 md:grid-cols-3">
-            {!isLoading &&
-              data?.revenue.pipeline.map((metric) => <FinancialMetricCard key={metric.id} metric={metric} />)}
-            {isLoading && new Array(3).fill(null).map((_, index) => <Skeleton key={index} className="h-36 rounded-xl bg-white/5" />)}
-          </section>
-          <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-corporate-platinum">
-                <BarChart3 className="h-4 w-4 text-corporate-blue" /> Quarterly forecast
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {isLoading && <Skeleton className="h-40 rounded-xl bg-white/5" />}
-              {!isLoading && projectionsTable && (
-
           <TabsTrigger
             value="predictability"
-            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-corporate-blue/20 data-[state=active]:to-emerald-500/20"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-kpi-purple/20 data-[state=active]:to-revenue-green/20"
           >
-            <Radar className="mr-2 h-4 w-4" /> Predictability
+            <Gauge className="mr-2 h-4 w-4" /> Predictability
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="revenue" className="space-y-6">
-          <section className="grid gap-4 md:grid-cols-3">
-            {isLoading &&
-              new Array(3).fill(null).map((_, index) => (
-                <Skeleton key={`rev-summary-${index}`} className="h-36 rounded-xl bg-white/5" />
-              ))}
-            {!isLoading && data?.revenue.summary.map((metric) => <FinancialMetricCard key={metric.id} metric={metric} />)}
-          </section>
+          <div className="grid gap-4 md:grid-cols-3">
+            {dataset.revenue.summary.map((metric) => (
+              <FinancialMetricCard key={`rev-summary-${metric.id}`} metric={metric} />
+            ))}
+          </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
-            <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl lg:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                  <Target className="h-4 w-4 text-revenue-green" /> Pipeline momentum
+            <Card className="lg:col-span-2 border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <TrendingUp className="h-4 w-4 text-revenue-green" /> Monthly recurring revenue trend
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {isLoading ? (
-                  <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                    {new Array(3).fill(null).map((_, index) => (
-                      <Skeleton key={`rev-pipeline-${index}`} className="h-32 rounded-xl bg-white/5" />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                    {data?.revenue.pipeline.map((metric) => (
-                      <FinancialMetricCard key={metric.id} metric={metric} />
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                  <TrendingUp className="h-4 w-4 text-corporate-blue" /> Recurring revenue trend
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                {isLoading ? (
-                  <Skeleton className="h-60 rounded-xl bg-white/5" />
-                ) : (
-                  <ChartContainer config={revenueChartConfig} className="h-60">
-                    <AreaChart data={revenueTrend} margin={{ left: 0, right: 0, top: 8, bottom: 0 }}>
+                <ChartContainer config={revenueChartConfig} className="h-72">
+                  {(chartWidth, chartHeight) => (
+                    <AreaChart
+                      width={chartWidth}
+                      height={chartHeight}
+                      data={revenueTrend}
+                      margin={{ left: 12, right: 12, top: 12, bottom: 12 }}
+                    >
                       <defs>
-                        <linearGradient id="recurringGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="hsl(150, 83%, 60%)" stopOpacity={0.35} />
-                          <stop offset="95%" stopColor="hsl(150, 83%, 60%)" stopOpacity={0} />
+                        <linearGradient id="recurring" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="var(--color-recurring)" stopOpacity={0.7} />
+                          <stop offset="95%" stopColor="var(--color-recurring)" stopOpacity={0.1} />
                         </linearGradient>
-                        <linearGradient id="servicesGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="hsl(216, 88%, 68%)" stopOpacity={0.35} />
-                          <stop offset="95%" stopColor="hsl(216, 88%, 68%)" stopOpacity={0} />
+                        <linearGradient id="services" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="var(--color-services)" stopOpacity={0.7} />
+                          <stop offset="95%" stopColor="var(--color-services)" stopOpacity={0.1} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" className="stroke-white/10" />
-                      <XAxis dataKey="label" stroke="#94a3b8" tickLine={false} axisLine={false} />
-                      <YAxis
-                        stroke="#94a3b8"
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(value) => `$${Math.round((value as number) / 1000)}k`}
-                      />
-                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" opacity={0.25} />
+                      <XAxis dataKey="label" stroke="hsl(var(--muted-foreground))" />
+                      <YAxis stroke="hsl(var(--muted-foreground))" tickFormatter={formatCurrency} width={80} />
+                      <ChartTooltip cursor={false} content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} />} />
                       <ChartLegend content={<ChartLegendContent />} />
-                      <Area
-                        type="monotone"
-                        dataKey="recurring"
-                        stroke="hsl(150, 83%, 60%)"
-                        fill="url(#recurringGradient)"
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="services"
-                        stroke="hsl(216, 88%, 68%)"
-                        fill="url(#servicesGradient)"
-                        strokeWidth={2}
-                        dot={false}
-                      />
+                      <Area type="monotone" dataKey="recurring" stroke="var(--color-recurring)" fill="url(#recurring)" />
+                      <Area type="monotone" dataKey="services" stroke="var(--color-services)" fill="url(#services)" />
                     </AreaChart>
-                  </ChartContainer>
-                )}
+                  )}
+                </ChartContainer>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <Target className="h-4 w-4 text-primary" /> Pipeline & efficiency
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  {dataset.revenue.pipeline.map((metric) => (
+                    <div key={`pipeline-${metric.id}`} className="flex items-center justify-between text-sm">
+                      <span className="text-corporate-silver/80">{metric.label}</span>
+                      <span className="font-semibold text-white">{formatMetric(metric)}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-2">
+                  {dataset.revenue.efficiency.map((metric) => (
+                    <div key={`efficiency-${metric.id}`} className="flex items-center justify-between text-xs text-corporate-silver/70">
+                      <span>{metric.label}</span>
+                      <span>{formatPercent(metric.amount, metric.precision ?? 1)}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-corporate-silver/70">
+                  <p className="font-semibold text-corporate-platinum">Segment ARR mix</p>
+                  <div className="mt-2 space-y-1">
+                    {dataset.revenue.segments.map((segment) => (
+                      <div key={segment.id} className="flex items-center justify-between">
+                        <span>{segment.label}</span>
+                        <span>
+                          {formatCurrency(segment.arr)} ({formatPercent(segment.change)})
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-2">
-            <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                  <Gauge className="h-4 w-4 text-warning-amber" /> Revenue efficiency
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {isLoading ? (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {new Array(2).fill(null).map((_, index) => (
-                      <Skeleton key={`rev-efficiency-${index}`} className="h-32 rounded-xl bg-white/5" />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {data?.revenue.efficiency.map((metric) => (
-                      <FinancialMetricCard key={metric.id} metric={metric} />
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                  <Users className="h-4 w-4 text-revenue-green" /> Revenue mix by segment
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {isLoading ? (
-                  <Skeleton className="h-40 rounded-xl bg-white/5" />
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-white/5">
-                        <TableHead className="text-corporate-silver">Segment</TableHead>
-                        <TableHead className="text-corporate-silver">ARR</TableHead>
-                        <TableHead className="text-corporate-silver">QoQ</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {data?.revenue.segments.map((segment) => (
-                        <TableRow key={segment.id} className="border-white/5">
-                          <TableCell className="text-white/90">{segment.label}</TableCell>
-                          <TableCell className="text-white/90">{formatCurrency(segment.arr)}</TableCell>
-                          <TableCell
-                            className={cn(
-                              "font-medium",
-                              segment.change >= 0 ? "text-revenue-green" : "text-corporate-crimson"
-                            )}
-                          >
-                            {formatPercent(segment.change)}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                <Briefcase className="h-4 w-4 text-corporate-blue" /> Quarterly forecast
+          <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                <Users className="h-4 w-4 text-primary" /> Forward projections
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <Skeleton className="h-40 rounded-xl bg-white/5" />
-              ) : (
-main
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-white/5">
-                      <TableHead className="text-corporate-silver">Quarter</TableHead>
-                      <TableHead className="text-corporate-silver">Forecast</TableHead>
-                      <TableHead className="text-corporate-silver">Variance</TableHead>
+            <CardContent className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Quarter</TableHead>
+                    <TableHead className="text-right">Forecast</TableHead>
+                    <TableHead className="text-right">Variance</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {projectionsTable.map((projection) => (
+                    <TableRow key={projection.quarter}>
+                      <TableCell className="font-medium text-corporate-platinum">{projection.quarter}</TableCell>
+                      <TableCell className="text-right text-white">{formatCurrency(projection.forecast)}</TableCell>
+                      <TableCell className="text-right text-corporate-silver">
+                        {formatPercent(projection.variance)}
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {projectionsTable.map((projection) => (
-                      <TableRow key={projection.quarter} className="border-white/5">
-                        <TableCell className="text-white/90">{projection.quarter}</TableCell>
-                        <TableCell className="text-white/90">{formatCurrency(projection.forecast)}</TableCell>
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-                        <TableCell className={projection.variance >= 0 ? "text-revenue-green" : "text-corporate-crimson"}>
-
-                        <TableCell
-                          className={cn(
-                            projection.variance >= 0 ? "text-revenue-green" : "text-corporate-crimson",
-                            "font-medium"
-                          )}
-                        >
-main
-                          {formatPercent(projection.variance)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
+                  ))}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </TabsContent>
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-        <TabsContent value="expenses" className="space-y-6">
-          <section className="grid gap-4 md:grid-cols-3">
-            {isLoading && new Array(3).fill(null).map((_, index) => <Skeleton key={index} className="h-36 rounded-xl bg-white/5" />)}
-            {!isLoading && data?.expenses.headline.map((metric) => <FinancialMetricCard key={metric.id} metric={metric} />)}
-          </section>
-          {!isLoading && data && (
-            <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-corporate-platinum">
-                  <AlertTriangle className="h-4 w-4 text-warning-amber" /> Runway and controls
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-white/90">Runway</h3>
-                  <p className="text-3xl font-semibold text-white">
-                    {data.expenses.runway.runwayMonths} months
-                  </p>
-                  <p className="text-sm text-corporate-silver/80">
-                    Burn rate {formatCurrency(data.expenses.runway.burnRate)} per month
-                  </p>
-                  <Badge variant="outline" className="w-fit border-corporate-blue/40 text-corporate-blue bg-corporate-blue/10">
-                    {data.expenses.runway.nextMilestone}
-                  </Badge>
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-sm font-medium text-white/90">Alerts</h3>
-                  {data.expenses.alerts.map((alert) => (
-                    <div
-                      key={alert.id}
-                      className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-3"
-                    >
-                      <AlertTriangle
-                        className={`mt-0.5 h-4 w-4 ${
-                          alert.severity === "critical"
-                            ? "text-corporate-crimson"
-                            : alert.severity === "warning"
-                            ? "text-warning-amber"
-                            : "text-corporate-blue"
-                        }`}
-                      />
-                      <p className="text-sm text-corporate-silver/90">{alert.message}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
 
         <TabsContent value="expenses" className="space-y-6">
-          <section className="grid gap-4 md:grid-cols-3">
-            {isLoading &&
-              new Array(3).fill(null).map((_, index) => (
-                <Skeleton key={`exp-summary-${index}`} className="h-36 rounded-xl bg-white/5" />
-              ))}
-            {!isLoading && data?.expenses.summary.map((metric) => <FinancialMetricCard key={metric.id} metric={metric} />)}
-          </section>
-
-          <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                <PieChart className="h-4 w-4 text-warning-amber" /> Unit economics
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                  {new Array(4).fill(null).map((_, index) => (
-                    <Skeleton key={`exp-unit-${index}`} className="h-32 rounded-xl bg-white/5" />
-                  ))}
-                </div>
-              ) : (
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                  {data?.expenses.unitEconomics.map((metric) => (
-                    <FinancialMetricCard key={metric.id} metric={metric} />
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <div className="grid gap-4 md:grid-cols-3">
+            {dataset.expenses.summary.map((metric) => (
+              <FinancialMetricCard key={`expense-summary-${metric.id}`} metric={metric} />
+            ))}
+          </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
-            <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl lg:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                  <TrendingUp className="h-4 w-4 text-corporate-blue" /> Spend cadence
+            <Card className="lg:col-span-2 border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <PieChart className="h-4 w-4 text-corporate-gold" /> Expense trend by category
                 </CardTitle>
               </CardHeader>
-              <CardContent className="pt-6">
-                {isLoading ? (
-                  <Skeleton className="h-60 rounded-xl bg-white/5" />
-                ) : (
-                  <ChartContainer config={expenseChartConfig} className="h-60">
-                    <BarChart data={spendTrend} margin={{ left: 0, right: 0, top: 8, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" className="stroke-white/10" />
-                      <XAxis dataKey="label" stroke="#94a3b8" tickLine={false} axisLine={false} />
-                      <YAxis
-                        stroke="#94a3b8"
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(value) => `$${Math.round((value as number) / 1000)}k`}
-                      />
-                      <ChartTooltip content={<ChartTooltipContent />} />
+              <CardContent>
+                <ChartContainer config={expenseChartConfig} className="h-72">
+                  {(chartWidth, chartHeight) => (
+                    <BarChart
+                      width={chartWidth}
+                      height={chartHeight}
+                      data={spendTrend}
+                      margin={{ left: 12, right: 12, top: 12, bottom: 12 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" opacity={0.25} />
+                      <XAxis dataKey="label" stroke="hsl(var(--muted-foreground))" />
+                      <YAxis stroke="hsl(var(--muted-foreground))" tickFormatter={formatCurrency} width={80} />
+                      <ChartTooltip cursor={false} content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} />} />
                       <ChartLegend content={<ChartLegendContent />} />
-                      <Bar dataKey="headcount" stackId="a" fill="hsl(217, 92%, 65%)" radius={[6, 6, 0, 0]} />
-                      <Bar dataKey="marketing" stackId="a" fill="hsl(35, 92%, 60%)" />
-                      <Bar dataKey="tooling" stackId="a" fill="hsl(286, 82%, 68%)" radius={[0, 0, 6, 6]} />
+                      <Bar dataKey="marketing" fill="var(--color-marketing)" radius={[6, 6, 0, 0]} />
+                      <Bar dataKey="headcount" fill="var(--color-headcount)" radius={[6, 6, 0, 0]} />
+                      <Bar dataKey="tooling" fill="var(--color-tooling)" radius={[6, 6, 0, 0]} />
                     </BarChart>
-                  </ChartContainer>
-                )}
+                  )}
+                </ChartContainer>
               </CardContent>
             </Card>
 
-            <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                  <ShieldCheck className="h-4 w-4 text-revenue-green" /> Runway & controls
+            <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <Briefcase className="h-4 w-4 text-primary" /> Vendor spend
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-5">
-                {isLoading ? (
-                  <Skeleton className="h-48 rounded-xl bg-white/5" />
-                ) : (
-                  <>
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-corporate-silver/80">Runway</p>
-                      <p className="text-3xl font-semibold text-white">
-                        {data?.expenses.runway.runwayMonths} months
-                      </p>
-                      <p className="text-sm text-corporate-silver/70">
-                        Burn {formatCurrency(data?.expenses.runway.burnRate ?? 0)} / month · Cash {" "}
-                        {formatCurrency(data?.expenses.runway.cashBalance ?? 0)}
-                      </p>
+              <CardContent className="space-y-3">
+                {dataset.expenses.vendorSpend.map((vendor) => (
+                  <div key={vendor.id} className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs">
+                    <div className="flex items-center justify-between text-corporate-platinum">
+                      <span className="font-semibold">{vendor.vendor}</span>
+                      <span>{formatCurrency(vendor.amount)}</span>
                     </div>
-                    <Badge
-                      variant="outline"
-                      className="border-corporate-blue/40 bg-corporate-blue/10 text-corporate-blue"
-                    >
-                      {data?.expenses.runway.nextMilestone}
-                    </Badge>
-                    <div className="space-y-3">
-                      {data?.expenses.alerts.map((alert) => (
-                        <div
-                          key={alert.id}
-                          className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-3"
-                        >
-                          <AlertTriangle
-                            className={cn(
-                              "mt-0.5 h-4 w-4",
-                              alert.severity === "critical"
-                                ? "text-corporate-crimson"
-                                : alert.severity === "warning"
-                                ? "text-warning-amber"
-                                : "text-corporate-blue"
-                            )}
-                          />
-                          <p className="text-sm text-corporate-silver/90">{alert.message}</p>
-                        </div>
-                      ))}
+                    <div className="mt-1 flex items-center justify-between text-corporate-silver/70">
+                      <span>{vendor.category}</span>
+                      <span className={cn(vendor.change >= 0 ? "text-revenue-green" : "text-corporate-crimson")}>
+                        {formatPercent(vendor.change)}
+                      </span>
                     </div>
-                  </>
-                )}
+                    <div className="mt-1 text-corporate-silver/60">Status: {vendor.status}</div>
+                  </div>
+                ))}
               </CardContent>
             </Card>
           </div>
 
-          <Card className="backdrop-blur-xl bg-card/80 border border-white/10 shadow-xl">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                <Briefcase className="h-4 w-4 text-warning-amber" /> Vendor spend radar
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <Skeleton className="h-48 rounded-xl bg-white/5" />
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-white/5">
-                      <TableHead className="text-corporate-silver">Vendor</TableHead>
-                      <TableHead className="text-corporate-silver">Category</TableHead>
-                      <TableHead className="text-corporate-silver">Monthly Spend</TableHead>
-                      <TableHead className="text-corporate-silver">MoM</TableHead>
-                      <TableHead className="text-corporate-silver text-right">Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {data?.expenses.vendorSpend.map((vendor) => (
-                      <TableRow key={vendor.id} className="border-white/5">
-                        <TableCell className="text-white/90">{vendor.vendor}</TableCell>
-                        <TableCell className="text-corporate-silver/90">{vendor.category}</TableCell>
-                        <TableCell className="text-white/90">{formatCurrency(vendor.amount)}</TableCell>
-                        <TableCell
-                          className={cn(
-                            "font-medium",
-                            vendor.change >= 0 ? "text-warning-amber" : "text-revenue-green"
-                          )}
-                        >
-                          {formatPercent(vendor.change)}
-                        </TableCell>
-                        <TableCell className="text-right text-corporate-silver/80">{vendor.status}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-          </Card>
+          <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+            <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <AlertTriangle className="h-4 w-4 text-warning-amber" /> Runway & alerts
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-3 text-sm text-corporate-silver/80">
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-corporate-silver/60">Burn rate</p>
+                    <p className="text-lg font-semibold text-white">{formatCurrency(dataset.expenses.runway.burnRate)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-corporate-silver/60">Runway</p>
+                    <p className="text-lg font-semibold text-white">{dataset.expenses.runway.runwayMonths} months</p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-corporate-silver/60">Cash balance</p>
+                    <p className="text-lg font-semibold text-white">{formatCurrency(dataset.expenses.runway.cashBalance)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-corporate-silver/60">Next milestone</p>
+                    <p className="text-sm font-semibold text-white">{dataset.expenses.runway.nextMilestone}</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {dataset.expenses.alerts.map((alert) => (
+                    <div
+                      key={alert.id}
+                      className={cn(
+                        "flex items-start gap-2 rounded-lg border px-3 py-2 text-xs",
+                        alert.severity === "critical"
+                          ? "border-corporate-crimson/40 bg-corporate-crimson/10 text-corporate-crimson"
+                          : alert.severity === "warning"
+                          ? "border-warning-amber/40 bg-warning-amber/10 text-warning-amber"
+                          : "border-corporate-silver/30 bg-white/5 text-corporate-silver",
+                      )}
+                    >
+                      <AlertTriangle className="mt-0.5 h-3.5 w-3.5" />
+                      <span>{alert.message}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <Target className="h-4 w-4 text-primary" /> Unit economics
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {dataset.expenses.unitEconomics.map((metric) => (
+                  <div key={`unit-${metric.id}`} className="flex items-center justify-between text-sm">
+                    <span className="text-corporate-silver/80">{metric.label}</span>
+                    <span className="font-semibold text-white">
+                      {formatMetric(metric)}
+                    </span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="predictability" className="space-y-6">
-          <div className="grid gap-6 xl:grid-cols-[2fr,1fr]">
-            <Card className="relative overflow-hidden border border-white/10 bg-gradient-to-br from-corporate-blue/30 via-corporate-navy/30 to-black/30 shadow-xl">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.08),_transparent_55%)]" />
-              <CardHeader className="relative z-10">
-                {isLoading ? (
-                  <div className="space-y-4">
-                    <Skeleton className="h-6 w-64 rounded-full bg-white/5" />
-                    <Skeleton className="h-10 w-48 rounded-full bg-white/5" />
-                    <Skeleton className="h-5 w-full rounded-full bg-white/5" />
-                  </div>
-                ) : (
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.18em] text-white/60">Predictability &amp; Modeling Command</p>
-                      <h2 className="text-3xl font-semibold text-white tracking-tight">PRO</h2>
-                      <p className="text-sm text-white/70">
-                        Model the safe launch envelope and automation reliability before scaling the war machine.
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-start gap-2 sm:items-end">
-                      <Badge
-                        variant="outline"
-                        className="border-white/30 bg-white/10 text-xs text-white backdrop-blur"
-                      >
-                        {safeLaunch ? formatNumber(safeLaunch.twilioVerified) : "--"} Twilio verified
-                      </Badge>
-                      <Badge
-                        variant="outline"
-                        className="border-revenue-green/40 bg-revenue-green/10 text-xs text-revenue-green"
-                      >
-                        {safeLaunch ? safeLaunch.interceptCoverage.toFixed(0) : "--"}% intercept coverage
-                      </Badge>
-                    </div>
-                  </div>
-                )}
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <ShieldCheck className="h-4 w-4 text-revenue-green" /> Safe launch envelope
+                </CardTitle>
               </CardHeader>
-              <CardContent className="relative z-10 space-y-6">
-                {isLoading ? (
-                  <div className="grid gap-6 lg:grid-cols-2">
-                    <Skeleton className="h-40 rounded-2xl bg-white/5" />
-                    <Skeleton className="h-40 rounded-2xl bg-white/5" />
-                  </div>
-                ) : (
-                  <div className="grid gap-6 lg:grid-cols-2">
-                    <div className="space-y-5 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Safe launch envelope</p>
-                        <p className="mt-2 text-4xl font-semibold text-white">
-                          {safeLaunch ? formatNumber(safeLaunch.qualifiedLeadLow) : "—"} - {" "}
-                          {safeLaunch ? formatNumber(safeLaunch.qualifiedLeadHigh) : "—"}
-                        </p>
-                        <p className="text-sm text-white/70">
-                          Qualified lead range anchored at {safeLaunch ? formatNumber(safeLaunch.qualifiedLeads) : "—"}.
-                        </p>
-                      </div>
-                      <dl className="grid gap-4 sm:grid-cols-2">
-                        <div>
-                          <dt className="text-xs uppercase tracking-[0.18em] text-white/50">Activation window</dt>
-                          <dd className="text-lg font-semibold text-white">
-                            {safeLaunch ? `${safeLaunch.activationWindowDays} days` : "—"}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt className="text-xs uppercase tracking-[0.18em] text-white/50">Automation confidence</dt>
-                          <dd className="text-lg font-semibold text-white">
-                            {safeLaunch ? `${safeLaunch.automationConfidence.toFixed(0)}%` : "—"}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt className="text-xs uppercase tracking-[0.18em] text-white/50">Cost to scale</dt>
-                          <dd className="text-lg font-semibold text-white">
-                            {safeLaunch ? formatCurrency(safeLaunch.costToScale) : "—"}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt className="text-xs uppercase tracking-[0.18em] text-white/50">Budget guardrail</dt>
-                          <dd className="text-lg font-semibold text-white">
-                            {safeLaunch ? formatCurrency(safeLaunch.budgetGuardrail) : "—"}
-                          </dd>
-                        </div>
-                      </dl>
-                    </div>
-                    <div className="space-y-5 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Model reliability</p>
-                          <p className="mt-2 text-4xl font-semibold text-white">
-                            {modeling ? `${modeling.reliabilityScore.toFixed(0)}%` : "--"}
-                          </p>
-                          <p className="text-sm text-white/70">
-                            {modeling
-                              ? `Forecast accuracy ${modeling.forecastAccuracy.toFixed(1)}% with ${modeling.interceptMargin.toFixed(2)}x intercept margin.`
-                              : "Forecast accuracy telemetry loading..."}
-                          </p>
-                        </div>
-                        <Badge className="bg-revenue-green/20 text-xs text-revenue-green" variant="secondary">
-                          {modeling ? `${modeling.scenarioConfidence.toFixed(0)}% scenario lock` : "Scenario pending"}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-white/60">{modeling?.notes ?? "Realtime guardrail telemetry pending."}</p>
-                    </div>
-                  </div>
-                )}
+              <CardContent className="grid gap-2 text-xs text-corporate-silver/80">
+                <div className="flex items-center justify-between">
+                  <span>Qualified lead window</span>
+                  <span className="font-semibold text-white">
+                    {formatNumber(safeLaunch.qualifiedLeadLow)} – {formatNumber(safeLaunch.qualifiedLeadHigh)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Activation window</span>
+                  <span className="font-semibold text-white">{safeLaunch.activationWindowDays} days</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Budget guardrail</span>
+                  <span className="font-semibold text-white">{formatCurrency(safeLaunch.budgetGuardrail)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Automation confidence</span>
+                  <span className="font-semibold text-white">{safeLaunch.automationConfidence}%</span>
+                </div>
               </CardContent>
             </Card>
 
-            <Card className="border border-white/10 bg-card/80 shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                  <ShieldCheck className="h-4 w-4 text-revenue-green" /> Enforcement guardrails
+            <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <Gauge className="h-4 w-4 text-primary" /> Forecast modeling
                 </CardTitle>
-                <p className="text-sm text-corporate-silver/70">
-                  Live guardrail checks for compliance, budget, and support readiness.
-                </p>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {isLoading
-                  ? new Array(3).fill(null).map((_, index) => (
-                      <Skeleton key={`guardrail-${index}`} className="h-16 rounded-xl bg-white/5" />
-                    ))
-                  : guardrails.map((guardrail) => (
-                      <div
-                        key={guardrail.id}
-                        className="flex items-start justify-between gap-3 rounded-xl border border-white/5 bg-white/5 p-4 backdrop-blur"
-                      >
-                        <div>
-                          <p className="text-sm font-semibold text-white">{guardrail.label}</p>
-                          <p className="text-xs text-white/70">{guardrail.detail}</p>
-                        </div>
-                        <Badge
-                          variant="outline"
-                          className={cn("border px-3 py-1 text-xs font-semibold", guardrailStyles[guardrail.status])}
-                        >
-                          {guardrailLabels[guardrail.status]}
-                        </Badge>
-                      </div>
-                    ))}
+              <CardContent className="grid gap-2 text-xs text-corporate-silver/80">
+                <div className="flex items-center justify-between">
+                  <span>Forecast accuracy</span>
+                  <span className="font-semibold text-white">{modeling.forecastAccuracy.toFixed(1)}%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Reliability score</span>
+                  <span className="font-semibold text-white">{modeling.reliabilityScore.toFixed(0)}%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Intercept margin</span>
+                  <span className="font-semibold text-white">{(modeling.interceptMargin * 100).toFixed(0)}%</span>
+                </div>
+                <p className="mt-2 text-[0.7rem] italic text-corporate-silver/70">{modeling.notes}</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <Users className="h-4 w-4 text-primary" /> Guardrails
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {guardrails.map((guardrail) => (
+                  <div
+                    key={guardrail.id}
+                    className={cn("rounded-lg border px-3 py-2 text-xs", guardrailStyles[guardrail.status])}
+                  >
+                    <div className="flex items-center justify-between text-[0.7rem] uppercase tracking-wide">
+                      <span>{guardrail.label}</span>
+                      <span>{guardrailLabels[guardrail.status]}</span>
+                    </div>
+                    <p className="mt-1 text-[0.7rem] text-corporate-platinum/90">{guardrail.detail}</p>
+                  </div>
+                ))}
               </CardContent>
             </Card>
           </div>
 
-          <Card className="border border-white/10 bg-card/80 shadow-xl">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-corporate-platinum text-lg">
-                <Radar className="h-4 w-4 text-corporate-blue" /> Execution telemetry
+          <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                <Target className="h-4 w-4 text-primary" /> Launch scenarios
               </CardTitle>
-              <p className="text-sm text-corporate-silver/70">
-                Switch across logistics, drivers, channel mix, and support load to calibrate go-live velocity.
-              </p>
             </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <Skeleton className="h-64 rounded-xl bg-white/5" />
-              ) : (
-                <Tabs defaultValue="logistics" className="space-y-4">
-                  <TabsList className="grid w-full grid-cols-2 gap-1 rounded-xl bg-white/5 p-1 sm:grid-cols-4">
-                    <TabsTrigger value="logistics" className="text-xs sm:text-sm">
-                      Leads &amp; logistics
-                    </TabsTrigger>
-                    <TabsTrigger value="volume" className="text-xs sm:text-sm">
-                      Volume drive
-                    </TabsTrigger>
-                    <TabsTrigger value="mix" className="text-xs sm:text-sm">
-                      Channel mix
-                    </TabsTrigger>
-                    <TabsTrigger value="support" className="text-xs sm:text-sm">
-                      Voice &amp; support
-                    </TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="logistics">
-                    <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5">
-                      <Table>
-                        <TableHeader>
-                          <TableRow className="border-white/5">
-                            <TableHead className="text-white/70">Scenario</TableHead>
-                            <TableHead className="text-white/70">Launch-ready leads</TableHead>
-                            <TableHead className="text-white/70">Conversion</TableHead>
-                            <TableHead className="text-white/70">Readiness</TableHead>
-                            <TableHead className="text-white/70">Go-live confidence</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {scenarios.map((scenario) => (
-                            <TableRow key={scenario.id} className="border-white/5">
-                              <TableCell className="font-medium text-white">{scenario.scenario}</TableCell>
-                              <TableCell className="text-white/80">{formatNumber(scenario.leadVolume)}</TableCell>
-                              <TableCell className="text-white/80">{scenario.conversion.toFixed(1)}%</TableCell>
-                              <TableCell className="text-white/70">{scenario.readiness}</TableCell>
-                              <TableCell className="text-white/80">{scenario.goLive}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="volume">
-                    <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5">
-                      <Table>
-                        <TableHeader>
-                          <TableRow className="border-white/5">
-                            <TableHead className="text-white/70">Driver</TableHead>
-                            <TableHead className="text-white/70">Readiness</TableHead>
-                            <TableHead className="text-white/70">Modeled run rate</TableHead>
-                            <TableHead className="text-white/70">Cost envelope</TableHead>
-                            <TableHead className="text-white/70">Signal</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {volumeDrivers.map((driver) => (
-                            <TableRow key={driver.id} className="border-white/5">
-                              <TableCell className="font-medium text-white">{driver.driver}</TableCell>
-                              <TableCell className="text-white/70">{driver.readiness}</TableCell>
-                              <TableCell className="text-white/80">{formatCurrency(driver.runRate)}</TableCell>
-                              <TableCell className="text-white/80">{formatCurrency(driver.cost)}</TableCell>
-                              <TableCell className={cn("text-sm font-semibold", signalStyles[driver.signal])}>
-                                {signalLabels[driver.signal]}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="mix">
-                    <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5">
-                      <Table>
-                        <TableHeader>
-                          <TableRow className="border-white/5">
-                            <TableHead className="text-white/70">Channel</TableHead>
-                            <TableHead className="text-white/70">Mix</TableHead>
-                            <TableHead className="text-white/70">CAC</TableHead>
-                            <TableHead className="text-white/70">Payback</TableHead>
-                            <TableHead className="text-white/70">Intercept</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {channelMix.map((row) => (
-                            <TableRow key={row.id} className="border-white/5">
-                              <TableCell className="font-medium text-white">{row.channel}</TableCell>
-                              <TableCell className="text-white/80">{row.mix.toFixed(0)}%</TableCell>
-                              <TableCell className="text-white/80">{formatCurrency(row.cac)}</TableCell>
-                              <TableCell className="text-white/80">{row.payback.toFixed(1)} mo</TableCell>
-                              <TableCell className="text-white/70">{row.intercept}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="support">
-                    <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5">
-                      <Table>
-                        <TableHeader>
-                          <TableRow className="border-white/5">
-                            <TableHead className="text-white/70">Metric</TableHead>
-                            <TableHead className="text-white/70">Current</TableHead>
-                            <TableHead className="text-white/70">Target</TableHead>
-                            <TableHead className="text-white/70">Status</TableHead>
-                            <TableHead className="text-white/70">Trend</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {voiceSupport.map((metric: PredictabilitySupportMetric) => (
-                            <TableRow key={metric.id} className="border-white/5">
-                              <TableCell className="font-medium text-white">{metric.label}</TableCell>
-                              <TableCell className="text-white/80">{metric.value}</TableCell>
-                              <TableCell className="text-white/80">{metric.target}</TableCell>
-                              <TableCell>
-                                <Badge
-                                  variant="outline"
-                                  className={cn("border px-3 py-1 text-xs font-semibold", supportStyles[metric.status])}
-                                >
-                                  {supportLabels[metric.status]}
-                                </Badge>
-                              </TableCell>
-                              <TableCell>
-                                <span
-                                  className={cn(
-                                    "text-sm font-semibold",
-                                    metric.trend >= 0 ? "text-revenue-green" : "text-corporate-crimson"
-                                  )}
-                                >
-                                  {formatPercent(metric.trend)}
-                                </span>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              )}
+            <CardContent className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Scenario</TableHead>
+                    <TableHead className="text-right">Lead volume</TableHead>
+                    <TableHead className="text-right">Conversion</TableHead>
+                    <TableHead>Readiness</TableHead>
+                    <TableHead className="text-right">Go-live</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {scenarios.map((scenario) => (
+                    <TableRow key={scenario.id}>
+                      <TableCell className="font-medium text-corporate-platinum">{scenario.scenario}</TableCell>
+                      <TableCell className="text-right text-white">{formatNumber(scenario.leadVolume)}</TableCell>
+                      <TableCell className="text-right text-corporate-silver">{scenario.conversion.toFixed(1)}%</TableCell>
+                      <TableCell className="text-corporate-silver/80">{scenario.readiness}</TableCell>
+                      <TableCell className="text-right text-corporate-silver">{scenario.goLive}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
-main
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <TrendingUp className="h-4 w-4 text-revenue-green" /> Volume drivers
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {volumeDrivers.map((driver) => (
+                  <div key={driver.id} className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs">
+                    <div className="flex items-center justify-between text-corporate-platinum">
+                      <span className="font-semibold">{driver.driver}</span>
+                      <span className={cn("font-semibold", signalStyles[driver.signal])}>
+                        {signalLabels[driver.signal]}
+                      </span>
+                    </div>
+                    <div className="mt-1 flex items-center justify-between text-corporate-silver/70">
+                      <span>{driver.readiness}</span>
+                      <span>
+                        {formatCurrency(driver.runRate)} / {formatCurrency(driver.cost)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card className="border border-white/10 bg-card/80 backdrop-blur-xl">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold text-corporate-platinum">
+                  <PieChart className="h-4 w-4 text-primary" /> Channel mix & support
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-xs text-corporate-silver/80">
+                <div className="space-y-1">
+                  {channelMix.map((channel) => (
+                    <div key={channel.id} className="flex items-center justify-between">
+                      <span>{channel.channel}</span>
+                      <span className="font-semibold text-white">
+                        {channel.mix.toFixed(0)}% · CAC {formatCurrency(channel.cac)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="grid gap-2">
+                  {voiceSupport.map((metric: PredictabilitySupportMetric) => (
+                    <div
+                      key={metric.id}
+                      className={cn("rounded-lg border px-3 py-2", supportStyles[metric.status])}
+                    >
+                      <div className="flex items-center justify-between text-[0.7rem] uppercase tracking-wide">
+                        <span>{metric.label}</span>
+                        <span>{supportLabels[metric.status]}</span>
+                      </div>
+                      <div className="mt-1 flex items-center justify-between text-[0.7rem]">
+                        <span>{metric.value}</span>
+                        <span>Target {metric.target}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

@@ -8,8 +8,6 @@ export type SkinDefinition = {
   headline: string;
 };
 
-codex/add-skin-selector-for-color-theme
- codex/add-skin-selector-for-color-theme-on40yv
 const liquidGlassTokens: Record<string, string> = {
   background: "210 40% 98%",
   foreground: "215 32% 14%",
@@ -57,8 +55,6 @@ const liquidGlassTokens: Record<string, string> = {
   "warning-amber": "44 90% 58%",
 };
 
-main
-main
 const fortune100Tokens: Record<string, string> = {
   background: "218 23% 4%",
   foreground: "210 40% 95%",
@@ -88,16 +84,10 @@ const fortune100Tokens: Record<string, string> = {
   "sidebar-accent-foreground": "210 40% 95%",
   "sidebar-border": "218 23% 10%",
   "sidebar-ring": "212 100% 45%",
-codex/add-skin-selector-for-color-theme
-=======
- codex/add-skin-selector-for-color-theme-on40yv
-	
   "glass-base": "218 28% 10%",
   "glass-highlight": "210 40% 88%",
   "glass-border": "218 24% 18%",
   "glass-shadow": "212 90% 32%",
-main
- main
   "corporate-blue": "212 100% 45%",
   "corporate-navy": "218 50% 20%",
   "corporate-silver": "210 15% 75%",
@@ -141,16 +131,10 @@ const auroraGlassTokens: Record<string, string> = {
   "sidebar-accent-foreground": "198 48% 92%",
   "sidebar-border": "225 36% 26%",
   "sidebar-ring": "195 86% 62%",
- codex/add-skin-selector-for-color-theme
-=======
- codex/add-skin-selector-for-color-theme-on40yv
-
   "glass-base": "223 52% 16%",
   "glass-highlight": "197 56% 94%",
   "glass-border": "223 40% 28%",
   "glass-shadow": "195 70% 48%",
-main
- main
   "corporate-blue": "195 86% 62%",
   "corporate-navy": "224 60% 18%",
   "corporate-silver": "197 28% 74%",
@@ -194,16 +178,10 @@ const emberVanguardTokens: Record<string, string> = {
   "sidebar-accent-foreground": "28 36% 94%",
   "sidebar-border": "28 32% 26%",
   "sidebar-ring": "16 92% 58%",
-codex/add-skin-selector-for-color-theme
-=======
-codex/add-skin-selector-for-color-theme-on40yv
-
   "glass-base": "24 38% 12%",
   "glass-highlight": "32 40% 92%",
   "glass-border": "26 34% 24%",
   "glass-shadow": "16 88% 42%",
-main
- main
   "corporate-blue": "205 82% 54%",
   "corporate-navy": "220 50% 20%",
   "corporate-silver": "35 24% 70%",
@@ -220,34 +198,21 @@ main
 
 const SKIN_DEFINITIONS = [
   {
-codex/add-skin-selector-for-color-theme
-=======
- codex/add-skin-selector-for-color-theme-on40yv
- id: "liquid-glass-pro",
+    id: "liquid-glass-pro",
     name: "Liquid Glass PRO",
     description: "Crisp white glass with executive neon accents.",
     cssVars: liquidGlassTokens,
-    previewColors: [
-      "hsl(213 90% 56%)",
-      "hsl(152 76% 45%)",
-      "hsl(0 72% 56%)",
-    ],
+    previewColors: ["hsl(213 90% 56%)", "hsl(152 76% 45%)", "hsl(0 72% 56%)"],
     heroGradient:
       "linear-gradient(135deg, hsla(213,90%,56%,0.18) 0%, hsla(152,76%,45%,0.12) 45%, hsla(0,0%,100%,0.8) 100%)",
     headline: "Liquid glass control",
   },
   {
- main
- main
     id: "fortune-100",
     name: "Fortune 100 Steel",
     description: "Executive navy glass with electric revenue pulses.",
     cssVars: fortune100Tokens,
-    previewColors: [
-      "hsl(212 100% 45%)",
-      "hsl(210 10% 85%)",
-      "hsl(355 85% 55%)",
-    ],
+    previewColors: ["hsl(212 100% 45%)", "hsl(210 10% 85%)", "hsl(355 85% 55%)"],
     heroGradient:
       "linear-gradient(135deg, hsla(212,100%,45%,0.8) 0%, hsla(218,50%,20%,0.9) 50%, hsla(210,10%,85%,0.35) 100%)",
     headline: "Fortune 100 ready",
@@ -257,11 +222,7 @@ codex/add-skin-selector-for-color-theme
     name: "Aurora Glass",
     description: "Polar neon glass for data-native operators.",
     cssVars: auroraGlassTokens,
-    previewColors: [
-      "hsl(195 86% 62%)",
-      "hsl(282 78% 68%)",
-      "hsl(152 72% 48%)",
-    ],
+    previewColors: ["hsl(195 86% 62%)", "hsl(282 78% 68%)", "hsl(152 72% 48%)"],
     heroGradient:
       "linear-gradient(135deg, hsla(195,86%,62%,0.8) 0%, hsla(282,78%,68%,0.7) 55%, hsla(197,56%,96%,0.35) 100%)",
     headline: "Neon telemetry",
@@ -271,11 +232,7 @@ codex/add-skin-selector-for-color-theme
     name: "Ember Vanguard",
     description: "Sunset war room with molten KPI heat.",
     cssVars: emberVanguardTokens,
-    previewColors: [
-      "hsl(16 92% 58%)",
-      "hsl(347 74% 62%)",
-      "hsl(42 86% 62%)",
-    ],
+    previewColors: ["hsl(16 92% 58%)", "hsl(347 74% 62%)", "hsl(42 86% 62%)"],
     heroGradient:
       "linear-gradient(135deg, hsla(16,92%,58%,0.85) 0%, hsla(347,74%,62%,0.75) 50%, hsla(32,40%,94%,0.35) 100%)",
     headline: "Molten conversions",
@@ -288,17 +245,8 @@ const skinMap = new Map<SkinId, SkinDefinition>(
   SKIN_DEFINITIONS.map((definition) => [definition.id, definition]),
 );
 
- codex/add-skin-selector-for-color-theme
-export const defaultSkinId: SkinId = "fortune-100";
-
-=======
- codex/add-skin-selector-for-color-theme-on40yv
-export const defaultSkinId: SkinId = "fortune-100";
-
 export const defaultSkinId: SkinId = "liquid-glass-pro";
-main
 
- main
 export function getAvailableSkins(): readonly SkinDefinition[] {
   return SKIN_DEFINITIONS;
 }
