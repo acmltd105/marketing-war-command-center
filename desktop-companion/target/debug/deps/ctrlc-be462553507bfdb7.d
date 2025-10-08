@@ -1,0 +1,9 @@
+/Users/alanredmond/Library/Mobile Documents/com~apple~CloudDocs/GITHUB CURSOR REPO CLONES/marketing-war-command-center/desktop-companion/target/debug/deps/ctrlc-be462553507bfdb7.d: /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/lib.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/error.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/platform/mod.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/platform/unix/mod.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/signal.rs
+
+/Users/alanredmond/Library/Mobile Documents/com~apple~CloudDocs/GITHUB CURSOR REPO CLONES/marketing-war-command-center/desktop-companion/target/debug/deps/libctrlc-be462553507bfdb7.rmeta: /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/lib.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/error.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/platform/mod.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/platform/unix/mod.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/signal.rs
+
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/lib.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/error.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/platform/mod.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/platform/unix/mod.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ctrlc-3.5.0/src/signal.rs:

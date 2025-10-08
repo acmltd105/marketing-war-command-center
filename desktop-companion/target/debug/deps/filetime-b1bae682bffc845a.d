@@ -1,0 +1,8 @@
+/Users/alanredmond/Library/Mobile Documents/com~apple~CloudDocs/GITHUB CURSOR REPO CLONES/marketing-war-command-center/desktop-companion/target/debug/deps/filetime-b1bae682bffc845a.d: /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/lib.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/unix/mod.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/unix/utimes.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/unix/macos.rs
+
+/Users/alanredmond/Library/Mobile Documents/com~apple~CloudDocs/GITHUB CURSOR REPO CLONES/marketing-war-command-center/desktop-companion/target/debug/deps/libfiletime-b1bae682bffc845a.rmeta: /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/lib.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/unix/mod.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/unix/utimes.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/unix/macos.rs
+
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/lib.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/unix/mod.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/unix/utimes.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/filetime-0.2.26/src/unix/macos.rs:
