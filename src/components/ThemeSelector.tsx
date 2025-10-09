@@ -1,41 +1,26 @@
-import React, { useEffect, useState } from "react";
-import presets from "@/themes/presets";
-import { applyThemeById, applyPersistedTheme } from "@/themes/applyTheme";
+import React from "react";
+import { useSkin } from "@/hooks/useSkin";
 
 /**
- * Simple dropdown to select theme.
- * - Applies selected theme and persists choice.
- * - Reads initial selection from localStorage.
+ * ThemeSelector — thin wrapper to expose available skins as a simple <select>.
+ * This reuses the existing `useSkin` contract so selection is persisted locally
+ * and synced remotely via the existing preference pipeline.
  */
 export default function ThemeSelector() {
-  const [currentTheme, setCurrentTheme] = useState<string>(() => {
-    try {
-      const applied = applyPersistedTheme();
-      return applied?.id ?? presets[0].id;
-    } catch {
-      return presets[0].id;
-    }
-  });
-
-  useEffect(() => {
-    // Ensure theme is applied on mount (client-side)
-    applyThemeById(currentTheme);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // run once
-
-  function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const id = e.target.value;
-    applyThemeById(id);
-    setCurrentTheme(id);
-  }
+  const { availableSkins, currentSkinId, selectSkin, isHydrated } = useSkin();
 
   return (
     <label style={{ display: "flex", gap: 8, alignItems: "center" }}>
       <span style={{ fontSize: 14 }}>Theme</span>
-      <select value={currentTheme} onChange={onChange} aria-label="Select theme">
-        {presets.map((p) => (
-          <option key={p.id} value={p.id}>
-            {p.name}
+      <select
+        value={currentSkinId}
+        onChange={(e) => selectSkin(e.target.value)}
+        aria-label="Select theme"
+        disabled={!isHydrated}
+      >
+        {availableSkins.map((s) => (
+          <option key={s.id} value={s.id}>
+            {s.name}
           </option>
         ))}
       </select>
