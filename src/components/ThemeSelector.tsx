@@ -42,7 +42,22 @@ export default function ThemeSelector() {
       return;
     }
 
-    // Otherwise treat as a lightweight theme preset
+    // Map simple presets to canonical skin ids so they use the same persistence + sync.
+    const presetToSkin: Record<string, string> = {
+      light: "liquid-glass-pro",
+      dark: "fortune-100",
+      "high-contrast": "ember-vanguard",
+    };
+
+    const mapped = presetToSkin[id];
+    if (mapped) {
+      selectSkin(mapped as any).catch((err) => {
+        console.error("Failed to select mapped skin for preset", err);
+      });
+      return;
+    }
+
+    // Fallback: apply lightweight preset locally
     try {
       applyThemeById(id);
     } catch (err) {
