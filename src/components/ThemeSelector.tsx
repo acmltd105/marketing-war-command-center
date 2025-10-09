@@ -1,7 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useSkin } from "@/hooks/useSkin";
-import presets from "@/themes/presets";
-import { applyThemeById, applyPersistedTheme } from "@/themes/applyTheme";
 
 /**
  * ThemeSelector — thin wrapper to expose available skins as a simple <select>.
@@ -11,58 +9,17 @@ import { applyThemeById, applyPersistedTheme } from "@/themes/applyTheme";
 export default function ThemeSelector() {
   const { availableSkins, currentSkinId, selectSkin, isHydrated } = useSkin();
 
-  // Keep a small combined selection value so the select can show either a skin id or a preset id
-  const [value, setValue] = useState<string>(() => {
-    // Try persisted theme first (from applyTheme), fall back to current skin id
-    try {
-      const persisted = applyPersistedTheme();
-      return persisted?.id ?? currentSkinId;
-    } catch {
-      return currentSkinId;
-    }
-  });
+  // Keep a small selection value so the select can show the current skin id
+  const [value, setValue] = useState<string>(currentSkinId);
 
-  useEffect(() => {
-    // Keep value in sync when skin provider updates
-    setValue((current) => (current === currentSkinId ? current : currentSkinId));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSkinId]);
+  useEffect(() => setValue(currentSkinId), [currentSkinId]);
 
   const skinIds = useMemo(() => new Set(availableSkins.map((s) => s.id)), [availableSkins]);
 
   function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const id = e.target.value;
     setValue(id);
-
-    if (skinIds.has(id)) {
-      // It's an available skin — use the skin pipeline (local + remote persistence)
-      selectSkin(id as any).catch((err) => {
-        console.error("Failed to select skin", err);
-      });
-      return;
-    }
-
-    // Map simple presets to canonical skin ids so they use the same persistence + sync.
-    const presetToSkin: Record<string, string> = {
-      light: "liquid-glass-pro",
-      dark: "fortune-100",
-      "high-contrast": "ember-vanguard",
-    };
-
-    const mapped = presetToSkin[id];
-    if (mapped) {
-      selectSkin(mapped as any).catch((err) => {
-        console.error("Failed to select mapped skin for preset", err);
-      });
-      return;
-    }
-
-    // Fallback: apply lightweight preset locally
-    try {
-      applyThemeById(id);
-    } catch (err) {
-      console.error("Failed to apply theme preset", err);
-    }
+    selectSkin(id as any).catch((err) => console.error("Failed to select skin", err));
   }
 
   return (
@@ -76,13 +33,7 @@ export default function ThemeSelector() {
             </option>
           ))}
         </optgroup>
-        <optgroup label="Simple themes">
-          {presets.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
-            </option>
-          ))}
-        </optgroup>
+        {/* No separate presets — only canonical skins are selectable to avoid diverging behaviour */}
       </select>
     </label>
   );
