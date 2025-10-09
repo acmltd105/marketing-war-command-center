@@ -23,6 +23,7 @@ import {
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
 import SkinSelector from "./SkinSelector";
+import ThemeSelector from "./ThemeSelector";
 
 const BUILD_STATUSES = [
   "queued",
@@ -476,6 +477,13 @@ const Dashboard = () => {
         </div>
         <div className="flex items-center gap-6">
           <SkinSelector />
+          {/* ThemeSelector shows a compact theme selector that reuses the skin preference pipeline */}
+          <div className="hidden sm:block">
+            {/* lazy import locally to avoid extra bundle impact if unused */}
+            <React.Suspense fallback={null}>
+              <ThemeSelector />
+            </React.Suspense>
+          </div>
           <div className="flex items-center gap-4">
             <Button variant="outline" size="icon" className="glow-corporate" aria-label="Notifications">
               <Bell className="h-4 w-4" />
