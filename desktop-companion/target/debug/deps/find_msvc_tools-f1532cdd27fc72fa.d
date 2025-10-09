@@ -1,0 +1,9 @@
+/Users/alanredmond/Library/Mobile Documents/com~apple~CloudDocs/GITHUB CURSOR REPO CLONES/marketing-war-command-center/desktop-companion/target/debug/deps/find_msvc_tools-f1532cdd27fc72fa.d: /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/lib.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/find_tools.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/tool.rs
+
+/Users/alanredmond/Library/Mobile Documents/com~apple~CloudDocs/GITHUB CURSOR REPO CLONES/marketing-war-command-center/desktop-companion/target/debug/deps/libfind_msvc_tools-f1532cdd27fc72fa.rlib: /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/lib.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/find_tools.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/tool.rs
+
+/Users/alanredmond/Library/Mobile Documents/com~apple~CloudDocs/GITHUB CURSOR REPO CLONES/marketing-war-command-center/desktop-companion/target/debug/deps/libfind_msvc_tools-f1532cdd27fc72fa.rmeta: /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/lib.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/find_tools.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/tool.rs
+
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/lib.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/find_tools.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.1/src/tool.rs:

@@ -1,0 +1,9 @@
+/Users/alanredmond/Library/Mobile Documents/com~apple~CloudDocs/GITHUB CURSOR REPO CLONES/marketing-war-command-center/desktop-companion/target/debug/deps/serde-b31c010d38f1835c.d: /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/lib.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/integer128.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/private/mod.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/private/de.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/private/ser.rs
+
+/Users/alanredmond/Library/Mobile Documents/com~apple~CloudDocs/GITHUB CURSOR REPO CLONES/marketing-war-command-center/desktop-companion/target/debug/deps/libserde-b31c010d38f1835c.rmeta: /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/lib.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/integer128.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/private/mod.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/private/de.rs /Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/private/ser.rs
+
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/lib.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/integer128.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/private/mod.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/private/de.rs:
+/Users/alanredmond/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.224/src/private/ser.rs:
