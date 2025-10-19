@@ -1,17 +1,10 @@
- codex/add-skin-selector-for-color-theme
-import type { SupabaseClient } from "@supabase/supabase-js";
-=======
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
- main
 import { resolveSkinId, type SkinId } from "./skins";
 
 const STORAGE_KEY = "mwcc:dashboard-skin";
 
- codex/add-skin-selector-for-color-theme
-=======
 type StorageCallback = (skinId: SkinId | null) => void;
 
-main
 export function readStoredSkin(): SkinId | null {
   if (typeof window === "undefined") {
     return null;
@@ -19,11 +12,7 @@ export function readStoredSkin(): SkinId | null {
 
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (!stored) {
-      return null;
-    }
-
-    return resolveSkinId(stored);
+    return stored ? resolveSkinId(stored) : null;
   } catch (error) {
     console.warn("Unable to read skin preference from localStorage", error);
     return null;
@@ -42,8 +31,6 @@ export function persistStoredSkin(skinId: SkinId) {
   }
 }
 
-codex/add-skin-selector-for-color-theme
-=======
 export function subscribeToStoredSkin(callback: StorageCallback): () => void {
   if (typeof window === "undefined") {
     return () => {};
@@ -63,25 +50,18 @@ export function subscribeToStoredSkin(callback: StorageCallback): () => void {
   };
 
   window.addEventListener("storage", handler);
-
-  return () => {
-    window.removeEventListener("storage", handler);
-  };
+  return () => window.removeEventListener("storage", handler);
 }
 
- main
 function isAuthSessionError(error: unknown): boolean {
   if (!error || typeof error !== "object") {
     return false;
   }
 
-  return "message" in error && typeof (error as { message?: unknown }).message === "string"
-    ? (error as { message: string }).message.toLowerCase().includes("session")
-    : false;
+  const message = (error as { message?: unknown }).message;
+  return typeof message === "string" && message.toLowerCase().includes("session");
 }
 
-codex/add-skin-selector-for-color-theme
-=======
 function getPostgrestCode(error: unknown): string | null {
   if (error && typeof error === "object" && "code" in error) {
     const code = (error as PostgrestError).code;
@@ -94,17 +74,13 @@ function getPostgrestCode(error: unknown): string | null {
 
 function isIgnorablePreferenceError(error: unknown): boolean {
   const code = getPostgrestCode(error);
-
   if (!code) {
     return false;
   }
 
-  // 42P01: relation does not exist, 42501: insufficient privilege
-  // PGRST116: row not found for maybeSingle, PGRST301: table not found
   return ["42P01", "42501", "PGRST116", "PGRST301"].includes(code);
 }
 
-main
 function formatSupabaseError(error: unknown, fallback: string): Error {
   if (error instanceof Error) {
     return error;
@@ -112,9 +88,7 @@ function formatSupabaseError(error: unknown, fallback: string): Error {
   return new Error(fallback);
 }
 
-export async function fetchRemoteSkin(
-  client: SupabaseClient,
-): Promise<SkinId | null> {
+export async function fetchRemoteSkin(client: SupabaseClient): Promise<SkinId | null> {
   const {
     data: { user },
     error: authError,
@@ -138,12 +112,8 @@ export async function fetchRemoteSkin(
     .maybeSingle();
 
   if (error) {
-codex/add-skin-selector-for-color-theme
-    if ("code" in error && (error as { code?: string }).code === "PGRST116") {
-=======
     if (isIgnorablePreferenceError(error)) {
       console.warn("Dashboard skin preference table unavailable, falling back to defaults", error);
-main
       return null;
     }
 
@@ -151,11 +121,7 @@ main
   }
 
   const remoteSkin = data?.dashboard_skin as string | null | undefined;
-  if (!remoteSkin) {
-    return null;
-  }
-
-  return resolveSkinId(remoteSkin);
+  return remoteSkin ? resolveSkinId(remoteSkin) : null;
 }
 
 export async function persistRemoteSkin(client: SupabaseClient, skinId: SkinId): Promise<void> {
@@ -186,14 +152,14 @@ export async function persistRemoteSkin(client: SupabaseClient, skinId: SkinId):
     );
 
   if (error) {
-codex/add-skin-selector-for-color-theme
-=======
     if (isIgnorablePreferenceError(error)) {
-      console.warn("Unable to persist dashboard skin preference remotely; continuing with local value", error);
+      console.warn(
+        "Unable to persist dashboard skin preference remotely; continuing with local value",
+        error,
+      );
       return;
     }
 
- main
     throw formatSupabaseError(error, "Failed to persist dashboard skin preference");
   }
 }
