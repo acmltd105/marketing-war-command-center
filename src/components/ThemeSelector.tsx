@@ -1,5 +1,6 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { useSkin } from "@/hooks/useSkin";
+import { type SkinId } from "@/lib/skins";
 
 /**
  * ThemeSelector — thin wrapper to expose available skins as a simple <select>.
@@ -10,16 +11,28 @@ export default function ThemeSelector() {
   const { availableSkins, currentSkinId, selectSkin, isHydrated } = useSkin();
 
   // Keep a small selection value so the select can show the current skin id
-  const [value, setValue] = useState<string>(currentSkinId);
+  const [value, setValue] = useState<SkinId>(currentSkinId);
 
   useEffect(() => setValue(currentSkinId), [currentSkinId]);
 
-  const skinIds = useMemo(() => new Set(availableSkins.map((s) => s.id)), [availableSkins]);
+  const skinIds = useMemo(() => new Set<SkinId>(availableSkins.map((s) => s.id)), [availableSkins]);
+
+  const isKnownSkinId = useCallback(
+    (input: string | null | undefined): input is SkinId =>
+      typeof input === "string" && skinIds.has(input as SkinId),
+    [skinIds],
+  );
 
   function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const id = e.target.value;
-    setValue(id);
-    selectSkin(id as any).catch((err) => console.error("Failed to select skin", err));
+    const next = e.target.value;
+
+    if (!isKnownSkinId(next)) {
+      console.error("Attempted to select unknown skin", { id: next, available: [...skinIds] });
+      return;
+    }
+
+    setValue(next);
+    selectSkin(next).catch((err) => console.error("Failed to select skin", err));
   }
 
   return (
