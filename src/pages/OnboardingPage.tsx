@@ -130,8 +130,9 @@ export default function OnboardingPage() {
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Connect your data plane</h1>
           </div>
           <p className="text-muted-foreground text-sm sm:text-base">
-            One guided setup for operators. Pick where metrics and campaigns sync from, then wire Supabase or your own
-            gateway. Static sites never hold warehouse passwords—only publishable keys or HTTPS to your BFF.
+            You are building agents—this stack is for using them to <strong className="text-foreground">market and close</strong>.
+            Wire where telemetry and customer data sync from (Supabase first-class; other warehouses via your gateway). Static
+            sites never hold warehouse passwords—only publishable keys or HTTPS to your BFF.
           </p>
           <div className="space-y-1">
             <div className="text-muted-foreground flex justify-between text-xs">
@@ -149,8 +150,12 @@ export default function OnboardingPage() {
             <CardHeader>
               <CardTitle>Welcome to the Marketing War Command Center</CardTitle>
               <CardDescription>
-                This dashboard reads telemetry and configuration through secure HTTP APIs. Choose a primary database vendor
-                below—we ship first-class wiring for Supabase and document gateway patterns for everything else.
+                The product vision is simple: <strong className="text-foreground">text, email, RCS, and MMS at scale</strong>,
+                Segment-style <strong className="text-foreground">triggers and enrichment</strong>, trainable{" "}
+                <strong className="text-foreground">Closer Bots</strong> (text + voice) on <em>your</em> sales canon and
+                knowledge base, payments across major processors with routing controls, a growing template library, lead
+                marketplace hooks, e-sign over message, and landing pages that convert. This screen connects the{" "}
+                <strong className="text-foreground">data plane</strong> so the rest of the shell can stay honest and fast.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -160,7 +165,8 @@ export default function OnboardingPage() {
                 <AlertDescription>
                   Cosmos DB, SQL Azure, Neon, Redshift, Snowflake, and peers require a small sync service (Azure Functions,
                   Cloud Run, Lambda, Fly.io, etc.) that holds connection strings. This app stores only what belongs in the
-                  client: Supabase anon credentials or the URL of your gateway.
+                  client: Supabase anon credentials or the URL of your gateway. Volume, compliance, and carrier rules for
+                  outreach stay in your Twilio and program configuration—not in this wizard.
                 </AlertDescription>
               </Alert>
               <div className="flex flex-wrap gap-2">
