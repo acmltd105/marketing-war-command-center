@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Layout from "./components/Layout";
+import OnboardingGate from "./components/OnboardingGate";
 import { SkinProvider } from "./hooks/useSkin";
 import Campaigns from "./pages/Campaigns";
 import ClientPreviewShowcase from "./pages/ClientPreviewShowcase";
@@ -14,6 +15,7 @@ import Index from "./pages/Index";
 import JourneyBuilder from "./pages/JourneyBuilder";
 import LeadIntelligence from "./pages/LeadIntelligence";
 import NotFound from "./pages/NotFound";
+import OnboardingPage from "./pages/OnboardingPage";
 import SettingsPage from "./pages/SettingsPage";
 import TemplateGallery from "./pages/TemplateGallery";
 import WebDevelopment from "./pages/WebDevelopment";
@@ -31,8 +33,10 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}>
+          <OnboardingGate>
+            <Routes>
+              <Route path="/onboarding" element={<OnboardingPage />} />
+              <Route path="/" element={<Layout />}>
               <Route index element={<Index />} />
               <Route path="create" element={<CreateCampaign />} />
               <Route path="campaigns" element={<Campaigns />} />
@@ -48,8 +52,9 @@ const App = () => (
               <Route path="financials" element={<FinancialsPage />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </OnboardingGate>
         </BrowserRouter>
       </TooltipProvider>
     </SkinProvider>

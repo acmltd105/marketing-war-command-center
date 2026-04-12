@@ -26,6 +26,14 @@ VITE_SUPABASE_ANON_KEY="<anon-key>"
 The Supabase schema, triggers, and edge functions live in [`supabase/`](supabase/README.md). Deploy them with the Supabase CLI
 before pointing CI to the `report-build` endpoint.
 
+### First-run onboarding (no `.env` required)
+
+If `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are **not** set at build time (for example on a public GitHub Pages build),
+the app opens **`/onboarding`**. Operators pick a primary vendor from a catalog (Supabase, Neon, Azure SQL, Cosmos DB, and
+dozens of common warehouses and document stores), optionally test a Supabase project against the `projects` table, and can
+record a **custom HTTPS gateway** URL for non-Supabase sync. Credentials are stored in **`localStorage`** in this browser only.
+CI deployments that inject Supabase env vars skip the wizard automatically.
+
 ## Production deployment
 
 This repository now includes an automated GitHub Pages workflow (`.github/workflows/deploy.yml`). Once GitHub Pages is enabled

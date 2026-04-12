@@ -1,27 +1,33 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
+import { resolveSupabaseCredentialsFromOnboarding } from "./onboarding";
+
 let browserClient: SupabaseClient | null = null;
+let cachedFingerprint: string | null = null;
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+function fingerprint(url: string, key: string) {
+  return `${url}::${key.length}::${key.slice(0, 8)}`;
+}
 
-function validateConfig() {
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn(
-      "Supabase environment variables VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are not configured. Falling back to demo data.",
-    );
-    return false;
-  }
-  return true;
+export function resetSupabaseBrowserClient() {
+  browserClient = null;
+  cachedFingerprint = null;
 }
 
 export function getSupabaseBrowserClient() {
-  if (browserClient) return browserClient;
-  if (!validateConfig()) {
+  const resolved = resolveSupabaseCredentialsFromOnboarding();
+  if (!resolved?.projectUrl || !resolved?.anonKey) {
+    resetSupabaseBrowserClient();
     return null;
   }
 
-  browserClient = createClient(supabaseUrl!, supabaseAnonKey!, {
+  const { projectUrl: url, anonKey } = resolved;
+  const fp = fingerprint(url, anonKey);
+  if (browserClient && cachedFingerprint === fp) {
+    return browserClient;
+  }
+
+  browserClient = createClient(url, anonKey, {
     auth: {
       persistSession: false,
     },
@@ -31,6 +37,7 @@ export function getSupabaseBrowserClient() {
       },
     },
   });
+  cachedFingerprint = fp;
 
   return browserClient;
 }

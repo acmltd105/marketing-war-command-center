@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useSkin } from "@/hooks/useSkin";
+import { resolveSkinId } from "@/lib/skins";
 
 /**
  * ThemeSelector — thin wrapper to expose available skins as a simple <select>.
@@ -19,7 +20,7 @@ export default function ThemeSelector() {
   function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const id = e.target.value;
     setValue(id);
-    selectSkin(id as any).catch((err) => console.error("Failed to select skin", err));
+    selectSkin(resolveSkinId(id)).catch((err) => console.error("Failed to select skin", err));
   }
 
   return (

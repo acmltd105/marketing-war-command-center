@@ -38,6 +38,7 @@ const Sidebar = () => {
     { name: "Client Previews", path: "/client-previews", icon: MessageSquare, badge: "New" },
     { name: "Landing & Web Dev", path: "/web-dev", icon: Globe, badge: null },
     { name: "System Configuration", path: "/settings", icon: Settings, badge: null },
+    { name: "Data connection", path: "/onboarding", icon: Database, badge: null },
   ] as const;
 
   const quickStats = [
