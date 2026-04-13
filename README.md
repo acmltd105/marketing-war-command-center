@@ -85,7 +85,9 @@ If `VITE_SUPABASE_*` are **not** set at build time (e.g. public GitHub Pages), t
 | [`docs/guardrails-no-drift.md`](docs/guardrails-no-drift.md) | Anti-drift rules |
 | [`docs/QA.md`](docs/QA.md) | QA agent charter |
 | [`docs/RALPH-BY-CATEGORY.md`](docs/RALPH-BY-CATEGORY.md) | **Ralph loop** per category + world-class targets |
-| [`docs/phases-roadmap.md`](docs/phases-roadmap.md) | Phases 1–5 → time to use |
+| [`docs/phases-roadmap.md`](docs/phases-roadmap.md) | Phases 1–5 → time to use (summary) |
+| [`docs/phases/README.md`](docs/phases/README.md) | **Detailed** phase 1–5 + error-testing plans |
+| [`docs/conversation-closure-checklist.md`](docs/conversation-closure-checklist.md) | **Frozen** conversation ↔ plan + execution gaps |
 | [`docs/mvp-demo-script.md`](docs/mvp-demo-script.md) | Demo script outline (fill at MVP close) |
 | [`docs/templates/SPEC-TEMPLATE.md`](docs/templates/SPEC-TEMPLATE.md) | Copy for new feature specs |
 

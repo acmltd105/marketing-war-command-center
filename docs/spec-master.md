@@ -61,7 +61,9 @@ Browser (Vite SPA) ──HTTPS──► Azure API (Container Apps / APIM)
 | `docs/agents.md` | Roles and contracts |
 | `docs/guardrails-no-drift.md` | Anti-drift |
 | `docs/QA.md` | Quality agent |
-| `docs/phases-roadmap.md` | Phases 1–5 |
+| `docs/phases-roadmap.md` | Phases 1–5 summary |
+| `docs/phases/README.md` | Detailed phase plans + error program |
+| `docs/conversation-closure-checklist.md` | Frozen conversation audit + MVP execution gaps |
 | `docs/spec-pipeline-to-revenue-ralph-a-plus.md` | Deep product/engine moat spec |
 | `docs/company-lifecycle-pipeline.md` | Formation → IPO narrative |
 | `docs/azure-managed-agents.md` | Azure + agents |
@@ -78,6 +80,7 @@ Browser (Vite SPA) ──HTTPS──► Azure API (Container Apps / APIM)
 |------|--------|
 | Planning pause | Created master spec + hub + orchestration + agents + QA + guardrails + Ralph-by-category + phases |
 | Planning pause | Added `docs/INDEX.md`, `mvp-demo-script.md`, `templates/SPEC-TEMPLATE.md`; README planning banner + table |
+| Planning freeze | `conversation-closure-checklist.md` + full `docs/phases/*` (phase 01–05 + ERROR-TESTING) |
 
 ---
 

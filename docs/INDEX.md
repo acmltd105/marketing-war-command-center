@@ -12,7 +12,9 @@ Read in this order:
 | 4 | [`guardrails-no-drift.md`](./guardrails-no-drift.md) | Non-negotiables; what “no drift” means in PRs |
 | 5 | [`QA.md`](./QA.md) | QA agent charter, test layers, exit gates |
 | 6 | [`RALPH-BY-CATEGORY.md`](./RALPH-BY-CATEGORY.md) | **Ralph loop** — category → subcategory → subtask → world-class target |
-| 7 | [`phases-roadmap.md`](./phases-roadmap.md) | Phases 1–5 to **time to use** (internal → GA → scale) |
+| 7 | [`phases-roadmap.md`](./phases-roadmap.md) | Phases 1–5 summary + links to **detailed** phase docs |
+| 8 | [`conversation-closure-checklist.md`](./conversation-closure-checklist.md) | **Frozen** thread → plan alignment + execution gap list |
+| — | [`phases/README.md`](./phases/README.md) | Index: `phase-01` … `phase-05`, **ERROR-TESTING** |
 
 **Supporting specs (already in repo):**
 
