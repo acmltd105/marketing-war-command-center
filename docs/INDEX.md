@@ -18,6 +18,7 @@ Read in this order:
 | 10 | [`ui-design-system-worldclass.md`](./ui-design-system-worldclass.md) | **UI constitution** — minimal, functional, intuitive (global) |
 | — | [`phases/README.md`](./phases/README.md) | Index: `phase-01` … `phase-05`, **ERROR-TESTING** |
 | — | [`phases/cursor-claude-agent-split.md`](./phases/cursor-claude-agent-split.md) | **3 Cursor Claude agents per phase** — lanes, owns, merge order, prompts |
+| — | [`phases/phase-01-cursor-launch-now.md`](./phases/phase-01-cursor-launch-now.md) | **Phase 1 — 3 copy-paste Cursor agent prompts** (launch in parallel) |
 
 **Supporting specs (already in repo):**
 

@@ -14,3 +14,5 @@
 **Frozen closure:** [`../conversation-closure-checklist.md`](../conversation-closure-checklist.md)
 
 **Three Cursor agents per phase:** [`cursor-claude-agent-split.md`](./cursor-claude-agent-split.md) — parallel lanes (Systems / Product surface / Quality & closure), merge order, copy-paste prompts.
+
+**Phase 1 — paste into 3 chats:** [`phase-01-cursor-launch-now.md`](./phase-01-cursor-launch-now.md)
