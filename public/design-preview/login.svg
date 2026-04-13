@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" fill="none">
+  <rect width="960" height="640" fill="#F8FAFC"/>
+  <circle cx="180" cy="120" r="280" fill="#3B82F6" fill-opacity="0.06"/>
+  <circle cx="820" cy="80" r="200" fill="#14B8A6" fill-opacity="0.05"/>
+  <rect x="300" y="140" width="360" height="360" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="480" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" letter-spacing="0.08em" fill="#64748B">PIPELINE PANTRY</text>
+  <text x="480" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="600" fill="#0F172A">Sign in</text>
+  <text x="480" y="268" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#64748B">Microsoft account · secure session</text>
+  <rect x="340" y="300" width="280" height="44" rx="8" fill="#2563EB"/>
+  <text x="480" y="329" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Continue with Microsoft</text>
+  <text x="480" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#94A3B8">or</text>
+  <rect x="340" y="398" width="280" height="44" rx="8" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="480" y="426" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="500" fill="#475569">Continue with mock session</text>
+  <text x="480" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#94A3B8">No password stored in the browser for production paths.</text>
+</svg>

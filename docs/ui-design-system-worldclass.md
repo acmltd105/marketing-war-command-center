@@ -1,5 +1,7 @@
 # Pipeline Pantry — world-class UI system (minimal · functional · intuitive)
 
+**Visual previews (SVG):** [`/public/design-preview/`](../public/design-preview/) — open `index.html` in a browser after `npm run dev` at **http://localhost:8080/design-preview/index.html** (or open the `.svg` files directly).
+
 **Role:** Canonical design direction for **all** surfaces. Implements alongside [`ui-mockups-2026.md`](./ui-mockups-2026.md) (per-route) and [`guardrails-no-drift.md`](./guardrails-no-drift.md) (no fake metrics).
 
 **North star:** *Calm power* — the UI feels **empty on purpose** until data earns ink; every control has **one obvious job**; errors are **recoverable in one click** where possible.

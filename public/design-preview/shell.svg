@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" fill="none">
+  <rect width="960" height="640" fill="#F8FAFC"/>
+  <rect x="0" y="0" width="288" height="640" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="24" y="44" font-family="system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="0.06em" fill="#0F172A">PIPELINE PANTRY</text>
+  <text x="24" y="64" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8">Pipelines to revenue</text>
+  <rect x="16" y="92" width="256" height="36" rx="8" fill="#EFF6FF"/>
+  <text x="32" y="116" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#2563EB">Pipeline overview</text>
+  <text x="32" y="152" font-family="system-ui, sans-serif" font-size="13" fill="#64748B">Company workspace</text>
+  <text x="32" y="188" font-family="system-ui, sans-serif" font-size="13" fill="#64748B">Contacts</text>
+  <text x="32" y="224" font-family="system-ui, sans-serif" font-size="13" fill="#64748B">Financial Command</text>
+  <text x="32" y="260" font-family="system-ui, sans-serif" font-size="13" fill="#64748B">Campaigns</text>
+  <line x1="16" y1="300" x2="272" y2="300" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="32" y="328" font-family="system-ui, sans-serif" font-size="13" fill="#64748B">Data connection</text>
+  <rect x="304" y="24" width="624" height="592" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="328" y="64" font-family="system-ui, sans-serif" font-size="22" font-weight="600" fill="#0F172A">Contacts</text>
+  <text x="328" y="92" font-family="system-ui, sans-serif" font-size="14" fill="#64748B">People and orgs you move through the pipeline.</text>
+  <rect x="328" y="120" width="120" height="36" rx="8" fill="#2563EB"/>
+  <text x="388" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#FFFFFF">Add contact</text>
+  <rect x="328" y="188" width="576" height="40" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="344" y="214" font-family="system-ui, sans-serif" font-size="13" fill="#94A3B8">Search&</text>
+  <line x1="328" y1="252" x2="904" y2="252" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="344" y="284" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#64748B">Name</text>
+  <text x="560" y="284" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#64748B">Email</text>
+  <text x="344" y="318" font-family="system-ui, sans-serif" font-size="14" fill="#0F172A">Jamie Deal</text>
+  <text x="560" y="318" font-family="system-ui, sans-serif" font-size="14" fill="#475569">jamie@example.test</text>
+  <text x="344" y="354" font-family="system-ui, sans-serif" font-size="14" fill="#0F172A">Acme Dental Co</text>
+  <text x="560" y="354" font-family="system-ui, sans-serif" font-size="14" fill="#475569">ops@acmedental.test</text>
+</svg>

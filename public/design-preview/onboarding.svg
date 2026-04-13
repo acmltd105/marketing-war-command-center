@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" fill="none">
+  <rect width="960" height="640" fill="#F8FAFC"/>
+  <text x="80" y="56" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#0F172A">Connect your data plane</text>
+  <text x="80" y="88" font-family="system-ui, sans-serif" font-size="15" fill="#64748B" width="800">Choose Azure or another backend. Gateway holds secrets  not this browser.</text>
+  <rect x="80" y="120" width="800" height="8" rx="4" fill="#E2E8F0"/>
+  <rect x="80" y="120" width="200" height="8" rx="4" fill="#2563EB"/>
+  <text x="80" y="152" font-family="system-ui, sans-serif" font-size="12" fill="#64748B">Step 2 of 4 · Choose backend</text>
+  <rect x="80" y="180" width="800" height="360" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="104" y="204" width="752" height="40" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="120" y="230" font-family="system-ui, sans-serif" font-size="14" fill="#94A3B8">Search Azure SQL, Cosmos&</text>
+  <rect x="104" y="260" width="752" height="56" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1"/>
+  <text x="120" y="288" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0F172A">Azure SQL Database</text>
+  <text x="120" y="308" font-family="system-ui, sans-serif" font-size="12" fill="#64748B">Gateway + managed identity · no TDS in browser</text>
+  <rect x="104" y="332" width="752" height="48" rx="8" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="120" y="362" font-family="system-ui, sans-serif" font-size="14" fill="#475569">Neon</text>
+  <rect x="104" y="396" width="752" height="48" rx="8" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="120" y="426" font-family="system-ui, sans-serif" font-size="14" fill="#475569">Supabase</text>
+  <rect x="720" y="560" width="160" height="44" rx="8" fill="#2563EB"/>
+  <text x="800" y="588" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Continue</text>
+</svg>
