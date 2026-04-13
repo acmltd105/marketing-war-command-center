@@ -25,6 +25,7 @@ Read in this order:
 - [`spec-pipeline-to-revenue-ralph-a-plus.md`](./spec-pipeline-to-revenue-ralph-a-plus.md) — Party / Motion / Outcome, frontier list
 - [`company-lifecycle-pipeline.md`](./company-lifecycle-pipeline.md) — Idea → IPO lifecycle
 - [`azure-managed-agents.md`](./azure-managed-agents.md) — Azure dogfood + gateway + agents
+- [`azure-devops-git.md`](./azure-devops-git.md) — **Azure Repos** remote, PAT, `scripts/push-azure-devops.sh`
 - [`mvp-problems-and-next-steps.md`](./mvp-problems-and-next-steps.md) — Known problems + first 10 steps
 - [`ui-mockups-2026.md`](./ui-mockups-2026.md) — Per-route UI/motion mockups
 
