@@ -1,5 +1,7 @@
 # Pipeline Pantry
 
+> **Planning mode (pause):** Execution follows the **living plan** in [`docs/INDEX.md`](docs/INDEX.md) — master spec, orchestration, agents, QA, guardrails, Ralph-by-category, phases. **Do not drift** from [`docs/guardrails-no-drift.md`](docs/guardrails-no-drift.md).
+
 **You are building AI agents—are you using them to market?** **Pipeline Pantry** is the product: **pipelines to revenue, keep revenue, expand revenue**—and the **company lifecycle** that makes revenue possible: **idea → entity → brand → site → story → first sale → scale → IPO readiness** (see [`docs/company-lifecycle-pipeline.md`](docs/company-lifecycle-pipeline.md)). This repo is the Pipeline Pantry web app: Vite + React 18, Twilio-leaning operations. **Internal dogfood** runs on **Azure** (SQL, Cosmos, Blobs, containers, Microsoft 365) via a **gateway**—see [`docs/azure-managed-agents.md`](docs/azure-managed-agents.md). The `supabase/` tree remains for OSS demos and migration history; choosing an **Azure-primary** backend in onboarding **disables** the Supabase browser client for that browser profile.
 
 The GitHub repo may remain `marketing-war-command-center` until you rename it; the shipped product name is **Pipeline Pantry**.
@@ -72,10 +74,25 @@ If `VITE_SUPABASE_*` are **not** set at build time (e.g. public GitHub Pages), t
 
 [`docs/spec-pipeline-to-revenue-ralph-a-plus.md`](docs/spec-pipeline-to-revenue-ralph-a-plus.md) — Party / Motion / Outcome primitives, strip-back discipline, frontier capabilities.
 
-## MVP backlog & UI
+## Planning hub (living docs)
 
-- [`docs/mvp-problems-and-next-steps.md`](docs/mvp-problems-and-next-steps.md) — **All known problems** (bundle size, lint, audit, git hygiene, gateway, auth) + **next 10 steps** + **5 rotating agents**.
-- [`docs/ui-mockups-2026.md`](docs/ui-mockups-2026.md) — **2026 minimal + motion** mockups per route (login, onboarding, every menu page, 404); background design agent deliverable.
+| Doc | Role |
+|-----|------|
+| [`docs/INDEX.md`](docs/INDEX.md) | **Start here** — full map of all planning MDs |
+| [`docs/spec-master.md`](docs/spec-master.md) | Master spec, MVP definition, architecture |
+| [`docs/orchestration.md`](docs/orchestration.md) | Research → scaffold → code → wire → ship |
+| [`docs/agents.md`](docs/agents.md) | Agent roles & handoffs |
+| [`docs/guardrails-no-drift.md`](docs/guardrails-no-drift.md) | Anti-drift rules |
+| [`docs/QA.md`](docs/QA.md) | QA agent charter |
+| [`docs/RALPH-BY-CATEGORY.md`](docs/RALPH-BY-CATEGORY.md) | **Ralph loop** per category + world-class targets |
+| [`docs/phases-roadmap.md`](docs/phases-roadmap.md) | Phases 1–5 → time to use |
+| [`docs/mvp-demo-script.md`](docs/mvp-demo-script.md) | Demo script outline (fill at MVP close) |
+| [`docs/templates/SPEC-TEMPLATE.md`](docs/templates/SPEC-TEMPLATE.md) | Copy for new feature specs |
+
+## MVP backlog & UI (execution hints)
+
+- [`docs/mvp-problems-and-next-steps.md`](docs/mvp-problems-and-next-steps.md) — Known problems + first 10 engineering steps + 5-seat rotation.
+- [`docs/ui-mockups-2026.md`](docs/ui-mockups-2026.md) — Per-route UI/motion mockups.
 
 ## Quality checklist
 
