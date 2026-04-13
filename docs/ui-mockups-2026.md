@@ -2,6 +2,8 @@
 
 Marketing war command center: minimal surfaces, high contrast, generous whitespace, subtle depth, motion only where it clarifies hierarchy or feedback.
 
+**Global system (must align):** [`ui-design-system-worldclass.md`](./ui-design-system-worldclass.md) — layout shell, typography scale, semantic color, motion limits, empty/loading/error patterns.
+
 ---
 
 ## 1. Design principles

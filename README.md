@@ -95,6 +95,7 @@ If `VITE_SUPABASE_*` are **not** set at build time (e.g. public GitHub Pages), t
 
 - [`docs/mvp-problems-and-next-steps.md`](docs/mvp-problems-and-next-steps.md) — Known problems + first 10 engineering steps + 5-seat rotation.
 - [`docs/ui-mockups-2026.md`](docs/ui-mockups-2026.md) — Per-route UI/motion mockups.
+- [`docs/ui-design-system-worldclass.md`](docs/ui-design-system-worldclass.md) — **Global UI system** (layout, type, color, motion, a11y).
 
 ## Quality checklist
 
