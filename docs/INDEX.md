@@ -14,6 +14,7 @@ Read in this order:
 | 6 | [`RALPH-BY-CATEGORY.md`](./RALPH-BY-CATEGORY.md) | **Ralph loop** — category → subcategory → subtask → world-class target |
 | 7 | [`phases-roadmap.md`](./phases-roadmap.md) | Phases 1–5 summary + links to **detailed** phase docs |
 | 8 | [`conversation-closure-checklist.md`](./conversation-closure-checklist.md) | **Frozen** thread → plan alignment + execution gap list |
+| 9 | [`swarm-phase1-mock-launch-pack.md`](./swarm-phase1-mock-launch-pack.md) | **5-agent swarm** — copy-paste prompts, mocks, CEO merge order |
 | — | [`phases/README.md`](./phases/README.md) | Index: `phase-01` … `phase-05`, **ERROR-TESTING** |
 
 **Supporting specs (already in repo):**
