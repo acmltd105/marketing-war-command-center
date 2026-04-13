@@ -29,6 +29,8 @@
 
 **Rule:** No new screen without mapping to **Party × Motion × Outcome**.
 
+**Company lifecycle:** The same primitives apply to **the business you are building**—formation, brand, corporate site, press, revenue milestones (1 / 5 / 10 / 1000), IPO readiness—see [`company-lifecycle-pipeline.md`](./company-lifecycle-pipeline.md).
+
 ### 1.2 Replace “strip-back” with **spine-first routing**
 
 - **One home:** **Pipeline** (all parties with open Motions), not dashboard chrome.  

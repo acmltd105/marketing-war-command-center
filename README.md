@@ -1,13 +1,19 @@
 # Pipeline Pantry
 
-**You are building AI agents—are you using them to market?** **Pipeline Pantry** is the product: **pipelines to revenue, keep revenue, expand revenue.** This repository is the Pipeline Pantry web app—a Vite + React 18 control surface for Twilio-powered marketing operations, build telemetry from Supabase, configuration flows for Twilio/Flex, a Supabase Edge function layer, and a Rust desktop companion.
+**You are building AI agents—are you using them to market?** **Pipeline Pantry** is the product: **pipelines to revenue, keep revenue, expand revenue**—and the **company lifecycle** that makes revenue possible: **idea → entity → brand → site → story → first sale → scale → IPO readiness** (see [`docs/company-lifecycle-pipeline.md`](docs/company-lifecycle-pipeline.md)). This repo is the Pipeline Pantry web app: Vite + React 18, Twilio-leaning operations, Supabase telemetry and schema, Edge Functions, and a Rust desktop companion.
 
 The GitHub repo may remain `marketing-war-command-center` until you rename it; the shipped product name is **Pipeline Pantry**.
 
 ## Product vision (where we are going)
 
-The full platform is aimed at teams who want **scale and closure**, not one-off campaigns:
+The full platform is aimed at teams who want **scale and closure**, not one-off campaigns—and operators who want **one spine** from formation to liquidity narrative:
 
+- **Company creation**: Setup flows, **EIN/FEIN** checklists (with partner/CPA handoffs—no legal advice in the UI), entity profile, cap-table stubs where useful.
+- **Brand & surface**: **Brand identity tools** (kit, voice, assets), **corporate website** launch checklist and deploy hooks.
+- **Narrative**: **Press release** drafting blocks, embargo dates, IR-facing page patterns when you go public.
+- **Velocity milestones**: **First sale in a day**, then **5 → 10 → 1000** (or your cohort numbers) as **explicit checkpoints** tied to economics—not vanity counters.
+- **IPO tracker**: Readiness checklist (governance, audit trail density, reporting themes)—**progress + education**, not brokerage; your counsel owns filings.
+- **Survival / risk context**: Industry **failure-rate** context and **your** leading risk signals (runway, consent, chargebacks)—framed as **radar**, not a goal. Details in the lifecycle doc.
 - **Volume + agents**: Serious throughput (for example **~1M outbound touches in a day** when numbers, compliance, and carrier limits support it), with **AI agents** on **SMS and voice**. Operators bring their **knowledge base**.
 - **Closer Bot program**: **Canon of sales training**, **Closer Bots** tuned to **their** methodology, optional **voice**.
 - **Omnichannel**: **SMS**, **email**, **RCS**, **MMS**, and coordinated journeys.
