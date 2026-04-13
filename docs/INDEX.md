@@ -17,6 +17,7 @@ Read in this order:
 | 9 | [`swarm-phase1-mock-launch-pack.md`](./swarm-phase1-mock-launch-pack.md) | **5-agent swarm** — copy-paste prompts, mocks, CEO merge order |
 | 10 | [`ui-design-system-worldclass.md`](./ui-design-system-worldclass.md) | **UI constitution** — minimal, functional, intuitive (global) |
 | — | [`phases/README.md`](./phases/README.md) | Index: `phase-01` … `phase-05`, **ERROR-TESTING** |
+| — | [`phases/cursor-claude-agent-split.md`](./phases/cursor-claude-agent-split.md) | **3 Cursor Claude agents per phase** — lanes, owns, merge order, prompts |
 
 **Supporting specs (already in repo):**
 

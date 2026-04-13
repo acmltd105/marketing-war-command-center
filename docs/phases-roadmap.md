@@ -6,6 +6,8 @@
 
 **Detailed plans (full breakdowns):** [`phases/README.md`](./phases/README.md)
 
+**Parallel Cursor agents (3 per phase):** [`phases/cursor-claude-agent-split.md`](./phases/cursor-claude-agent-split.md)
+
 | Phase | Summary doc | One-line |
 |-------|---------------|----------|
 | 1 | [`phases/phase-01-foundation.md`](./phases/phase-01-foundation.md) | Entra, gateway `/health`, hygiene, lazy bundles |
