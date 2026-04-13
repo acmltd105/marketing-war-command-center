@@ -11,6 +11,7 @@ import {
   MessageSquare,
   Phone,
   Plus,
+  Link2,
   Radar,
   Settings,
   Target,
@@ -24,28 +25,28 @@ import { Button } from "@/components/ui/button";
 
 const Sidebar = () => {
   const navItems = [
-    { name: "Revenue Dashboard", path: "/", icon: LayoutDashboard, badge: null },
-    { name: "Financial Command", path: "/financials", icon: Wallet, badge: "Live" },
-    { name: "Campaign Operations", path: "/campaigns", icon: Target, badge: "3 Active" },
+    { name: "Pipeline overview", path: "/", icon: LayoutDashboard, badge: null },
+    { name: "Financial Command", path: "/financials", icon: Wallet, badge: null },
+    { name: "Campaign Operations", path: "/campaigns", icon: Target, badge: null },
     { name: "Go-To-Market War Map", path: "/war-map", icon: Radar, badge: null },
     { name: "Launch Campaign", path: "/create", icon: Plus, badge: null },
     { name: "DNC Upload", path: "/dnc-upload", icon: Upload, badge: null },
-    { name: "Customer Database", path: "/contacts", icon: Users, badge: "47K" },
-    { name: "Lead Intelligence", path: "/leads", icon: Database, badge: "Ingest" },
+    { name: "Contacts", path: "/contacts", icon: Users, badge: null },
+    { name: "Lead Intelligence", path: "/leads", icon: Database, badge: null },
     { name: "Performance Analytics", path: "/analytics", icon: BarChart3, badge: null },
-    { name: "Communication Assets", path: "/numbers", icon: Phone, badge: "12" },
-    { name: "Message Templates", path: "/templates", icon: FileText, badge: "24" },
-    { name: "Client Previews", path: "/client-previews", icon: MessageSquare, badge: "New" },
+    { name: "Communication Assets", path: "/numbers", icon: Phone, badge: null },
+    { name: "Message Templates", path: "/templates", icon: FileText, badge: null },
+    { name: "Client Previews", path: "/client-previews", icon: MessageSquare, badge: null },
     { name: "Landing & Web Dev", path: "/web-dev", icon: Globe, badge: null },
     { name: "System Configuration", path: "/settings", icon: Settings, badge: null },
-    { name: "Data connection", path: "/onboarding", icon: Database, badge: null },
+    { name: "Data connection", path: "/onboarding", icon: Link2, badge: null },
   ] as const;
 
   const quickStats = [
-    { label: "Revenue Generated", value: "$2.4M", color: "text-revenue-green" },
-    { label: "Active Operations", value: "12", color: "text-corporate-blue" },
-    { label: "Queue Processing", value: "847", color: "text-warning-amber" },
-    { label: "System Alerts", value: "2", color: "text-corporate-crimson" },
+    { label: "Pipeline health", value: "—", color: "text-corporate-silver" },
+    { label: "Open motions", value: "—", color: "text-corporate-silver" },
+    { label: "Outcomes (30d)", value: "—", color: "text-corporate-silver" },
+    { label: "Alerts", value: "—", color: "text-corporate-silver" },
   ];
 
   return (

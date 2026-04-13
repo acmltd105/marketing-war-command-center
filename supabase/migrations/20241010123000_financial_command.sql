@@ -1,7 +1,12 @@
--- Financial command center tables for revenue & expense intelligence
-codex/integrate-revenue-and-expense-tabs-ugnmqm
+-- Financial command + predictability tables (Pipeline Pantry)
+-- Replaces corrupted merge artifacts; matches frontend useFinancialsData.ts
+
 create extension if not exists pgcrypto;
- main
+
+-- ---------------------------------------------------------------------------
+-- Revenue metrics (section: summary | pipeline | efficiency)
+-- ---------------------------------------------------------------------------
+
 create table if not exists public.financial_revenue_metrics (
   id text primary key,
   label text not null,
@@ -9,17 +14,14 @@ create table if not exists public.financial_revenue_metrics (
   delta numeric default 0,
   trend text default 'flat' check (trend in ('up', 'down', 'flat')),
   target numeric,
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-  category text not null default 'headline',
-
   category text not null default 'summary',
   section text not null default 'summary',
-  format text not null default 'currency' check (format in ('currency', 'percent', 'number', 'ratio', 'duration')),
+  format text not null default 'currency'
+    check (format in ('currency', 'percent', 'number', 'ratio', 'duration')),
   precision integer default 0,
   suffix text,
- main
   active boolean not null default true,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.financial_revenue_projections (
@@ -27,11 +29,9 @@ create table if not exists public.financial_revenue_projections (
   quarter text not null,
   forecast numeric not null,
   variance numeric default 0,
-  created_at timestamp with time zone default now()
+  created_at timestamptz default now()
 );
 
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-create unique index if not exists financial_revenue_projections_quarter_key on public.financial_revenue_projections (quarter);
 create unique index if not exists financial_revenue_projections_quarter_key
   on public.financial_revenue_projections (quarter);
 
@@ -40,7 +40,7 @@ create table if not exists public.financial_revenue_segments (
   label text not null,
   arr numeric not null,
   change numeric default 0,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.financial_revenue_mrr_trends (
@@ -48,50 +48,36 @@ create table if not exists public.financial_revenue_mrr_trends (
   month text not null,
   recurring numeric not null,
   services numeric not null,
-  created_at timestamp with time zone default now()
+  created_at timestamptz default now()
 );
 
 create unique index if not exists financial_revenue_mrr_trends_month_key
   on public.financial_revenue_mrr_trends (month);
-main
+
+-- ---------------------------------------------------------------------------
+-- Expense metrics (section: summary | unit | runway | alert)
+-- ---------------------------------------------------------------------------
+
 create table if not exists public.financial_expense_metrics (
   id text primary key,
   label text not null,
   amount numeric,
   delta numeric,
   trend text default 'flat' check (trend in ('up', 'down', 'flat')),
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-  category text not null default 'headline',
-=======
   category text not null default 'summary',
   section text not null default 'summary',
-  format text not null default 'currency' check (format in ('currency', 'percent', 'number', 'ratio', 'duration')),
+  format text not null default 'currency'
+    check (format in ('currency', 'percent', 'number', 'ratio', 'duration')),
   precision integer default 0,
   suffix text,
-main
   runway_burn numeric,
   runway_months numeric,
   next_milestone text,
   severity text default 'info' check (severity in ('info', 'warning', 'critical')),
   message text,
   active boolean not null default true,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
-
- codex/integrate-revenue-and-expense-tabs-ugnmqm
-comment on table public.financial_revenue_metrics is 'Live revenue KPIs powering the financial command tab.';
-comment on table public.financial_revenue_projections is 'Forward-looking revenue projections used in the forecast grid.';
-comment on table public.financial_expense_metrics is 'Expense, runway, and alert telemetry for the financial command experience.';
-
--- Seed defaults for demo environments
-insert into public.financial_revenue_metrics (id, label, amount, delta, trend, target, category)
-values
-  ('arr', 'ARR', 2400000, 12.4, 'up', 3000000, 'headline'),
-  ('net-retention', 'Net Revenue Retention', 134, 4.1, 'up', 140, 'headline'),
-  ('gross-margin', 'Gross Margin', 78, 1.2, 'up', 80, 'headline'),
-  ('pipeline', 'Pipeline Coverage', 3.4, -0.3, 'down', 4, 'pipeline'),
-  ('avg-deal', 'Avg Deal Size', 58000, 2.6, 'up', null, 'pipeline'),
-  ('sales-cycle', 'Sales Cycle', 34, -1.7, 'down', null, 'pipeline')
 
 create table if not exists public.financial_vendor_spend (
   id text primary key,
@@ -100,7 +86,7 @@ create table if not exists public.financial_vendor_spend (
   amount numeric not null,
   change numeric default 0,
   status text not null,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.financial_expense_trends (
@@ -109,19 +95,18 @@ create table if not exists public.financial_expense_trends (
   marketing numeric not null,
   headcount numeric not null,
   tooling numeric not null,
-  created_at timestamp with time zone default now()
+  created_at timestamptz default now()
 );
 
 create unique index if not exists financial_expense_trends_month_key
   on public.financial_expense_trends (month);
 
-comment on table public.financial_revenue_metrics is 'Live revenue KPIs powering the financial command tab.';
-comment on table public.financial_revenue_projections is 'Forward-looking revenue projections used in the forecast grid.';
-comment on table public.financial_revenue_segments is 'Segmented ARR mix leveraged for revenue planning.';
-comment on table public.financial_revenue_mrr_trends is 'Monthly recurring revenue deltas split by recurring vs services.';
-comment on table public.financial_expense_metrics is 'Expense, runway, and alert telemetry for the financial command experience.';
-comment on table public.financial_vendor_spend is 'Operating vendor run-rate telemetry surfaced in the expense tab.';
-comment on table public.financial_expense_trends is 'Stacked expense cadence for marketing, headcount, and tooling spend.';
+comment on table public.financial_revenue_metrics is 'Revenue KPIs for Financial Command.';
+comment on table public.financial_expense_metrics is 'Expense, runway, and alert rows for Financial Command.';
+
+-- ---------------------------------------------------------------------------
+-- Predictability
+-- ---------------------------------------------------------------------------
 
 create table if not exists public.predictability_safe_launch (
   id text primary key default 'safe-launch',
@@ -134,7 +119,7 @@ create table if not exists public.predictability_safe_launch (
   intercept_coverage numeric not null,
   twilio_verified integer not null,
   automation_confidence numeric not null,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.predictability_modeling (
@@ -144,7 +129,7 @@ create table if not exists public.predictability_modeling (
   intercept_margin numeric not null,
   scenario_confidence numeric not null,
   notes text,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.predictability_guardrails (
@@ -153,7 +138,7 @@ create table if not exists public.predictability_guardrails (
   status text not null check (status in ('stable', 'watch', 'breach')),
   detail text not null,
   display_order integer default 0,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.predictability_scenarios (
@@ -164,7 +149,7 @@ create table if not exists public.predictability_scenarios (
   readiness text not null,
   go_live text not null,
   display_order integer default 0,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.predictability_volume_drivers (
@@ -175,7 +160,7 @@ create table if not exists public.predictability_volume_drivers (
   cost numeric not null,
   signal text not null check (signal in ('hot', 'warm', 'cool')),
   display_order integer default 0,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.predictability_channel_mix (
@@ -186,7 +171,7 @@ create table if not exists public.predictability_channel_mix (
   payback numeric not null,
   intercept text not null,
   display_order integer default 0,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
 create table if not exists public.predictability_support_metrics (
@@ -197,18 +182,13 @@ create table if not exists public.predictability_support_metrics (
   status text not null check (status in ('on-track', 'at-risk', 'breach')),
   trend numeric not null,
   display_order integer default 0,
-  updated_at timestamp with time zone default now()
+  updated_at timestamptz default now()
 );
 
-comment on table public.predictability_safe_launch is 'Safe launch envelope inputs for the predictability & modeling command.';
-comment on table public.predictability_modeling is 'Forecast reliability telemetry backing the predictability command hero card.';
-comment on table public.predictability_guardrails is 'Compliance, budget, and readiness guardrails that gate safe launches.';
-comment on table public.predictability_scenarios is 'Scenario planning data for lead logistics modeling.';
-comment on table public.predictability_volume_drivers is 'Modeled pipeline drivers with run rate, cost, and readiness signals.';
-comment on table public.predictability_channel_mix is 'Channel distribution and economics powering the predictability mix view.';
-comment on table public.predictability_support_metrics is 'Voice and support readiness telemetry for predictability enforcement.';
+-- ---------------------------------------------------------------------------
+-- Seeds
+-- ---------------------------------------------------------------------------
 
--- Seed defaults for demo environments
 insert into public.financial_revenue_metrics
   (id, label, amount, delta, trend, target, category, section, format, precision, suffix)
 values
@@ -221,20 +201,17 @@ values
   ('win-rate', 'Win Rate', 31, 1.7, 'up', 35, 'efficiency', 'efficiency', 'percent', 1, null),
   ('sales-cycle', 'Sales Cycle', 32, -2.1, 'down', null, 'efficiency', 'efficiency', 'duration', 0, 'days'),
   ('lead-velocity', 'Lead Velocity', 18, 2.4, 'up', null, 'efficiency', 'efficiency', 'percent', 1, null)
- main
 on conflict (id) do update set
+  label = excluded.label,
   amount = excluded.amount,
   delta = excluded.delta,
   trend = excluded.trend,
   target = excluded.target,
   category = excluded.category,
- codex/integrate-revenue-and-expense-tabs-ugnmqm
-=======
   section = excluded.section,
   format = excluded.format,
   precision = excluded.precision,
   suffix = excluded.suffix,
- main
   active = true,
   updated_at = now();
 
@@ -248,16 +225,6 @@ on conflict (quarter) do update set
   forecast = excluded.forecast,
   variance = excluded.variance,
   created_at = now();
-
- codex/integrate-revenue-and-expense-tabs-ugnmqm
-insert into public.financial_expense_metrics (id, label, amount, delta, trend, category, runway_burn, runway_months, next_milestone, severity, message)
-values
-  ('burn', 'Monthly Burn', 480000, -2.3, 'down', 'headline', 480000, 19, 'Series C readiness in 2 quarters', 'info', null),
-  ('opex', 'OpEx', 220000, 1.1, 'up', 'headline', null, null, null, 'info', null),
-  ('unit', 'Unit Economics', 42, 6.2, 'up', 'headline', null, null, null, 'info', null),
-  ('runway', 'Cash Runway', null, null, 'flat', 'runway', 480000, 19, 'Series C readiness in 2 quarters', 'info', null),
-  ('vendor-spend', 'Vendor Spend Alert', null, null, 'flat', 'alert', null, null, null, 'warning', 'Martech vendor costs spiked 11% MoM'),
-  ('hiring-freeze', 'Hiring Freeze', null, null, 'flat', 'alert', null, null, null, 'info', 'Hiring slowdown preserving runway')
 
 insert into public.financial_revenue_segments (id, label, arr, change)
 values
@@ -297,18 +264,16 @@ values
   ('vendor-spend', 'Vendor Cost Spike', null, 12, 'up', 'alert', 'alert', 'number', 1, '%', null, null, null, 'warning', 'Data enrichment renewal is trending +12% month over month.'),
   ('hiring', 'Hiring Discipline', null, 0, 'flat', 'alert', 'alert', 'number', 0, null, null, null, null, 'info', 'Hiring slowdown preserving headcount budget across sales.'),
   ('support-alert', 'Support Pressure', null, 8, 'up', 'alert', 'alert', 'number', 0, null, null, null, null, 'critical', 'Escalation volume has exceeded the support run rate by 8%.')
-main
 on conflict (id) do update set
+  label = excluded.label,
   amount = excluded.amount,
   delta = excluded.delta,
   trend = excluded.trend,
   category = excluded.category,
- codex/integrate-revenue-and-expense-tabs-ugnmqm
   section = excluded.section,
   format = excluded.format,
   precision = excluded.precision,
   suffix = excluded.suffix,
- main
   runway_burn = excluded.runway_burn,
   runway_months = excluded.runway_months,
   next_milestone = excluded.next_milestone,
@@ -316,8 +281,6 @@ on conflict (id) do update set
   message = excluded.message,
   active = true,
   updated_at = now();
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-
 
 insert into public.financial_vendor_spend (id, vendor, category, amount, change, status)
 values
@@ -475,4 +438,3 @@ on conflict (id) do update set
   trend = excluded.trend,
   display_order = excluded.display_order,
   updated_at = now();
-main

@@ -5,6 +5,8 @@ import Layout from "./components/Layout";
 import OnboardingGate from "./components/OnboardingGate";
 import { SkinProvider } from "./hooks/useSkin";
 import Campaigns from "./pages/Campaigns";
+import CommunicationAssetsPage from "./pages/CommunicationAssetsPage";
+import ContactsPage from "./pages/ContactsPage";
 import ClientPreviewShowcase from "./pages/ClientPreviewShowcase";
 import CreateCampaign from "./pages/CreateCampaign";
 import DncUpload from "./pages/DncUpload";
@@ -14,6 +16,7 @@ import GoToMarketPipeline from "./pages/GoToMarketPipeline";
 import Index from "./pages/Index";
 import JourneyBuilder from "./pages/JourneyBuilder";
 import LeadIntelligence from "./pages/LeadIntelligence";
+import PerformanceAnalyticsPage from "./pages/PerformanceAnalyticsPage";
 import NotFound from "./pages/NotFound";
 import OnboardingPage from "./pages/OnboardingPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -45,6 +48,9 @@ const App = () => (
               <Route path="war-map" element={<GoToMarketPipeline />} />
               <Route path="workflows" element={<WorkflowManager />} />
               <Route path="leads" element={<LeadIntelligence />} />
+              <Route path="contacts" element={<ContactsPage />} />
+              <Route path="analytics" element={<PerformanceAnalyticsPage />} />
+              <Route path="numbers" element={<CommunicationAssetsPage />} />
               <Route path="web-dev" element={<WebDevelopment />} />
               <Route path="dnc-upload" element={<DncUpload />} />
               <Route path="templates" element={<TemplateGallery />} />
