@@ -13,6 +13,7 @@ Creates and seeds (among others):
 - **`projects`**, **`builds`**, **`project_latest_build`** — CI/build dashboard.
 - **Financial command** — `financial_revenue_metrics`, `financial_revenue_projections`, `financial_revenue_segments`, `financial_revenue_mrr_trends`, `financial_expense_metrics`, `financial_vendor_spend`, `financial_expense_trends`, plus predictability tables.
 - **Pipeline Pantry spine** — `party`, `deal`, `outcome` (see `20260413000000_pipeline_pantry_spine.sql`).
+- **Company workspace** — `company_workspace` profile + checklist JSON (`20260413120000_company_workspace.sql`); UI at `/company` uses localStorage until wired.
 - **Lead ingestion**, **user preferences / skin**, **failed build alerts** — see migration filenames in `supabase/migrations/`.
 
 ## Edge functions

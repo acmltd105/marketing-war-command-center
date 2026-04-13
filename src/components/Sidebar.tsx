@@ -4,6 +4,7 @@ import {
   Activity,
   AlertTriangle,
   BarChart3,
+  Building2,
   Database,
   FileText,
   Globe,
@@ -26,6 +27,7 @@ import { Button } from "@/components/ui/button";
 const Sidebar = () => {
   const navItems = [
     { name: "Pipeline overview", path: "/", icon: LayoutDashboard, badge: null },
+    { name: "Company workspace", path: "/company", icon: Building2, badge: null },
     { name: "Financial Command", path: "/financials", icon: Wallet, badge: null },
     { name: "Campaign Operations", path: "/campaigns", icon: Target, badge: null },
     { name: "Go-To-Market War Map", path: "/war-map", icon: Radar, badge: null },

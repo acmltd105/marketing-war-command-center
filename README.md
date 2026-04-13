@@ -28,7 +28,7 @@ The full platform is aimed at teams who want **scale and closure**, not one-off 
 
 ## What ships in this repository today
 
-A **Vite + React 18** app (Tailwind, shadcn UI): campaign and journey UIs, Flex/workflow surfaces, template galleries, lead intelligence, financial command tabs, **live build telemetry** from **Supabase**, **migrations**, **Edge Functions** (`report-build`, `twilio-build-alert`), and a **Rust desktop companion** for build logs.
+A **Vite + React 18** app (Tailwind, shadcn UI): campaign and journey UIs, Flex/workflow surfaces, template galleries, lead intelligence, **Company workspace** (`/company`) for idea→IPO checklists, financial command tabs, **live build telemetry** from **Supabase**, **migrations**, **Edge Functions** (`report-build`, `twilio-build-alert`), and a **Rust desktop companion** for build logs.
 
 ## Local development
 

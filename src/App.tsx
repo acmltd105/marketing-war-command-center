@@ -6,6 +6,7 @@ import OnboardingGate from "./components/OnboardingGate";
 import { SkinProvider } from "./hooks/useSkin";
 import Campaigns from "./pages/Campaigns";
 import CommunicationAssetsPage from "./pages/CommunicationAssetsPage";
+import CompanyPage from "./pages/CompanyPage";
 import ContactsPage from "./pages/ContactsPage";
 import ClientPreviewShowcase from "./pages/ClientPreviewShowcase";
 import CreateCampaign from "./pages/CreateCampaign";
@@ -41,6 +42,7 @@ const App = () => (
               <Route path="/onboarding" element={<OnboardingPage />} />
               <Route path="/" element={<Layout />}>
               <Route index element={<Index />} />
+              <Route path="company" element={<CompanyPage />} />
               <Route path="create" element={<CreateCampaign />} />
               <Route path="campaigns" element={<Campaigns />} />
               <Route path="flex" element={<FlexManagement />} />

@@ -46,6 +46,10 @@ If the product ever shows “death rate,” label it **risk / mortality context*
 
 ---
 
+## In-app entry
+
+Shipped route: **`/company`** (“Company workspace”) — profile fields, lane checklists, local persistence; Supabase table `company_workspace` for a future sync.
+
 ## Build order (suggested)
 
 1. **Workspace / company profile** object (name, jurisdiction, stage enum: `idea | formed | revenue | scaling | pre_ipo_public`).
