@@ -72,6 +72,11 @@ If `VITE_SUPABASE_*` are **not** set at build time (e.g. public GitHub Pages), t
 
 [`docs/spec-pipeline-to-revenue-ralph-a-plus.md`](docs/spec-pipeline-to-revenue-ralph-a-plus.md) — Party / Motion / Outcome primitives, strip-back discipline, frontier capabilities.
 
+## MVP backlog & UI
+
+- [`docs/mvp-problems-and-next-steps.md`](docs/mvp-problems-and-next-steps.md) — **All known problems** (bundle size, lint, audit, git hygiene, gateway, auth) + **next 10 steps** + **5 rotating agents**.
+- [`docs/ui-mockups-2026.md`](docs/ui-mockups-2026.md) — **2026 minimal + motion** mockups per route (login, onboarding, every menu page, 404); background design agent deliverable.
+
 ## Quality checklist
 
 - **Supabase**: `supabase db push`, `supabase functions deploy report-build`, `supabase functions deploy twilio-build-alert`.
