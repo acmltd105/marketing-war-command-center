@@ -1,6 +1,6 @@
 # Pipeline Pantry
 
-**You are building AI agents—are you using them to market?** **Pipeline Pantry** is the product: **pipelines to revenue, keep revenue, expand revenue**—and the **company lifecycle** that makes revenue possible: **idea → entity → brand → site → story → first sale → scale → IPO readiness** (see [`docs/company-lifecycle-pipeline.md`](docs/company-lifecycle-pipeline.md)). This repo is the Pipeline Pantry web app: Vite + React 18, Twilio-leaning operations, Supabase telemetry and schema, Edge Functions, and a Rust desktop companion.
+**You are building AI agents—are you using them to market?** **Pipeline Pantry** is the product: **pipelines to revenue, keep revenue, expand revenue**—and the **company lifecycle** that makes revenue possible: **idea → entity → brand → site → story → first sale → scale → IPO readiness** (see [`docs/company-lifecycle-pipeline.md`](docs/company-lifecycle-pipeline.md)). This repo is the Pipeline Pantry web app: Vite + React 18, Twilio-leaning operations. **Internal dogfood** runs on **Azure** (SQL, Cosmos, Blobs, containers, Microsoft 365) via a **gateway**—see [`docs/azure-managed-agents.md`](docs/azure-managed-agents.md). The `supabase/` tree remains for OSS demos and migration history; choosing an **Azure-primary** backend in onboarding **disables** the Supabase browser client for that browser profile.
 
 The GitHub repo may remain `marketing-war-command-center` until you rename it; the shipped product name is **Pipeline Pantry**.
 
@@ -41,18 +41,20 @@ Dev server: `http://localhost:8080` by default.
 
 ### Environment variables
 
-For live telemetry, add to `.env.local`:
+**Supabase (optional, demos / OSS path):**
 
 ```bash
 VITE_SUPABASE_URL="https://<your-project>.supabase.co"
 VITE_SUPABASE_ANON_KEY="<anon-key>"
 ```
 
-Supabase: [`supabase/README.md`](supabase/README.md).
+**Azure dogfood:** leave `VITE_SUPABASE_*` unset, or set `VITE_REQUIRE_ONBOARDING=true` so CI can still inject Supabase for public builds while **forcing** your team through `/onboarding` to pick **Azure SQL** / **Cosmos** and enter the **gateway** URL.
+
+Supabase folder: [`supabase/README.md`](supabase/README.md).
 
 ### First-run onboarding (no `.env` required)
 
-If `VITE_SUPABASE_*` are **not** set at build time (e.g. public GitHub Pages), the app opens **`/onboarding`**: pick a data vendor catalog, optional Supabase test against `projects`, optional **gateway URL**. Credentials live in **`localStorage`**. CI builds that inject env vars **skip** the wizard.
+If `VITE_SUPABASE_*` are **not** set at build time (e.g. public GitHub Pages), the app opens **`/onboarding`**: pick a primary backend. **Azure-primary** choices require an **HTTPS gateway** (SQL + Cosmos + Blob behind Key Vault—never secrets in the SPA). Optional Supabase test for other backends. Credentials live in **`localStorage`**. CI builds that inject Supabase env vars **skip** the wizard unless `VITE_REQUIRE_ONBOARDING=true`.
 
 ## Production deployment
 

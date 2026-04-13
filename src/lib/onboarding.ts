@@ -1,4 +1,5 @@
 import type { BackendProviderDefinition } from "./backendProviders";
+import { shouldUseSupabaseInBrowser } from "./dataPlane";
 
 const STORAGE_KEY = "mwcc:onboarding-v1";
 
@@ -68,9 +69,12 @@ export function clearOnboardingState() {
 
 /**
  * Skip wizard when the app is built with Supabase env (typical GitHub Pages + injected secrets).
+ * Set `VITE_REQUIRE_ONBOARDING=true` to always show the wizard until localStorage onboarding completes
+ * (Azure dogfood when CI still injects Supabase for OSS demos).
  */
 export function isOnboardingComplete(): boolean {
-  if (readEnvSupabase()) {
+  const forceWizard = import.meta.env.VITE_REQUIRE_ONBOARDING === "true";
+  if (!forceWizard && readEnvSupabase()) {
     return true;
   }
   const s = readOnboardingState();
@@ -81,8 +85,13 @@ export function resolveSupabaseCredentialsFromOnboarding(): {
   projectUrl: string;
   anonKey: string;
 } | null {
-  const fromEnv = readEnvSupabase();
   const ob = readOnboardingState();
+  /** Dogfood / Azure plane: never open Supabase in this browser once onboarding locked Azure. */
+  if (ob?.completedAt && ob.primaryProviderId && !shouldUseSupabaseInBrowser(ob.primaryProviderId)) {
+    return null;
+  }
+
+  const fromEnv = readEnvSupabase();
   const fromOb =
     ob?.supabase?.projectUrl?.trim() && ob?.supabase?.anonKey?.trim()
       ? {
@@ -96,6 +105,8 @@ export function resolveSupabaseCredentialsFromOnboarding(): {
   }
   return null;
 }
+
+export { isAzurePrimaryProvider } from "./dataPlane";
 
 export function buildOnboardingPayload(args: {
   primary: BackendProviderDefinition;

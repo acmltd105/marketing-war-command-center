@@ -17,6 +17,7 @@ import {
   filterProviders,
   type BackendProviderDefinition,
 } from "@/lib/backendProviders";
+import { isAzurePrimaryProvider } from "@/lib/dataPlane";
 import { buildOnboardingPayload, clearOnboardingState, writeOnboardingState } from "@/lib/onboarding";
 import { resetSupabaseBrowserClient } from "@/lib/supabaseClient";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -29,6 +30,30 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 
 const STEPS = ["Welcome", "Choose backend", "Connect", "Review"] as const;
+
+async function probeGateway(baseUrl: string): Promise<{ ok: true } | { ok: false; message: string }> {
+  const root = baseUrl.trim().replace(/\/$/, "");
+  if (!root) {
+    return { ok: false, message: "Gateway URL is required." };
+  }
+  const healthUrl = `${root}/health`;
+  try {
+    const res = await fetch(healthUrl, { method: "GET", mode: "cors" });
+    if (res.ok) {
+      return { ok: true };
+    }
+    return {
+      ok: false,
+      message: `Gateway responded with HTTP ${res.status} at ${healthUrl}. Fix CORS or implement GET /health.`,
+    };
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "Network error";
+    return {
+      ok: false,
+      message: `Could not reach ${healthUrl} (${message}). If the gateway exists, CORS may block the browser—you can still continue.`,
+    };
+  }
+}
 
 async function probeSupabase(projectUrl: string, anonKey: string): Promise<{ ok: true } | { ok: false; message: string }> {
   const url = projectUrl.trim().replace(/\/$/, "");
@@ -74,6 +99,8 @@ export default function OnboardingPage() {
   const [usingDemo, setUsingDemo] = useState(false);
   const [testStatus, setTestStatus] = useState<"idle" | "running" | "ok" | "error">("idle");
   const [testMessage, setTestMessage] = useState<string | null>(null);
+  const [gatewayTestStatus, setGatewayTestStatus] = useState<"idle" | "running" | "ok" | "error">("idle");
+  const [gatewayTestMessage, setGatewayTestMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   const filtered = useMemo(() => filterProviders(search), [search]);
@@ -81,10 +108,26 @@ export default function OnboardingPage() {
   const progress = ((step + 1) / STEPS.length) * 100;
 
   const canAdvanceFromBackend = Boolean(primary);
+  const isAzurePlane = Boolean(primary && isAzurePrimaryProvider(primary.id));
+
   const canAdvanceFromConnect =
     usingDemo ||
-    (Boolean(supabaseUrl.trim()) && Boolean(supabaseAnon.trim()) && testStatus === "ok") ||
-    (Boolean(gatewayBaseUrl.trim()) && primary && primary.id !== "supabase");
+    (!isAzurePlane && Boolean(supabaseUrl.trim()) && Boolean(supabaseAnon.trim()) && testStatus === "ok") ||
+    (isAzurePlane && Boolean(gatewayBaseUrl.trim())) ||
+    (!isAzurePlane && Boolean(gatewayBaseUrl.trim()) && primary && primary.id !== "supabase");
+
+  async function runGatewayTest() {
+    setGatewayTestStatus("running");
+    setGatewayTestMessage(null);
+    const result = await probeGateway(gatewayBaseUrl);
+    if (result.ok) {
+      setGatewayTestStatus("ok");
+      setGatewayTestMessage("GET /health succeeded.");
+    } else {
+      setGatewayTestStatus("error");
+      setGatewayTestMessage(result.message);
+    }
+  }
 
   async function runTest() {
     setTestStatus("running");
@@ -106,7 +149,7 @@ export default function OnboardingPage() {
       const payload = buildOnboardingPayload({
         primary,
         supabase:
-          !usingDemo && supabaseUrl.trim() && supabaseAnon.trim()
+          !usingDemo && !isAzurePlane && supabaseUrl.trim() && supabaseAnon.trim()
             ? { projectUrl: supabaseUrl.trim(), anonKey: supabaseAnon.trim() }
             : undefined,
         gatewayBaseUrl: gatewayBaseUrl.trim() || undefined,
@@ -131,8 +174,9 @@ export default function OnboardingPage() {
           </div>
           <p className="text-muted-foreground text-sm sm:text-base">
             You are building agents—this stack is for using them to <strong className="text-foreground">market and close</strong>.
-            Wire where telemetry and customer data sync from (Supabase first-class; other warehouses via your gateway). Static
-            sites never hold warehouse passwords—only publishable keys or HTTPS to your BFF.
+            Dogfood default: <strong className="text-foreground">Azure</strong> (SQL Database, Cosmos DB, Blob Storage,
+            Container Apps / AKS, Microsoft 365) via your <strong className="text-foreground">gateway</strong>—no database
+            secrets in the browser. Optional Supabase block appears only if you pick a non-Azure primary backend.
           </p>
           <div className="space-y-1">
             <div className="text-muted-foreground flex justify-between text-xs">
@@ -148,7 +192,7 @@ export default function OnboardingPage() {
         {step === 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Welcome to the Marketing War Command Center</CardTitle>
+              <CardTitle>Welcome to Pipeline Pantry</CardTitle>
               <CardDescription>
                 The product vision is simple: <strong className="text-foreground">text, email, RCS, and MMS at scale</strong>,
                 Segment-style <strong className="text-foreground">triggers and enrichment</strong>, trainable{" "}
@@ -163,10 +207,10 @@ export default function OnboardingPage() {
                 <Shield className="h-4 w-4" />
                 <AlertTitle>Built for the browser</AlertTitle>
                 <AlertDescription>
-                  Cosmos DB, SQL Azure, Neon, Redshift, Snowflake, and peers require a small sync service (Azure Functions,
-                  Cloud Run, Lambda, Fly.io, etc.) that holds connection strings. This app stores only what belongs in the
-                  client: Supabase anon credentials or the URL of your gateway. Volume, compliance, and carrier rules for
-                  outreach stay in your Twilio and program configuration—not in this wizard.
+                  For <strong>Azure SQL</strong>, <strong>Cosmos DB</strong>, and peers, connection strings live in{" "}
+                  <strong>Azure Key Vault</strong> + your <strong>API / Container Apps</strong> gateway. This SPA stores only
+                  the gateway base URL and notes—never SQL passwords or Cosmos keys. Managed agents (see docs) call the same
+                  gateway to read/write on your behalf.
                 </AlertDescription>
               </Alert>
               <div className="flex flex-wrap gap-2">
@@ -175,8 +219,8 @@ export default function OnboardingPage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button variant="outline" asChild>
-                  <a href="https://supabase.com/docs/guides/api" target="_blank" rel="noreferrer">
-                    Supabase API guide
+                  <a href="https://learn.microsoft.com/azure/" target="_blank" rel="noreferrer">
+                    Azure docs
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
@@ -267,79 +311,139 @@ export default function OnboardingPage() {
                 )}
               </div>
 
-              <div className="space-y-3">
-                <Label className="text-base font-semibold">Supabase (recommended first link)</Label>
-                <p className="text-muted-foreground text-sm">
-                  Paste your project URL and anon key. We validate by reading <code className="text-xs">projects</code>{" "}
-                  over PostgREST—the same path the live dashboard uses.
-                </p>
-                <div className="space-y-2">
-                  <Label htmlFor="sb-url">Project URL</Label>
-                  <Input
-                    id="sb-url"
-                    placeholder="https://xyzcompany.supabase.co"
-                    value={supabaseUrl}
-                    onChange={(e) => {
-                      setSupabaseUrl(e.target.value);
-                      setTestStatus("idle");
-                      setTestMessage(null);
-                    }}
-                    autoComplete="url"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="sb-key">Anon public key</Label>
-                  <Input
-                    id="sb-key"
-                    type="password"
-                    placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…"
-                    value={supabaseAnon}
-                    onChange={(e) => {
-                      setSupabaseAnon(e.target.value);
-                      setTestStatus("idle");
-                      setTestMessage(null);
-                    }}
-                    autoComplete="off"
-                  />
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button type="button" variant="secondary" onClick={runTest} disabled={!supabaseUrl.trim() || !supabaseAnon.trim()}>
-                    {testStatus === "running" ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Testing…
-                      </>
-                    ) : (
-                      "Test Supabase connection"
+              {isAzurePlane ? (
+                <div className="space-y-3">
+                  <Label className="text-base font-semibold">Azure data plane gateway (required)</Label>
+                  <p className="text-muted-foreground text-sm">
+                    Your Container Apps / API Management / Function App exposes HTTPS only. It talks to{" "}
+                    <strong className="text-foreground">Azure SQL</strong>, <strong className="text-foreground">Cosmos DB</strong>
+                    , and <strong className="text-foreground">Blob Storage</strong> with managed identity + Key Vault—never from
+                    this browser.
+                  </p>
+                  <div className="space-y-2">
+                    <Label htmlFor="gw-azure">Gateway base URL</Label>
+                    <Input
+                      id="gw-azure"
+                      placeholder="https://pantry-gateway.azurecontainerapps.io"
+                      value={gatewayBaseUrl}
+                      onChange={(e) => {
+                        setGatewayBaseUrl(e.target.value);
+                        setGatewayTestStatus("idle");
+                        setGatewayTestMessage(null);
+                      }}
+                      autoComplete="url"
+                    />
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={runGatewayTest}
+                      disabled={!gatewayBaseUrl.trim() || gatewayTestStatus === "running"}
+                    >
+                      {gatewayTestStatus === "running" ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Testing…
+                        </>
+                      ) : (
+                        "Test GET /health"
+                      )}
+                    </Button>
+                    {gatewayTestStatus === "ok" && (
+                      <span className="text-revenue-green flex items-center gap-1 text-sm">
+                        <CheckCircle2 className="h-4 w-4" />
+                        Gateway reachable
+                      </span>
                     )}
-                  </Button>
-                  {testStatus === "ok" && (
-                    <span className="text-revenue-green flex items-center gap-1 text-sm">
-                      <CheckCircle2 className="h-4 w-4" />
-                      Ready
-                    </span>
+                  </div>
+                  {gatewayTestMessage && (
+                    <Alert variant={gatewayTestStatus === "error" ? "destructive" : "default"}>
+                      <AlertDescription>{gatewayTestMessage}</AlertDescription>
+                    </Alert>
                   )}
                 </div>
-                {testMessage && (
-                  <Alert variant={testStatus === "error" ? "destructive" : "default"}>
-                    <AlertDescription>{testMessage}</AlertDescription>
-                  </Alert>
-                )}
-              </div>
+              ) : (
+                <>
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold">Supabase (optional)</Label>
+                    <p className="text-muted-foreground text-sm">
+                      Paste project URL and anon key to validate <code className="text-xs">projects</code> over PostgREST.
+                      Skip if you only use a custom gateway below.
+                    </p>
+                    <div className="space-y-2">
+                      <Label htmlFor="sb-url">Project URL</Label>
+                      <Input
+                        id="sb-url"
+                        placeholder="https://xyzcompany.supabase.co"
+                        value={supabaseUrl}
+                        onChange={(e) => {
+                          setSupabaseUrl(e.target.value);
+                          setTestStatus("idle");
+                          setTestMessage(null);
+                        }}
+                        autoComplete="url"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="sb-key">Anon public key</Label>
+                      <Input
+                        id="sb-key"
+                        type="password"
+                        placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…"
+                        value={supabaseAnon}
+                        onChange={(e) => {
+                          setSupabaseAnon(e.target.value);
+                          setTestStatus("idle");
+                          setTestMessage(null);
+                        }}
+                        autoComplete="off"
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={runTest}
+                        disabled={!supabaseUrl.trim() || !supabaseAnon.trim()}
+                      >
+                        {testStatus === "running" ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Testing…
+                          </>
+                        ) : (
+                          "Test Supabase connection"
+                        )}
+                      </Button>
+                      {testStatus === "ok" && (
+                        <span className="text-revenue-green flex items-center gap-1 text-sm">
+                          <CheckCircle2 className="h-4 w-4" />
+                          Ready
+                        </span>
+                      )}
+                    </div>
+                    {testMessage && (
+                      <Alert variant={testStatus === "error" ? "destructive" : "default"}>
+                        <AlertDescription>{testMessage}</AlertDescription>
+                      </Alert>
+                    )}
+                  </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="gw">Custom sync gateway (optional)</Label>
-                <Input
-                  id="gw"
-                  placeholder="https://api.mycompany.com/sync"
-                  value={gatewayBaseUrl}
-                  onChange={(e) => setGatewayBaseUrl(e.target.value)}
-                />
-                <p className="text-muted-foreground text-xs">
-                  For {primary.name}, point this at the HTTPS service that proxies to your warehouse or document API. Future
-                  releases will call this URL for non-Supabase sync jobs.
-                </p>
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="gw">Custom sync gateway (optional)</Label>
+                    <Input
+                      id="gw"
+                      placeholder="https://api.mycompany.com"
+                      value={gatewayBaseUrl}
+                      onChange={(e) => setGatewayBaseUrl(e.target.value)}
+                    />
+                    <p className="text-muted-foreground text-xs">
+                      Point at your BFF for non-Supabase warehouses. Pipeline Pantry will call this URL in future releases.
+                    </p>
+                  </div>
+                </>
+              )}
 
               <div className="space-y-2">
                 <Label htmlFor="notes">Operator notes (optional)</Label>
@@ -360,8 +464,8 @@ export default function OnboardingPage() {
                   onChange={(e) => setUsingDemo(e.target.checked)}
                 />
                 <span>
-                  Continue with <strong>demo data</strong> until my gateway is ready. I understand charts stay offline until
-                  Supabase or my API is reachable.
+                  Continue with <strong>demo data</strong> until my gateway is ready. I understand live telemetry stays
+                  offline until my API (or Supabase, if configured) is reachable.
                 </span>
               </label>
 
@@ -391,8 +495,8 @@ export default function OnboardingPage() {
                   <strong>{primary.name}</strong> ({primary.vendor})
                 </li>
                 <li>
-                  <span className="text-muted-foreground">Supabase:</span>{" "}
-                  {supabaseUrl.trim() ? "Configured" : "Not set"}
+                  <span className="text-muted-foreground">Data plane:</span>{" "}
+                  {isAzurePlane ? "Azure (gateway only in browser)" : supabaseUrl.trim() ? "Supabase configured" : "Not set"}
                 </li>
                 <li>
                   <span className="text-muted-foreground">Gateway:</span>{" "}
@@ -431,7 +535,7 @@ export default function OnboardingPage() {
                       Saving…
                     </>
                   ) : (
-                    "Enter command center"
+                    "Enter Pipeline Pantry"
                   )}
                 </Button>
                 <Button variant="outline" asChild>
