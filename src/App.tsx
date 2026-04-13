@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import AuthGate from "./components/AuthGate";
 import Layout from "./components/Layout";
 import OnboardingGate from "./components/OnboardingGate";
 import { SkinProvider } from "./hooks/useSkin";
@@ -18,6 +19,7 @@ import Index from "./pages/Index";
 import JourneyBuilder from "./pages/JourneyBuilder";
 import LeadIntelligence from "./pages/LeadIntelligence";
 import PerformanceAnalyticsPage from "./pages/PerformanceAnalyticsPage";
+import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import OnboardingPage from "./pages/OnboardingPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -38,9 +40,11 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <OnboardingGate>
-            <Routes>
-              <Route path="/onboarding" element={<OnboardingPage />} />
-              <Route path="/" element={<Layout />}>
+            <AuthGate>
+              <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/onboarding" element={<OnboardingPage />} />
+                <Route path="/" element={<Layout />}>
               <Route index element={<Index />} />
               <Route path="company" element={<CompanyPage />} />
               <Route path="create" element={<CreateCampaign />} />
@@ -60,8 +64,9 @@ const App = () => (
               <Route path="financials" element={<FinancialsPage />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AuthGate>
           </OnboardingGate>
         </BrowserRouter>
       </TooltipProvider>

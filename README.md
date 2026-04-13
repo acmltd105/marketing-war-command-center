@@ -41,6 +41,8 @@ npm run dev
 
 Dev server: `http://localhost:8080` by default.
 
+**Local dev (mock auth + API):** `.env.development` in the repo enables `VITE_USE_MOCK_AUTH`, `VITE_USE_MOCK_API`, and `VITE_DEV_SKIP_ONBOARDING` so `npm run dev` → **`/login`** → mock session → **`/contacts`** with in-memory parties (no Azure required). Remove or edit that file for full onboarding.
+
 ### Environment variables
 
 **Supabase (optional, demos / OSS path):**

@@ -73,6 +73,10 @@ export function clearOnboardingState() {
  * (Azure dogfood when CI still injects Supabase for OSS demos).
  */
 export function isOnboardingComplete(): boolean {
+  /** Local dev only — skip wizard when iterating on auth/contacts (see .env.development). */
+  if (import.meta.env.VITE_DEV_SKIP_ONBOARDING === "true") {
+    return true;
+  }
   const forceWizard = import.meta.env.VITE_REQUIRE_ONBOARDING === "true";
   if (!forceWizard && readEnvSupabase()) {
     return true;
