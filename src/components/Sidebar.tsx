@@ -50,8 +50,8 @@ const Sidebar = () => {
   return (
     <div className="flex h-screen w-72 flex-col border-r border-sidebar-border bg-sidebar p-4">
       <div className="mb-8 rounded-lg border border-corporate-navy bg-corporate-navy/30 p-4">
-        <h1 className="fortune-heading mb-1 text-xl font-bold">REVENUE ENGINE</h1>
-        <p className="text-xs text-corporate-silver">Enterprise Command Center</p>
+        <h1 className="fortune-heading mb-1 text-xl font-bold">PIPELINE PANTRY</h1>
+        <p className="text-xs text-corporate-silver">Pipelines to revenue</p>
         <div className="mt-2 flex items-center gap-2">
           <Activity className="h-3 w-3 text-revenue-green" />
           <span className="text-xs text-corporate-silver">Systems Operational</span>

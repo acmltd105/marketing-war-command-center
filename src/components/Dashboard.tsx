@@ -115,8 +115,8 @@ const demoProjects: UiProject[] = [
   {
     id: "demo-1",
     slug: "command-center",
-    name: "Marketing War Command Center",
-    repo_url: "https://github.com/acme/marketing-war-command-center",
+    name: "Pipeline Pantry",
+    repo_url: "https://github.com/acmltd105/marketing-war-command-center",
     ci_provider: "github-actions",
     builds: [
       {
@@ -126,7 +126,7 @@ const demoProjects: UiProject[] = [
         branch: "main",
         commit_sha: "3b7f2d8",
         ci_provider: "github-actions",
-        logs_url: "https://github.com/acme/marketing-war-command-center/actions",
+        logs_url: "https://github.com/acmltd105/marketing-war-command-center/actions",
         message: "Deploy container image",
         metadata: { source: "demo" },
         started_at: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
@@ -142,7 +142,7 @@ const demoProjects: UiProject[] = [
         branch: "main",
         commit_sha: "2f4c1a0",
         ci_provider: "github-actions",
-        logs_url: "https://github.com/acme/marketing-war-command-center/actions",
+        logs_url: "https://github.com/acmltd105/marketing-war-command-center/actions",
         message: "Deployment succeeded",
         metadata: { source: "demo" },
         started_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),

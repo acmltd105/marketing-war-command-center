@@ -1,6 +1,6 @@
 # Desktop Companion
 
-A lightweight Rust CLI that tails local build logs and forwards status updates to the Supabase `report-build` edge function. Use it when builds execute outside of cloud CI (e.g., on-prem runners or developer laptops) so the marketing command center dashboard stays accurate.
+A lightweight Rust CLI that tails local build logs and forwards status updates to the Supabase `report-build` edge function. Use it when builds execute outside of cloud CI (e.g., on-prem runners or developer laptops) so the Pipeline Pantry dashboard stays accurate.
 
 ## Features
 
@@ -23,7 +23,7 @@ The resulting binary lives at `target/release/desktop-companion`.
 ```bash
 ./desktop-companion \
   --project-slug marketing-war-command-center \
-  --project-name "Marketing War Command Center" \
+  --project-name "Pipeline Pantry" \
   --repository-url https://github.com/acme/marketing-war-command-center \
   --ci-provider local-runner \
   --branch main \

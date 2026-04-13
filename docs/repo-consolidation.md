@@ -1,8 +1,8 @@
-# Consolidating the Revenue & Expense workspace into the War Command Center
+# Consolidating the Revenue & Expense workspace into Pipeline Pantry
 
-This playbook shows how to fold the standalone revenue/expense dashboard into the War Command Center repo while keeping Git
+This playbook shows how to fold the standalone revenue/expense dashboard into the Pipeline Pantry repo while keeping Git
 history, Supabase artifacts, and UI conventions intact. It assumes you want both codebases to live side-by-side in this
-monorepo and expose the revenue and expense flows as tabs inside the command center shell.
+monorepo and expose the revenue and expense flows as tabs inside the Pipeline Pantry shell.
 
 ## 1. Prepare both repositories
 
@@ -46,7 +46,7 @@ first to trim out irrelevant directories, then run the `git subtree add` command
 4. If the smaller repo shipped with its own lint/test setup, port relevant scripts into `package.json` under new commands (e.g.,
    `npm run test:financials`).
 
-## 4. Expose the new tabs inside the War Command Center UI
+## 4. Expose the new tabs inside the Pipeline Pantry UI
 
 1. Create a **financials feature module** under `src/features/revenue-expense/` that exports the revenue and expense React
    components you just imported.

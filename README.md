@@ -1,8 +1,8 @@
-# Marketing War Command Center
+# Pipeline Pantry
 
-The Marketing War Command Center is a Vite + React 18 control surface for orchestrating Twilio-powered marketing operations. It
-shows live build telemetry from Supabase, houses configuration flows for Twilio/Flex, and is paired with a Supabase Edge
-function layer plus a Rust desktop companion.
+**Pipeline Pantry** is the product: pipelines to revenue, keep revenue, expand revenue. This repository is the **Pipeline Pantry** web app—a Vite + React 18 control surface for Twilio-powered marketing operations, build telemetry from Supabase, configuration flows for Twilio/Flex, a Supabase Edge function layer, and a Rust desktop companion.
+
+Repository host name may remain `marketing-war-command-center` on GitHub; the shipped product name is **Pipeline Pantry**.
 
 ## Local development
 
@@ -15,63 +15,36 @@ The dev server listens on `http://localhost:8080` by default. Tailwind, shadcn U
 
 ### Environment variables
 
-The dashboard automatically falls back to curated demo data when Supabase credentials are missing, keeping the UI interactive.
-Provide the following variables in a `.env.local` file to light up realtime telemetry:
+The dashboard falls back to curated demo data when Supabase credentials are missing. For live telemetry, add to `.env.local`:
 
 ```bash
 VITE_SUPABASE_URL="https://<your-project>.supabase.co"
 VITE_SUPABASE_ANON_KEY="<anon-key>"
 ```
 
-The Supabase schema, triggers, and edge functions live in [`supabase/`](supabase/README.md). Deploy them with the Supabase CLI
-before pointing CI to the `report-build` endpoint.
+Supabase migrations and Edge Functions live in [`supabase/`](supabase/README.md). Deploy with the Supabase CLI before wiring CI to `report-build`.
 
 ## Production deployment
 
-This repository now includes an automated GitHub Pages workflow (`.github/workflows/deploy.yml`). Once GitHub Pages is enabled
-for the repository:
+GitHub Pages workflow: [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
-1. Go to **Settings → Pages** and choose **GitHub Actions** as the source.
-2. Merge to `main` (or trigger the workflow manually). The action builds the Vite site and publishes it to Pages.
-3. The workflow outputs a ready-to-share URL (e.g., `https://<org>.github.io/<repo>/`) so stakeholders can click and test the UI
-   immediately.
+1. **Settings → Pages** → source **GitHub Actions**.
+2. Merge to `main` or run the workflow manually.
+3. Use the workflow’s Pages URL, or a custom domain.
 
-Assets are built with a relative base path, so the site works on both GitHub Pages and custom domains without further
-configuration. If you host elsewhere, set `VITE_BASE_PATH` to the appropriate subdirectory before running `npm run build`.
+Set `VITE_BASE_PATH` before `npm run build` if the app is not hosted at the domain root.
 
 ## Consolidating related dashboards
 
-Need to pull the revenue & expense UI into this monorepo? Follow the step-by-step playbook in
-[`docs/repo-consolidation.md`](docs/repo-consolidation.md) to graft the smaller repo with `git subtree`, harmonize Supabase
-artifacts, and expose the new tabs inside the command center shell.
+[`docs/repo-consolidation.md`](docs/repo-consolidation.md) describes folding another dashboard into this repo with `git subtree` and shared Supabase artifacts.
 
-codex/integrate-revenue-and-expense-tabs
-=======
-## Financial command module
+## Financial command
 
-The revenue and expense intelligence now ships natively with the command center. Navigate to **Financial Command** in the
-left rail (or visit `/financials`) to access:
+**Financial Command** in the left rail (`/financials`): revenue and expense views backed by Supabase financial tables, with demo fallbacks when credentials are missing.
 
-codex/integrate-revenue-and-expense-tabs-ugnmqm
-- A dual-tab glass dashboard that pivots between revenue acceleration and cost discipline views.
-- Supabase-backed metrics sourced from the `financial_revenue_metrics`, `financial_revenue_projections`, and
-  `financial_expense_metrics` tables with automatic demo fallbacks when credentials are missing.
-- Runway alerts and quarterly forecasts surfaced alongside the rest of the Twilio operations toolkit.
-
-- A dual-tab glass dashboard that pivots between revenue acceleration and cost discipline views, including ARR, pipeline health,
-  and segment mix visualizations.
-- Supabase-backed metrics sourced from the `financial_revenue_metrics`, `financial_revenue_projections`, and `financial_expense_metrics`
-  tables (plus supporting trend tables) with automatic demo fallbacks when credentials are missing.
-- Cost-per-client, CAC payback, and vendor runway controls surfaced alongside quarterly forecasts so finance can intervene fast.
-main
-
- main
 ## Quality checklist
 
 - **Supabase**: `supabase db push`, `supabase functions deploy report-build`, `supabase functions deploy twilio-build-alert`.
 - **Frontend**: `npm run lint`, `npm run build`.
-- **Desktop companion**: build the Rust project in `desktop-companion/` for deep Twilio runtime introspection.
-- **Twilio credentials**: store secrets via `supabase secrets set` as outlined in `supabase/README.md`.
-
-Keeping these guardrails in place ensures the command center stays error-proof, self-healing, and production ready.
-Testing preview!
+- **Desktop companion**: `desktop-companion/` for log forwarding to `report-build`.
+- **Twilio credentials**: `supabase secrets set` per [`supabase/README.md`](supabase/README.md).

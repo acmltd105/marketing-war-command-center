@@ -98,9 +98,9 @@ If after 90 days **<40%** of weekly active workspaces emit **≥1 Outcome with e
 4. **Processor cognition** — routing is **policy-as-code** with **live** risk + margin feedback.  
 5. **Proof replay** — any customer journey **byte-replayable** for litigation/regulator (see frontier list).
 
-### 3.3 **Naming** (defer until unfair five has demo)
+### 3.3 **Product name**
 
-Codename only: **`RecipePipe`** internal until trademark + product marketing.
+**Pipeline Pantry** — shipped product name. Repository slug may stay `marketing-war-command-center` on GitHub until a rename is worth the churn.
 
 ---
 
