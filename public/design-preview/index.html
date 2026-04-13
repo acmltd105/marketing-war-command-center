@@ -3,40 +3,159 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Pipeline Pantry — design preview</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: system-ui, sans-serif; background: #0f172a; color: #e2e8f0; padding: 2rem; }
-    h1 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
-    p { color: #94a3b8; font-size: 0.875rem; margin-bottom: 2rem; }
-    .grid { display: grid; gap: 2rem; max-width: 1000px; }
-    @media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } }
-    figure { margin: 0; background: #1e293b; border-radius: 12px; padding: 1rem; border: 1px solid #334155; }
-    figcaption { font-size: 0.75rem; color: #94a3b8; margin-top: 0.75rem; }
-    img { width: 100%; height: auto; border-radius: 8px; display: block; background: #fff; }
-    a { color: #60a5fa; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+      background: #020617;
+      color: #e2e8f0;
+      padding: clamp(1rem, 4vw, 2.5rem);
+      min-height: 100vh;
+    }
+    header {
+      max-width: 1100px;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    h1 {
+      font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.5rem 0;
+    }
+    .lede {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      max-width: 42rem;
+      margin: 0;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    button {
+      font: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #f8fafc;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #334155;
+      border-color: #475569;
+    }
+    button:focus-visible {
+      outline: 2px solid #38bdf8;
+      outline-offset: 2px;
+    }
+    .stamp {
+      font-size: 0.6875rem;
+      color: #64748b;
+      font-variant-numeric: tabular-nums;
+    }
+    a { color: #7dd3fc; }
+    a:hover { color: #bae6fd; }
+    .grid {
+      display: grid;
+      gap: clamp(1rem, 3vw, 2rem);
+      max-width: 1100px;
+    }
+    @media (min-width: 800px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    figure {
+      margin: 0;
+      background: #0f172a;
+      border-radius: 14px;
+      padding: 1rem;
+      border: 1px solid #1e293b;
+      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.45);
+    }
+    figcaption {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 0.875rem;
+      line-height: 1.4;
+    }
+    figcaption strong {
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+      background: #fff;
+      vertical-align: middle;
+    }
   </style>
 </head>
 <body>
-  <h1>Pipeline Pantry — UI preview (SVG)</h1>
-  <p>Minimal 2026-style wireframes. Open each file directly, or run <code>npm run dev</code> and visit <a href="/design-preview/index.html">/design-preview/index.html</a>.</p>
-  <div class="grid">
+  <header>
+    <div>
+      <h1>Pipeline Pantry — UI preview</h1>
+      <p class="lede">
+        Minimal wireframes (SVG). Served from <code style="color:#cbd5e1">/public/design-preview/</code>.
+        Dev server: <a href="/design-preview/index.html">/design-preview/index.html</a>
+      </p>
+    </div>
+    <div class="actions">
+      <button type="button" id="reload">Reload previews</button>
+      <span class="stamp" id="stamp" aria-live="polite"></span>
+    </div>
+  </header>
+  <div class="grid" id="grid">
     <figure>
-      <img src="./login.svg" alt="Login screen preview" width="960" height="640" />
-      <figcaption>Login — Microsoft + mock session</figcaption>
+      <img id="img-login" src="" alt="Login screen preview" width="960" height="640" loading="eager" />
+      <figcaption><strong>Login</strong> — Microsoft + mock session</figcaption>
     </figure>
     <figure>
-      <img src="./shell.svg" alt="App shell sidebar and main" width="960" height="640" />
-      <figcaption>Shell — sidebar + contacts table</figcaption>
+      <img id="img-shell" src="" alt="App shell sidebar and main" width="960" height="640" loading="eager" />
+      <figcaption><strong>Shell</strong> — sidebar + contacts</figcaption>
     </figure>
     <figure>
-      <img src="./onboarding.svg" alt="Onboarding step preview" width="960" height="640" />
-      <figcaption>Onboarding — step 2, Azure selected</figcaption>
+      <img id="img-onboarding" src="" alt="Onboarding step preview" width="960" height="640" loading="eager" />
+      <figcaption><strong>Onboarding</strong> — step 2, Azure selected</figcaption>
     </figure>
     <figure>
-      <img src="./empty-state.svg" alt="Empty state preview" width="720" height="400" />
-      <figcaption>Empty state — dashed region, one CTA</figcaption>
+      <img id="img-empty" src="" alt="Empty state preview" width="720" height="400" loading="eager" />
+      <figcaption><strong>Empty state</strong> — dashed region, one CTA</figcaption>
     </figure>
   </div>
+  <script>
+    function bust() {
+      return "v=" + Date.now();
+    }
+    function applySrc() {
+      var q = bust();
+      document.getElementById("img-login").src = "./login.svg?" + q;
+      document.getElementById("img-shell").src = "./shell.svg?" + q;
+      document.getElementById("img-onboarding").src = "./onboarding.svg?" + q;
+      document.getElementById("img-empty").src = "./empty-state.svg?" + q;
+      document.getElementById("stamp").textContent =
+        "Loaded " + new Date().toLocaleTimeString();
+    }
+    document.getElementById("reload").addEventListener("click", function () {
+      applySrc();
+    });
+    applySrc();
+  </script>
 </body>
 </html>
