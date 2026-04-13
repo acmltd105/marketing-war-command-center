@@ -23,6 +23,7 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import SidebarSignOut from "@/components/SidebarSignOut";
 
 const Sidebar = () => {
   const navItems = [
@@ -121,6 +122,10 @@ const Sidebar = () => {
         <Activity className="h-3 w-3 animate-pulse text-revenue-green" />
         <span className="text-corporate-silver">All Systems:</span>
         <span className="font-semibold text-revenue-green">OPERATIONAL</span>
+      </div>
+
+      <div className="mt-4 border-t border-sidebar-border pt-4">
+        <SidebarSignOut />
       </div>
     </div>
   );

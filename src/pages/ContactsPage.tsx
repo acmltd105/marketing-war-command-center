@@ -25,15 +25,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Party } from "@/lib/contracts/party";
-import { clearDevSession, readDevSession } from "@/lib/devAuth";
+import MsalSignOutButton from "@/components/MsalSignOutButton";
+import EntraUserLine from "@/components/EntraUserLine";
+import { clearDevSession, isMockAuthEnabled, readDevSession } from "@/lib/devAuth";
 import { addParty, isMockApiEnabled, listParties } from "@/lib/gatewayClient";
+import { isMsalConfigured } from "@/lib/msalConfig";
 import { Link } from "react-router-dom";
 
 const ContactsPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const session = readDevSession();
+  const mockAuth = isMockAuthEnabled();
   const mock = isMockApiEnabled();
+  const entra = isMsalConfigured() && !mockAuth;
 
   const [displayName, setDisplayName] = useState("");
   const [type, setType] = useState<"person" | "org">("person");
@@ -72,24 +77,26 @@ const ContactsPage = () => {
           <p className="text-muted-foreground mt-1 max-w-2xl text-sm">
             People and organizations you message, bill, and move through the pipeline.
           </p>
-          {session && (
+          {mockAuth && session && (
             <p className="text-muted-foreground mt-2 text-xs">
               Signed in as <span className="text-foreground font-medium">{session.displayName}</span> ·{" "}
               {mock ? "mock API" : "live gateway"}
             </p>
           )}
+          {entra && <EntraUserLine />}
         </div>
         <div className="flex flex-wrap gap-2">
           <Button type="button" variant="outline" size="sm" onClick={() => void partiesQuery.refetch()} disabled={partiesQuery.isFetching}>
             <RefreshCw className={`mr-2 h-4 w-4 ${partiesQuery.isFetching ? "animate-spin" : ""}`} />
             Refresh
           </Button>
-          {session && (
+          {mockAuth && session && (
             <Button type="button" variant="ghost" size="sm" onClick={signOut}>
               <LogOut className="mr-2 h-4 w-4" />
               Sign out
             </Button>
           )}
+          {entra && <MsalSignOutButton />}
         </div>
       </div>
 
