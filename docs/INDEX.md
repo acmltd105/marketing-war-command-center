@@ -23,3 +23,5 @@ Read in this order:
 - [`ui-mockups-2026.md`](./ui-mockups-2026.md) — Per-route UI/motion mockups
 
 **Repo root:** [`../README.md`](../README.md) — product pitch + dev quickstart; links here for **planning mode**.
+
+**Root stubs (same content, shorter path):** [`../agents.md`](../agents.md), [`../orchestration.md`](../orchestration.md), [`../QA.md`](../QA.md), [`../guardrails-no-drift.md`](../guardrails-no-drift.md) → point into `docs/`.
