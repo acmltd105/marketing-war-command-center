@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSkin } from "@/hooks/useSkin";
 import { resolveSkinId } from "@/lib/skins";
 
@@ -14,8 +14,6 @@ export default function ThemeSelector() {
   const [value, setValue] = useState<string>(currentSkinId);
 
   useEffect(() => setValue(currentSkinId), [currentSkinId]);
-
-  const skinIds = useMemo(() => new Set(availableSkins.map((s) => s.id)), [availableSkins]);
 
   function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const id = e.target.value;

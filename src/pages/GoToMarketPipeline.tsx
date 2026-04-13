@@ -273,7 +273,7 @@ const pipelineStages: PipelineStage[] = [
     title: "Campaign Launch",
     description: "Greenlight all channels, sync budgets, and initiate live attribution once risk gates clear.",
     status: "not-started",
-    owner: "Command Center",
+    owner: "Pipeline Pantry",
     dependencies: ["10"],
     metrics: [
       { label: "Channels", value: "0 Live" },

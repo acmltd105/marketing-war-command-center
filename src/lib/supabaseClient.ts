@@ -33,7 +33,7 @@ export function getSupabaseBrowserClient() {
     },
     global: {
       headers: {
-        "X-Client-Info": "marketing-war-command-center-dashboard",
+        "X-Client-Info": "pipeline-pantry-dashboard",
       },
     },
   });

@@ -7,8 +7,8 @@ All pipelines should publish lifecycle events to the `report-build` edge functio
 ```json
 {
   "project_slug": "marketing-war-command-center",
-  "project_name": "Marketing War Command Center",
-  "repository_url": "https://github.com/acme/marketing-war-command-center",
+  "project_name": "Pipeline Pantry",
+  "repository_url": "https://github.com/acmltd105/marketing-war-command-center",
   "ci_provider": "github-actions",
   "external_id": "${{ github.run_id }}",
   "build_number": "${{ github.run_number }}",
@@ -46,7 +46,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{
               "project_slug": "marketing-war-command-center",
-              "project_name": "Marketing War Command Center",
+              "project_name": "Pipeline Pantry",
               "repository_url": "https://github.com/${{ github.repository }}",
               "ci_provider": "github-actions",
               "external_id": "${{ github.run_id }}",
