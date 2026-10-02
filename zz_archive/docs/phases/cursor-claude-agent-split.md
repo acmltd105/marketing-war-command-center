@@ -25,8 +25,6 @@
 
 **Merge order:** P1‑A (gateway) → P1‑B (FE consumes real URLs) → P1‑C (CI + docs).
 
-**Launch now (copy-paste prompts):** [`phase-01-cursor-launch-now.md`](./phase-01-cursor-launch-now.md)
-
 ---
 
 ## Phase 2 — MVP spine
