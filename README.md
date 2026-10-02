@@ -43,6 +43,10 @@ Dev server: `http://localhost:8080` by default.
 
 **Local dev (mock auth + API):** `.env.development` in the repo enables `VITE_USE_MOCK_AUTH`, `VITE_USE_MOCK_API`, and `VITE_DEV_SKIP_ONBOARDING` so `npm run dev` → **`/login`** → mock session → **`/contacts`** with in-memory parties (no Azure required). Remove or edit that file for full onboarding.
 
+**Real gateway + Entra:** set `VITE_USE_MOCK_API=false`, `VITE_GATEWAY_BASE_URL=https://your-gateway`, and Microsoft Entra SPA vars below. Gateway `GET /health`, `GET/POST /api/parties` receive an **`Authorization: Bearer`** header when a token can be acquired (use `VITE_MSAL_API_SCOPE` for your API app’s scope; otherwise the SPA falls back to `User.Read` for Graph-only smoke tests).
+
+**Tests:** `npm run test` runs Vitest (mock gateway client smoke tests).
+
 ### Environment variables
 
 **Supabase (optional, demos / OSS path):**
@@ -53,6 +57,19 @@ VITE_SUPABASE_ANON_KEY="<anon-key>"
 ```
 
 **Azure dogfood:** leave `VITE_SUPABASE_*` unset, or set `VITE_REQUIRE_ONBOARDING=true` so CI can still inject Supabase for public builds while **forcing** your team through `/onboarding` to pick **Azure SQL** / **Cosmos** and enter the **gateway** URL.
+
+**Microsoft Entra (SPA) — optional; use instead of mock auth:**
+
+```bash
+VITE_MSAL_CLIENT_ID="<app-registration-client-id>"
+VITE_MSAL_TENANT_ID="<tenant-or-directory-id>"
+# Optional — defaults to window.location.origin (must match Entra redirect URI list)
+VITE_MSAL_REDIRECT_URI="http://localhost:8080"
+# Optional — API scope exposed by your gateway (e.g. api://<api-app-id>/access_as_user)
+VITE_MSAL_API_SCOPE="api://<your-api-app-id>/.default"
+```
+
+When `VITE_MSAL_*` client and tenant are set, **`VITE_USE_MOCK_AUTH` should be `false`** so `/login` uses **Continue with Microsoft** and routes are gated on the Entra session.
 
 Supabase folder: [`supabase/README.md`](supabase/README.md).
 

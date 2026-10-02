@@ -31,6 +31,19 @@ export function getGatewayBaseUrl(): string {
   return base?.replace(/\/$/, "") ?? "";
 }
 
+/** Attach Bearer token when MSAL is configured and user has a token. */
+export async function getGatewayFetchOptions(init?: RequestInit): Promise<RequestInit> {
+  const { acquireGatewayAccessToken, isMsalConfigured } = await import("@/lib/msalConfig");
+  const headers = new Headers(init?.headers ?? undefined);
+  if (isMsalConfigured()) {
+    const token = await acquireGatewayAccessToken();
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+  }
+  return { ...init, headers };
+}
+
 export type GatewayHealth = typeof MOCK_HEALTH;
 
 export async function fetchHealth(): Promise<GatewayHealth> {
@@ -41,7 +54,7 @@ export async function fetchHealth(): Promise<GatewayHealth> {
   if (!base) {
     throw new Error("VITE_GATEWAY_BASE_URL is not set and mock API is off.");
   }
-  const res = await fetch(`${base}/health`);
+  const res = await fetch(`${base}/health`, await getGatewayFetchOptions());
   if (!res.ok) {
     throw new Error(`Gateway /health returned ${res.status}`);
   }
@@ -56,7 +69,7 @@ export async function listParties(): Promise<Party[]> {
   if (!base) {
     throw new Error("VITE_GATEWAY_BASE_URL is not set and mock API is off.");
   }
-  const res = await fetch(`${base}/api/parties`);
+  const res = await fetch(`${base}/api/parties`, await getGatewayFetchOptions());
   if (!res.ok) {
     throw new Error(`Gateway /api/parties returned ${res.status}`);
   }
@@ -76,11 +89,12 @@ export async function addParty(input: Omit<Party, "id">): Promise<Party> {
     return row;
   }
   const base = getGatewayBaseUrl();
-  const res = await fetch(`${base}/api/parties`, {
+  const opts = await getGatewayFetchOptions({
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
   });
+  const res = await fetch(`${base}/api/parties`, opts);
   if (!res.ok) {
     throw new Error(`Gateway POST /api/parties returned ${res.status}`);
   }
