@@ -18,14 +18,12 @@ Read in this order:
 | 10 | [`ui-design-system-worldclass.md`](./ui-design-system-worldclass.md) | **UI constitution** — minimal, functional, intuitive (global) |
 | — | [`phases/README.md`](./phases/README.md) | Index: `phase-01` … `phase-05`, **ERROR-TESTING** |
 | — | [`phases/cursor-claude-agent-split.md`](./phases/cursor-claude-agent-split.md) | **3 Cursor Claude agents per phase** — lanes, owns, merge order, prompts |
-| — | [`phases/phase-01-cursor-launch-now.md`](./phases/phase-01-cursor-launch-now.md) | **Phase 1 — 3 copy-paste Cursor agent prompts** (launch in parallel) |
 
 **Supporting specs (already in repo):**
 
 - [`spec-pipeline-to-revenue-ralph-a-plus.md`](./spec-pipeline-to-revenue-ralph-a-plus.md) — Party / Motion / Outcome, frontier list
 - [`company-lifecycle-pipeline.md`](./company-lifecycle-pipeline.md) — Idea → IPO lifecycle
 - [`azure-managed-agents.md`](./azure-managed-agents.md) — Azure dogfood + gateway + agents
-- [`azure-devops-git.md`](./azure-devops-git.md) — **Azure Repos** remote, PAT, `scripts/push-azure-devops.sh`
 - [`mvp-problems-and-next-steps.md`](./mvp-problems-and-next-steps.md) — Known problems + first 10 steps
 - [`ui-mockups-2026.md`](./ui-mockups-2026.md) — Per-route UI/motion mockups
 
